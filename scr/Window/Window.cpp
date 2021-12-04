@@ -114,9 +114,20 @@ void Window::RRect(Rect<float> _rect, const Color& col, float radius) {
 	nvgFill(nvg);
 }
 
-void Window::Text(char* const_c_str, float x, float y, float font_scale, const Color& col) {
+void Window::Text(const char* c_str, float x, float y, float font_scale, const Color& col) {
+	int len = cstrlen(c_str);
+	char* heap_str = (char* )malloc(len + 1);
+	
+	for (int i = 0; i < len; i++) {
+		heap_str[i] = c_str[i];
+	}
+	heap_str[len] = 0;
 
-	char* c_str = (char*)const_c_str;
+	Text(heap_str, x, y, font_scale, col);
+	free(heap_str);
+}
+
+void Window::Text(char* c_str, float x, float y, float font_scale, const Color& col) {
 
 	nvgFontSize(nvg, font_scale);
 	nvgFontFace(nvg, "sans");

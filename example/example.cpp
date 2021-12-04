@@ -6,10 +6,10 @@ int main() {
 	Window window;
 	Keyboard kb;
 
-	Timer timer(1000/60.f);
+	Timer timer(1000 / 60.f);
 
 	while (true) {
-		
+
 		timer.reset();
 
 		kb.PumpEvents();
@@ -21,9 +21,10 @@ int main() {
 
 		window.Clear(Color(0.4, 0.4, 0.4, 0.99));
 
-		window.Text(Str("Hello Window Example.\n Press Esc to close.").str, 100, 100, 50, Color());
+		window.Text("Hello Window Example.\n Press Esc to close.", 100, 100, 50, Color());
 
 		window.EndFrame();
 
 		timer.wait_out();
 	}
+}

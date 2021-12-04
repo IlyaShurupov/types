@@ -26,6 +26,7 @@ public:
 	void DrawBounds(const Rect<float>& rect, const Color& col, short thickness);
 	void DrawLine(const vec2<float>& head, const vec2<float>& tail, const Color& col, short thickness);
 	void Text(char* str, float x, float y, float font_scale, const Color& col);
+	void Text(const char* str, float x, float y, float font_scale, const Color& col);
 	void Clear(const Color& col);
 
 	void GetCrsr(vec2<float>& crs);
