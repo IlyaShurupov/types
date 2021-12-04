@@ -2,9 +2,9 @@
 
 #include "Macros.h"
 
-struct Str;
+struct string;
 
-#define STRR const Str&
+#define STRR const string&
 
 typedef alni str_idx;
 
@@ -13,19 +13,19 @@ int cstr_len(const char* c_str);
 str_idx cstrlen(const char* str);
 str_idx cstrlen(const wchar_t* str);
 
-void to_string(Str* str, int val);
-void to_string(Str* str, alnf val);
-void to_string(Str* str, bool val);
-void to_string(Str* str, char val);
+void to_string(string* str, int val);
+void to_string(string* str, alnf val);
+void to_string(string* str, bool val);
+void to_string(string* str, char val);
 
 template <typename Type>
-inline void to_string(Str* str, Type val) {
+inline void to_string(string* str, Type val) {
   to_string(str, val);
 }
 
-bool str_from_string(Str* str, int& val);
-bool str_from_string(Str* str, float& val);
-bool str_from_string(Str* str, bool& val);
+bool str_from_string(string* str, int& val);
+bool str_from_string(string* str, float& val);
+bool str_from_string(string* str, bool& val);
 
 struct Range {
   str_idx strt;
@@ -39,50 +39,49 @@ struct Range {
 };
 
 struct StrRef {
-  struct Str *str;
+  struct string *str;
   Range rng;
 };
 
-struct Str {
+struct string {
 
-  Str(const char* str);
-  Str();
+  string(const char* str);
+  string();
 
   template <typename Type>
-  Str(Type val) {
+  string(Type val) {
     to_string(this, val);
   }
 
-  Str(const Str& val) {
+  string(const string& val) {
     *this = val;
   }
 
   char* str = nullptr;
-  str_idx length = 0;
 
-  str_idx len();
+  str_idx len() const;
   void alloc(str_idx len);
   void clear();
 
-  void operator=(const Str& string);
+  void operator=(const string& string);
   void operator=(const char* string);
   void operator=(const wchar_t* string);
 
-  Str& operator+=(const Str& string);
-  Str operator+(const Str& string);
+  string& operator+=(const string& string);
+  string operator+(const string& string);
 
   bool operator==(const char* cstring);
-  bool operator==(const Str& string);
+  bool operator==(const string& string);
   bool operator!=(const char* cstring);
-  bool operator!=(const Str& string);
+  bool operator!=(const string& string);
 
   char operator[](str_idx idx);
 
-  bool match(Range& range, Str& str2, Range& range2);
+  bool match(Range& range, string& str2, Range& range2);
   
-  void coppy(Str* str, Range range);
+  void copy(string* str, Range range);
 
-  str_idx find(Str& string, Range range) const;
+  str_idx find(string& string, Range range) const;
   str_idx find(const char character, Range range) const;
   str_idx rfind(const char character, Range range) const;
 
@@ -90,7 +89,6 @@ struct Str {
 
   void assign(char* cs) {
     str = cs;
-    length = cstrlen(cs);
   }
 
   template <typename Type>
@@ -100,7 +98,7 @@ struct Str {
 
   int how_many(const char val);
 
-  ~Str();
+  ~string();
 };
 
 #ifdef _DEBUG
@@ -109,8 +107,8 @@ struct Str {
 #define CLOG(text) 
 #endif 
 
-void cnsl(const Str& str);
+void cnsl(const string& str);
 
-void get_executable_dir(Str* in);
+void get_executable_dir(string* in);
 
 const wchar_t* wide_char(const char* c);

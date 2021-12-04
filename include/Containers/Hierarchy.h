@@ -6,7 +6,7 @@
 template <typename Type, typename ListType, int hrch_idx>
 struct Hierarchy {
 
-  Str id;
+  string id;
   Type* prnt = nullptr;
   ListType childs;
 

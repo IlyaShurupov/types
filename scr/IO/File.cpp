@@ -24,7 +24,7 @@ bool create_dir(const char* path) {
 
 #endif
 
-void File::open(const Str& path) {
+void File::open(const string& path) {
 
 	if (!opened) {
 		file.open(path.str, std::ios::in | std::ios::out | std::ios::binary);
@@ -41,16 +41,16 @@ void File::open(const Str& path) {
 	}
 }
 
-bool File::create(const Str& path) {
+bool File::create(const string& path) {
 
-	alni dir_idx_1 = path.rfind('\\', Range(0, path.length));
-	alni dir_idx_2 = path.rfind('/', Range(0, path.length));
+	alni dir_idx_1 = path.rfind('\\', Range(0, path.len()));
+	alni dir_idx_2 = path.rfind('/', Range(0, path.len()));
 
 	if (dir_idx_2 > dir_idx_1) {
 		dir_idx_1 = dir_idx_2;
 	}
 
-	Str directory(path);
+	string directory(path);
 
 	directory.trim(Range(0, dir_idx_1 - 1));
 

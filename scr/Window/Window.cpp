@@ -49,7 +49,7 @@ Window::Window() {
 
 	nvg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
 
-	Str path;
+	string path;
 	get_executable_dir(&path);
 	path += "RobotoRegular.ttf";
 

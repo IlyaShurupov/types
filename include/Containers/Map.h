@@ -252,10 +252,10 @@ public:
 };
 
 struct StrHashPolicy {
-	inline int operator()(const Str& str) {
+	inline int operator()(const string& str) {
 		return hash_string(str.str);
 	}
 };
 
 template< typename Type, typename CopyValfunc = CopyBytes<Type>, int table_size = HASHMAP_MIN_SIZE >
-using Dict = HashMap<Type, Str, StrHashPolicy, CopyValfunc, table_size>;
+using Dict = HashMap<Type, string, StrHashPolicy, CopyValfunc, table_size>;

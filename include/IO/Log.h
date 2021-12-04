@@ -13,14 +13,14 @@
 #include "Strings/Strings.h"
 
 class Nd_Log {
-	Node<Str*>* cursor = nullptr;
-	List<Str*> buff;
+	Node<string*>* cursor = nullptr;
+	List<string*> buff;
 public:
 
-	void write(const struct Str& in);
-	const Str* read();
+	void write(const struct string& in);
+	const string* read();
 };
 
-void NdLog_write(const struct Str& in);
+void NdLog_write(const struct string& in);
 
-const Str* NdLog_read();
+const string* NdLog_read();

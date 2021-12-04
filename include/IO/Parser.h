@@ -13,17 +13,17 @@ enum class DBType {
 };
 
 struct DataBlock {
-  Str BlockName;
+  string BlockName;
   DBType type = DBType::COMPOUND;
 
   long long int integer = 0;
   float floating = 0;
   bool boolean = 0;
-  Str string;
+  string string;
   List<DataBlock*> list;
 
   DataBlock* find(const char* BlockName);
   ~DataBlock();
 };
 
-struct DataBlock* Read_Yaml(struct Str* filepath);
+struct DataBlock* Read_Yaml(struct string* filepath);

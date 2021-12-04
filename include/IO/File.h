@@ -21,13 +21,13 @@ public:
 	File() {
 	}
 
-	File(const Str& path) {
+	File(const string& path) {
 		open(path);
 	}
 
-	void open(const Str& path);
+	void open(const string& path);
 
-	bool create(const Str& path);
+	bool create(const string& path);
 
 	void write(const uint1* in, int size, alni adress = -1);
 
