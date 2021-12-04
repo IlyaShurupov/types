@@ -3,27 +3,27 @@
 
 Nd_Log GLB_bd_log;
 
-void Nd_Log::write(const struct Str& in) {
-	buff.PushBack(new Str(in));
+void Nd_Log::write(const struct string& in) {
+	buff.PushBack(new string(in));
 
 	if (!cursor) {
 		cursor = buff.Last();
 	}
 }
 
-const Str* Nd_Log::read() {
+const string* Nd_Log::read() {
 	if (cursor) {
-		const Str* out = cursor->data;
+		const string* out = cursor->data;
 		cursor = cursor->next;
 		return out;
 	}
 	return nullptr;
 }
 
-void NdLog_write(const struct Str& in) {
+void NdLog_write(const struct string& in) {
 	GLB_bd_log.write(in);
 }
 
-const Str* NdLog_read() {
+const string* NdLog_read() {
 	return GLB_bd_log.read();
 }

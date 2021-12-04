@@ -29,6 +29,7 @@
     <ClCompile Include="..\..\scr\Geometry\Ray.cpp" />
     <ClCompile Include="..\..\scr\Geometry\Trig.cpp" />
     <ClCompile Include="..\..\scr\IO\File.cpp" />
+    <ClCompile Include="..\..\scr\IO\Log.cpp" />
     <ClCompile Include="..\..\scr\Macros.cpp" />
     <ClCompile Include="..\..\scr\Memory\Mem.cpp" />
     <ClCompile Include="..\..\scr\Strings\Strings.cpp" />
@@ -47,6 +48,7 @@
     <ClInclude Include="..\..\include\Containers\Tuple.h" />
     <ClInclude Include="..\..\include\Geometry\Matrix.h" />
     <ClInclude Include="..\..\include\IO\File.h" />
+    <ClInclude Include="..\..\include\IO\Log.h" />
     <ClInclude Include="..\..\include\Macros.h" />
     <ClInclude Include="..\..\include\Memory\Allocators.h" />
     <ClInclude Include="..\..\include\Strings\Strings.h" />

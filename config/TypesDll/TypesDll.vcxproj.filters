@@ -41,6 +41,9 @@
     <ClCompile Include="..\..\scr\Geometry\Trig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\scr\IO\Log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\Memory\Allocators.h">
@@ -92,6 +95,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\Window\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\IO\Log.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,7 @@
 
 #include "Memory/Mem.h"
 
+#ifdef MEM_TRACE
 
 #include "Time/Timer.h"
 #include "Strings/Strings.h"
@@ -141,3 +142,5 @@ void mem_test_types() {
   size = sizeof(alnf);
   size = sizeof(alni);
 }
+
+#endif

@@ -6,6 +6,9 @@
 #include "Macros.h"
 
 str_idx cstrlen(const char* str) {
+  if (!str) {
+    return 0;
+  }
   str_idx len = 0;
   while (str[len]) {
     len++;

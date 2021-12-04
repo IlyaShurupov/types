@@ -30,6 +30,7 @@ typedef unsigned long long		uint8;
 #define ALIGNED_MIN LLONG_MIN
 #endif
 
+#ifdef MEM_TRACE
 
 struct MemHead {
 	MemHead* next;
@@ -56,3 +57,5 @@ void operator delete (void* p, const char* file, int line);
 uint8 mem_allocated_size();
 
 void mem_test_types();
+
+#endif // MEM_TRACE
