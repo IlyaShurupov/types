@@ -29,9 +29,9 @@ void File::open(const string& path) {
 	if (!opened) {
 		file.open(path.str, std::ios::in | std::ios::out | std::ios::binary);
 
-		/*
 		//get length of file
-		file.seekg(0, std::ios::end);
+		/*
+		file.seekp(0, std::ios::end);
 		size_t length = file.tellg();
 		file.seekg(0, std::ios::beg);
 		size = (alni)length;

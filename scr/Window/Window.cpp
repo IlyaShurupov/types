@@ -51,7 +51,7 @@ Window::Window() {
 
 	string path;
 	get_executable_dir(&path);
-	path += "RobotoRegular.ttf";
+	path += "Font.ttf";
 
 	nvgCreateFont(nvg, "sans", path.str);
 
