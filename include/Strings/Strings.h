@@ -43,7 +43,9 @@ struct StrRef {
   Range rng;
 };
 
-struct string {
+class string {
+
+public:
 
   string(const char* str);
   string();

@@ -4,31 +4,23 @@
 #include "Macros.h"
 
 /*
-struct AllocatorChunck {
+template <int S_SLOT, int N_ENTRIES>
+struct MemChunkAlloc {
 
-  uint1* buff;
-  uint1 first;
-  uint1 freeblocks;
-  uint1 blockSize;
+  alni buff[N_ENTRIES];
+  void* first = &buff;
+  alni capacity = N_ENTRIES;
 
-  AllocatorChunck(uint1 p_blockSize, uint1 blocks) { 
-    buff = (uint1*)malloc(p_blockSize * blocks);
-    first = 0;
-    freeblocks = blocks;
-    blockSize = p_blockSize;
-
-    uint1 i = 0;
-    uint1* p = buff;
-    for (; i != blocks; p += blockSize) {
-      *p = ++i;
+  MemChunkAlloc() {
+    for (alni* block_iter = &buff; i < N_ENTRIES; p += S_SLOT) {
+      *block_iter = &block_iter[1];
     }
   }
 
-  ~AllocatorChunck() {
-    free(buff); 
+  ~MemChunkAlloc() {
   }
 
-  void* Get(uint1 size) { 
+  void* alloc(uint1 size) { 
     if (!freeblocks) {
       return 0;
     }
@@ -38,7 +30,7 @@ struct AllocatorChunck {
     return pResult;
   }
 
-  void Deallocate(void* ptr, int blockSize) {
+  void free(void* ptr, int blockSize) {
     uint1* delptr = (uint1*)(ptr);
     *delptr = first;
     first = (uint1)((delptr - buff) / blockSize);
