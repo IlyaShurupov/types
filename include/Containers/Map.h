@@ -48,7 +48,7 @@ public:
 	CopyValfunc copy_val;
 
 	void rehash() {
-		int nslots_old = nslots;
+		alni nslots_old = nslots;
 		HashNode<V, K>** table_old = table;
 
 		nslots = next_pow_of_2((uint8)((1.f / (HASHMAP_LOAD_FACTOR)) * nentries + 1));
@@ -56,23 +56,24 @@ public:
 		free_table();
 		nentries = 0;
 
-		for (int i = 0; i < nslots_old; i++) {
+		for (alni i = 0; i < nslots_old; i++) {
 			if (!table_old[i] || HASHMAP_DELETED_SLOT(table_old, i)) {
 				continue;
 			}
 
-			int idx = find_slot(table_old[i]->key, false);
+			alni idx = find_slot(table_old[i]->key, false);
 			table[idx] = table_old[i];
 			nentries++;
 		}
 		delete table_old;
 	}
 
-	int find_slot(const K& key, bool existing) {
-		int hashed_key = hash(key);
-		int mask = nslots - 1;
-		int idx = hashed_key & mask;
-		int shift = (hashed_key >> HASHMAP_PERTURB_SHIFT) & ~1;
+	alni find_slot(const K& key, bool existing) {
+		alni hashed_key = hash(key);
+		hashed_key = hash(key);
+		alni mask = nslots - 1;
+		alni idx = hashed_key & mask;
+		alni shift = (hashed_key >> HASHMAP_PERTURB_SHIFT) & ~1;
 
 	NEXT:
 
@@ -104,7 +105,7 @@ public:
 	}
 
 	void Put(const K& key, const V& val) {
-		int idx = find_slot(key, false);
+		alni idx = find_slot(key, false);
 
 		if (!table[idx] || HASHMAP_DELETED_SLOT(table, idx)) {
 			table[idx] = new HashNode<V, K>;
@@ -122,24 +123,37 @@ public:
 		}
 	}
 
-	int Presents(const K& key) {
-		int idx = find_slot(key, true);
+	alni Presents(const K& key) {
+		alni idx = find_slot(key, true);
 		return idx == -1 ? -1 : idx;
 	}
 
 	V& Get(const K& key) {
-		int idx = find_slot(key, true);
-		assert(idx != -1);
+		alni idx = find_slot(key, true);
+
+		if (idx == -1) {
+			throw ContainerAccessVioletion::NOT_PRESENTS;
+		}
+		
 		return table[idx]->val;
 	}
 
 	HashNode<V, K>* GetEntry(const K& key) {
-		int idx = find_slot(key, true);
+		alni idx = find_slot(key, true);
+		
+		if (idx == -1) {
+			throw ContainerAccessVioletion::NOT_PRESENTS;
+		}
+
 		return table[idx];
 	}
 
 	void Remove(const K& key) {
-		int idx = find_slot(key, true);
+		alni idx = find_slot(key, true);
+
+		if (idx == -1) {
+			throw ContainerAccessVioletion::NOT_PRESENTS;
+		}
 
 		if (del_values) {
 			delete table[idx]->val;
@@ -160,7 +174,7 @@ public:
 		nslots = in.nslots;
 		table = new HashNode<V, K>*[nslots]();
 
-		for (int i = 0; i < nslots; i++) {
+		for (alni i = 0; i < nslots; i++) {
 			if (in.table[i] && !HASHMAP_DELETED_SLOT(in.table, i)) {
 				Put(in.table[i]->key, copy_val(in.table[i]->val));
 			}
@@ -168,7 +182,7 @@ public:
 	}
 
 	void clear() {
-		for (int i = 0; i < nslots; i++) {
+		for (alni i = 0; i < nslots; i++) {
 			if (table[i] && !HASHMAP_DELETED_SLOT(table, i)) {
 				if (del_values) {
 					delete table[i]->val;
@@ -187,9 +201,9 @@ public:
 		return nslots;
 	}
 
-	int SlotIdx(int entry_idx_in) {
-		int entry_idx = -1;
-		for (int slot_idx = 0; slot_idx < nslots; slot_idx++) {
+	alni SlotIdx(alni entry_idx_in) {
+		alni entry_idx = -1;
+		for (alni slot_idx = 0; slot_idx < nslots; slot_idx++) {
 			if (table[slot_idx]) {
 				entry_idx++;
 			}
@@ -200,7 +214,7 @@ public:
 		return -1;
 	}
 
-	HashNode<V, K>* GetEntry(int idx) {
+	HashNode<V, K>* GetEntry(alni idx) {
 		return table[SlotIdx(idx)];
 	}
 
@@ -217,8 +231,8 @@ public:
 
 	HashMap<V, K, HF, CF, SZ>* map;
 	HashNode<V, K>* iter;
-	int slot_idx;
-	int entry_idx;
+	alni slot_idx;
+	alni entry_idx;
 
 	HashNode<V, K>* operator->() { return iter; }
 
@@ -244,18 +258,22 @@ public:
 		entry_idx++;
 	}
 
-	bool operator!=(int p_idx) {
+	bool operator!=(alni p_idx) {
 		return slot_idx != p_idx;
 	}
 
 	const MapIterator& operator*() { return *this; }
 };
 
+template< typename strType>
 struct StrHashPolicy {
-	inline int operator()(const string& str) {
+	inline alni operator()(const strType& str) {
 		return hash_string(str.str);
 	}
 };
 
-template< typename Type, typename CopyValfunc = CopyBytes<Type>, int table_size = HASHMAP_MIN_SIZE >
-using Dict = HashMap<Type, string, StrHashPolicy, CopyValfunc, table_size>;
+template< typename Type, typename CopyValfunc = CopyBytes<Type>, alni table_size = HASHMAP_MIN_SIZE >
+using Dict = HashMap<Type, string, StrHashPolicy<Type>, CopyValfunc, table_size>;
+
+template< typename Val, typename Key, typename CopyValfunc = CopyBytes<Val>, alni table_size = HASHMAP_MIN_SIZE >
+using hmap = HashMap<Val, Key, StrHashPolicy<Key>, CopyValfunc, table_size>;

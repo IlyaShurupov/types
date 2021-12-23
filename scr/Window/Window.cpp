@@ -5,6 +5,7 @@
 
 #define GLFW_INCLUDE_GLEXT
 #include <GLFW/glfw3.h>
+#undef APIENTRY
 //#include "GLFW/glfw3native.h"
 
 #include "nanovg.h"
@@ -17,11 +18,26 @@
 
 #include <Windows.h>
 
+bool G_window_is_active = true;
+//bool G_window_first_cycle = true;
+
+bool UI_Active() {
+	return G_window_is_active;
+}
+
+void window_focus_callback(GLFWwindow* window, int focused) {
+	G_window_is_active = focused;
+	//G_window_is_active = focused || G_window_first_cycle;
+	//G_window_first_cycle &= G_window_first_cycle;
+}
+
 Window::Window() {
 	
 	if (!glfwInit()) {
 		printf("Failed to init GLFW.");
 	}
+
+	window_dim.assign(300, 200, 1200, 800);
 
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
 
@@ -34,7 +50,7 @@ Window::Window() {
 
 	glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
 
-	window = glfwCreateWindow(1200, 800, "NanoVG", NULL, NULL);
+	window = glfwCreateWindow((int)window_dim.size.x, (int)window_dim.size.y, "NanoVG", NULL, NULL);
 	glfwMakeContextCurrent(window);
 
 	glfwSetWindowAttrib(window, GLFW_DECORATED, GLFW_FALSE);
@@ -58,9 +74,24 @@ Window::Window() {
 
 	wrld_rec.size = vec2<float>(10000, 10000);
 	bounds.size = wrld_rec.size;
+
+	glfwSetWindowFocusCallback(window, window_focus_callback);
 }
 
 void Window::BeginFrame() {
+
+	ResetBunds();
+
+	if (!(window_dim == window_dim_prev)) {
+    if (!(window_dim.pos == window_dim_prev.pos)) {
+			glfwSetWindowPos(window, (int)window_dim.pos.x, (int)window_dim.pos.y);
+    }
+    if (!(window_dim.size == window_dim_prev.size)) {
+      glfwSetWindowSize(window, (int)window_dim.size.x, (int)window_dim.size.y);
+    }
+    window_dim_prev = window_dim;
+  }
+
 	int winWidth, winHeight;
 	int fbWidth, fbHeight;
 	float pxRatio;
@@ -86,6 +117,18 @@ void Window::EndFrame() {
 
 void Window::SetBounds(const Rect<float>& _bounds) {
 	bounds = _bounds;
+}
+
+void Window::SetWindowDim(const Rect<float>& in) {
+  window_dim = in;
+}
+
+void Window::ResetBunds() {
+	wrld_rec.pos = 0;
+	bounds.pos = 0;
+
+	wrld_rec.size = window_dim_prev.size;
+	bounds.size = window_dim_prev.size;
 }
 
 void Window::SetCanvasRect(const Rect<float>& rect) {
@@ -115,7 +158,7 @@ void Window::RRect(Rect<float> _rect, const Color& col, float radius) {
 }
 
 void Window::Text(const char* c_str, float x, float y, float font_scale, const Color& col) {
-	int len = cstrlen(c_str);
+	int len = (int)cstrlen(c_str);
 	char* heap_str = (char* )malloc(len + 1);
 	
 	for (int i = 0; i < len; i++) {
@@ -217,7 +260,7 @@ void Window::DrawLine(const vec2<float>& head, const vec2<float>& tail, const Co
 	nvgMoveTo(nvg, head.x, head.y);
 	nvgLineTo(nvg, tail.x, tail.y);
 
-	nvgFillColor(nvg, nvgRGBA(col.r, col.g, col.b, col.a));
+	//nvgFillColor(nvg, nvgRGBA(col.r, col.g, col.b, col.a));
 	nvgFill(nvg);
 
 	nvgStrokeWidth(nvg, thickness);
@@ -231,13 +274,13 @@ void Window::Clear(const Color& col) {
 	RRect(wrld_rec, col);
 }
 
-void Window::GetCrsr(vec2<float>& crs) {
-
+vec2<float> Window::GetCrsr() {
 	vec2<double> incrs;
 	glfwGetCursorPos(window, &incrs.x, &incrs.y);
-
-	crs.x = (float)incrs.x;
-	crs.y = (float)incrs.y;
+	vec2<float> out;
+	out.x = (float)incrs.x;
+	out.y = (float)incrs.y;
+	return out;
 }
 
 

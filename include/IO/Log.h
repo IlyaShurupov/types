@@ -17,10 +17,10 @@ class Nd_Log {
 	List<string*> buff;
 public:
 
-	void write(const struct string& in);
+	void write(const class string& in);
 	const string* read();
 };
 
-void NdLog_write(const struct string& in);
+void NdLog_write(const class string& in);
 
 const string* NdLog_read();

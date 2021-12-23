@@ -19,11 +19,11 @@ struct DataBlock {
   long long int integer = 0;
   float floating = 0;
   bool boolean = 0;
-  string string;
+  string str;
   List<DataBlock*> list;
 
   DataBlock* find(const char* BlockName);
   ~DataBlock();
 };
 
-struct DataBlock* Read_Yaml(struct string* filepath);
+struct DataBlock* Read_Yaml(class string* filepath);

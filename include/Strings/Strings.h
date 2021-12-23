@@ -2,18 +2,16 @@
 
 #include "Macros.h"
 
-struct string;
 
-#define STRR const string&
-
-typedef alni str_idx;
+class string;
 
 int find_char(const char* c_str, int start, char val);
 int cstr_len(const char* c_str);
-str_idx cstrlen(const char* str);
-str_idx cstrlen(const wchar_t* str);
+alni cstrlen(const char* str);
+alni cstrlen(const wchar_t* str);
 
 void to_string(string* str, int val);
+void to_string(string* str, alni val);
 void to_string(string* str, alnf val);
 void to_string(string* str, bool val);
 void to_string(string* str, char val);
@@ -28,18 +26,18 @@ bool str_from_string(string* str, float& val);
 bool str_from_string(string* str, bool& val);
 
 struct Range {
-  str_idx strt;
-  str_idx end;
+  alni strt;
+  alni end;
 
-  str_idx len();
+  alni len();
   bool valid();
   Range();
   Range(const Range& rng);
-  Range(str_idx strt, str_idx end);
+  Range(alni strt, alni end);
 };
 
 struct StrRef {
-  struct string *str;
+  string *str;
   Range rng;
 };
 
@@ -47,8 +45,12 @@ class string {
 
 public:
 
-  string(const char* str);
+  char* str = nullptr;
+  alni flags = -1;
+
   string();
+  string(const char* str);
+  string(char* str);
 
   template <typename Type>
   string(Type val) {
@@ -59,10 +61,9 @@ public:
     *this = val;
   }
 
-  char* str = nullptr;
 
-  str_idx len() const;
-  void alloc(str_idx len);
+  alni len() const;
+  void alloc(alni len);
   void clear();
 
   void operator=(const string& string);
@@ -72,20 +73,20 @@ public:
   string& operator+=(const string& string);
   string operator+(const string& string);
 
-  bool operator==(const char* cstring);
-  bool operator==(const string& string);
-  bool operator!=(const char* cstring);
-  bool operator!=(const string& string);
+  bool operator==(const char* cstring) const;
+  bool operator==(const string& string) const;
+  bool operator!=(const char* cstring) const;
+  bool operator!=(const string& string) const;
 
-  char operator[](str_idx idx);
+  char operator[](alni idx) const;
 
   bool match(Range& range, string& str2, Range& range2);
   
   void copy(string* str, Range range);
 
-  str_idx find(string& string, Range range) const;
-  str_idx find(const char character, Range range) const;
-  str_idx rfind(const char character, Range range) const;
+  alni find(string& string, Range range) const;
+  alni find(const char character, Range range) const;
+  alni rfind(const char character, Range range) const;
 
   void trim(Range range);
 
