@@ -22,9 +22,6 @@
     <ProjectReference Include="..\..\..\nanovg\vs\nanovg.vcxproj">
       <Project>{5b129a8b-38b4-4c86-a997-3d788809c08f}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\Types\vsbuild\Types\Types.vcxproj">
-      <Project>{96a3651d-6a81-447a-bca8-6c5daa50465d}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\include\Keyboard\Keyboard.cpp" />
@@ -169,7 +166,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;$(ProjectDir)..\..\..\glfw\include;$(ProjectDir)..\..\..\nanovg\src;$(ProjectDir)..\..\..\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;$(ProjectDir)..\..\..\glfw\include;$(ProjectDir)..\..\..\nanovg\src;$(ProjectDir)..\..\..\glew\include;$(ProjectDir)..\..\..\filesystem\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
@@ -188,7 +185,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;$(ProjectDir)..\..\..\glfw\include;$(ProjectDir)..\..\..\nanovg\src;$(ProjectDir)..\..\..\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;$(ProjectDir)..\..\..\glfw\include;$(ProjectDir)..\..\..\nanovg\src;$(ProjectDir)..\..\..\glew\include;$(ProjectDir)..\..\..\filesystem\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

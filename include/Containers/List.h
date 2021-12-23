@@ -31,7 +31,7 @@ class List {
 
 	Node<Type>* first = nullptr;
 	Node<Type>* last = nullptr;
-	int length = 0;
+	alni length = 0;
 
 public:
 	bool recursive_free_on_destruction = true;
@@ -47,7 +47,7 @@ public:
 	inline const Node<Type>* First() const { return first; }
 	inline const Node<Type>* Last() const { return last; }
 	
-	inline int Len() { return length; }
+	inline alni Len() { return length; }
 
 	void Attach(Node<Type>* node, Node<Type>* node_to) {
 		if (node_to) {
@@ -92,7 +92,7 @@ public:
 		length--;
 	}
 
-	Node<Type>* Find(int idx) {
+	Node<Type>* Find(alni idx) {
 		if (!First() || idx < 0 || idx > Len() - 1) {
 			return nullptr;
 		}
@@ -105,7 +105,7 @@ public:
 
 	Node<Type>* Find(Type data) {
 		Node<Type>* found = First();
-		for (int i = 0; data != found->data; i++) {
+		for (alni i = 0; data != found->data; i++) {
 			if (!found->next) {
 				return nullptr;
 			}
@@ -157,7 +157,7 @@ public:
 	}
 
 	inline Type& operator[](ListIterator<Type>& iter) { return iter.node()->data; }
-	inline Type& operator[](int idx) { return Find(idx)->data; }
+	inline Type& operator[](alni idx) { return Find(idx)->data; }
 
 	void PushBack(Node<Type>* new_node) { Attach(new_node, Last()); }
 	void PushFront(Node<Type>* new_node) { Attach(new_node, nullptr); }
@@ -169,12 +169,19 @@ public:
 		PushFront(new Node<Type>(data));
 	}
 
-	void Insert(Node<Type>* node, int idx) {
-		Node<Type>* place_to = Find(idx);
-		Attach(node, place_to->prev);
+	void Insert(Node<Type>* node, alni idx) {
+		if (idx >= Len()) {
+			Attach(node, Last());
+		}
+		else if (idx < 0 || !Len()) {
+			Attach(node, nullptr);
+		}
+		else {
+			Attach(node, Find(idx)->prev);
+		}
 	}
 
-	void Insert(Type data, int idx) {
+	void Insert(Type data, alni idx) {
 		Insert(new Node<Type>(data), idx);
 	}
 
@@ -242,7 +249,7 @@ public:
 		return ListIterator<Type>(this, 0);
 	}
 
-	int end() {
+	alni end() {
 		return Len();
 	}
 
@@ -255,15 +262,15 @@ template <typename Type>
 class ListIterator {
 
 	Node<Type>* iter;
-	int idx;
+	alni idx;
 
 public:
-	int Idx() { return idx; }
+	alni Idx() { return idx; }
 	Type& operator->() { return iter->data; }
 	Type& Data() { return iter->data; }
 	Node<Type>* node() { return iter; }
 
-	ListIterator(List<Type>* list, int p_idx) {
+	ListIterator(List<Type>* list, alni p_idx) {
 		idx = p_idx;
 		iter = list->Find(idx);
 	}
@@ -275,13 +282,13 @@ public:
 
 	bool operator==(const ListIterator<Type>& IterNode) { return IterNode.iter == iter; }
 
-	bool operator==(int p_idx) { return idx == p_idx; }
-	bool operator!=(int p_idx) { return idx != p_idx; }
+	bool operator==(alni p_idx) { return idx == p_idx; }
+	bool operator!=(alni p_idx) { return idx != p_idx; }
 	bool operator!=(const ListIterator<Type>& in) { return iter != in.iter; }
-	bool operator>(int p_idx) { return idx > p_idx; }
-	bool operator<(int p_idx) { return idx < p_idx; }
-	bool operator>=(int p_idx) { return idx >= p_idx; }
-	bool operator<=(int p_idx) { return idx <= p_idx; }
+	bool operator>(alni p_idx) { return idx > p_idx; }
+	bool operator<(alni p_idx) { return idx < p_idx; }
+	bool operator>=(alni p_idx) { return idx >= p_idx; }
+	bool operator<=(alni p_idx) { return idx <= p_idx; }
 
 	const ListIterator& operator*() { return *this; }
 };

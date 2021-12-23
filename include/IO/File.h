@@ -5,7 +5,12 @@
 
 // BAD! remove headers and refactor class
 #include <fstream>
-typedef std::ofstream OsFile;
+typedef std::fstream OsFile;
+
+enum FileOpenFlags {
+	SAVE,
+	LOAD,
+};
 
 class File {
 
@@ -15,37 +20,35 @@ public:
 
 	alni adress = 0;
 	bool opened = false;
-	char* buff = nullptr;
-	alni size = 0;
+	
+	alni avl_adress = 0;
 
 	File() {
 	}
 
-	File(const string& path) {
-		open(path);
+	File(const string& path, FileOpenFlags flags) {
+		open(path, flags);
 	}
 
-	void open(const string& path);
+	void open(const string& path, FileOpenFlags);
 
-	bool create(const string& path);
-
-	void write(const uint1* in, int size, alni adress = -1);
+	void write_bytes(const int1* in, alni size, alni adress = -1);
 
 	template < typename Type >
 	void write(Type* in, alni adress = -1) {
-		write((uint1*)in, sizeof(Type), adress);
+		write_bytes((int1*)in, sizeof(Type), adress);
 	}
 
-
-	void read(const uint1* in, int size, alni adress = -1);
+	void read_bytes(int1* in, alni size, alni adress = -1);
 
 	template < typename Type >
 	void read(Type* in, alni adress = -1) {
-		read((uint1*)in, sizeof(Type), adress);
+		read_bytes((int1*)in, sizeof(Type), adress);
 	}
 
+	alni size();
 
-	void fill(uint1 val, int len);
+	void fill(uint1 val, alni len);
 
 	void close();
 

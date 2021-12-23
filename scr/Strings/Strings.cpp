@@ -5,26 +5,28 @@
 
 #include "Macros.h"
 
-str_idx cstrlen(const char* str) {
+//#include "Strings/conststring.h"
+
+alni cstrlen(const char* str) {
   if (!str) {
     return 0;
   }
-  str_idx len = 0;
+  alni len = 0;
   while (str[len]) {
     len++;
   }
   return len;
 }
 
-str_idx cstrlen(const wchar_t* str) {
-  str_idx len = 0;
+alni cstrlen(const wchar_t* str) {
+  alni len = 0;
   while (str[len]) {
     len++;
   }
   return len;
 }
 
-str_idx Range::len() {
+alni Range::len() {
   return end - strt + 1;
 }
 
@@ -36,7 +38,7 @@ Range::Range() {
   strt = end = -1;
 }
 
-Range::Range(str_idx strt, str_idx end) {
+Range::Range(alni strt, alni end) {
   this->strt = strt;
   this->end = end;
 }
@@ -54,27 +56,34 @@ string::~string() {
 }
 
 string::string(const char* string) {
+  flags = 0;
+  str = (char*)string;
+}
+
+string::string(char* string) {
   alloc(cstrlen(string));
   alni length = len();
-  for (str_idx i = 0; i < length; i++) {
+  for (alni i = 0; i < length; i++) {
     str[i] = string[i];
   }
 }
 
-str_idx string::len() const {
+alni string::len() const {
   return cstrlen(str);
 }
 
-void string::alloc(str_idx len) {
+void string::alloc(alni len) {
   clear();
 
   str = new char[len + 1];
 
   str[len] = '\0';
+
+  flags = 1;
 }
 
 void string::clear() {
-  if (str) {
+  if (str && flags != 0) {
     delete [] str;
   }
 }
@@ -82,7 +91,7 @@ void string::clear() {
 void string::operator=(const string& in) {
   alni length = in.len();
   alloc(length);
-  for (str_idx i = 0; i < length; i++) {
+  for (alni i = 0; i < length; i++) {
     str[i] = in.str[i];
   }
 }
@@ -90,7 +99,7 @@ void string::operator=(const string& in) {
 void string::operator=(const char* in) {
   alni length = cstrlen(in);
   alloc(length);
-  for (str_idx i = 0; i < length; i++) {
+  for (alni i = 0; i < length; i++) {
     str[i] = in[i];
   }
 }
@@ -98,8 +107,8 @@ void string::operator=(const char* in) {
 void string::operator=(const wchar_t* in) {
   alni length = cstrlen(in);
   alloc(length);
-  for (str_idx i = 0; i < length; i++) {
-    str[i] = in[i];
+  for (alni i = 0; i < length; i++) {
+    str[i] = (char)in[i];
   }
 }
 
@@ -107,7 +116,7 @@ string& string::operator+=(const string& in) {
 
   alni length = len();
   alni in_length = in.len();
-  str_idx newlen = in.len() + length;
+  alni newlen = in.len() + length;
   
   if (!newlen) {
     return *this;
@@ -116,11 +125,11 @@ string& string::operator+=(const string& in) {
   char* newstr = new char [newlen + 1];
   newstr[newlen] = '\0';
 
-  for (str_idx i = 0; i < length; i++) {
+  for (alni i = 0; i < length; i++) {
     newstr[i] = str[i];
   }
 
-  for (str_idx i = 0; i < in_length; i++) {
+  for (alni i = 0; i < in_length; i++) {
     newstr[i + length] = in.str[i];
   }
 
@@ -134,7 +143,7 @@ string string::operator+(const string& str) {
   return string(*this) += str;
 }
 
-bool string::operator==(const char* in) {
+bool string::operator==(const char* in) const {
   alni length = len();
   if (cstrlen(in) != length) {
     return false;
@@ -147,19 +156,19 @@ bool string::operator==(const char* in) {
   return true;
 }
 
-bool string::operator==(const string& in) {
+bool string::operator==(const string& in) const {
   return *this == in.str;
 }
 
-bool string::operator!=(const string& string) {
+bool string::operator!=(const string& string) const {
   return !(operator==(string));
 }
 
-bool string::operator!=(const char* cstring) {
+bool string::operator!=(const char* cstring) const {
   return !(operator==(cstring));
 }
 
-char string::operator[](str_idx idx) {
+char string::operator[](alni idx) const {
   return str[idx];
 }
 
@@ -167,7 +176,7 @@ bool string::match(Range& range, string& str2, Range& range2) {
   if (range.len() != range2.len()) {
     return false;
   }
-  for (str_idx i = 0; i < range.len(); i++) {
+  for (alni i = 0; i < range.len(); i++) {
     if (str[range.strt + i] != str2[range2.strt + i]) {
       return false;
     }
@@ -178,15 +187,15 @@ bool string::match(Range& range, string& str2, Range& range2) {
 void string::copy(string* in, Range range) {
   alloc(range.len());
   alni length = len();
-  for (str_idx i = 0; i < length; i++) {
+  for (alni i = 0; i < length; i++) {
     this->str[i] = (*in)[i + range.strt];
   }
 }
 
-str_idx string::find(string& string, Range range) const {
-  for (str_idx i = range.strt; i < range.end; i++) {
+alni string::find(string& string, Range range) const {
+  for (alni i = range.strt; i < range.end; i++) {
 
-    str_idx m = 0;
+    alni m = 0;
     while (m < string.len()) {
       if (this->str[i] != str[m]) {
         break;
@@ -201,8 +210,8 @@ str_idx string::find(string& string, Range range) const {
   return -1;
 }
 
-str_idx string::find(const char character, Range range) const {
-  for (str_idx i = range.strt; i <= range.end; i++) {
+alni string::find(const char character, Range range) const {
+  for (alni i = range.strt; i <= range.end; i++) {
     if (character == str[i]) {
       return i;
     }
@@ -210,8 +219,8 @@ str_idx string::find(const char character, Range range) const {
   return -1;
 }
 
-str_idx string::rfind(const char character, Range range) const {
-  for (str_idx i = range.end; i >= range.strt; i--) {
+alni string::rfind(const char character, Range range) const {
+  for (alni i = range.end; i >= range.strt; i--) {
     if (character == str[i]) {
       return i;
     }
@@ -220,11 +229,11 @@ str_idx string::rfind(const char character, Range range) const {
 }
 
 void string::trim(Range range) {
-  str_idx newlen = range.len();
+  alni newlen = range.len();
   char* newstr = new char [newlen + 1];
   newstr[newlen] = '\0';
 
-  for (str_idx i = 0; i < newlen; i++) {
+  for (alni i = 0; i < newlen; i++) {
     newstr[i] = str[i + range.strt];
   }
 
@@ -235,7 +244,7 @@ void string::trim(Range range) {
 int string::how_many(const char val) {
   int out = 0;
   alni length = len();
-  for (str_idx i = 0; i < length; i++) {
+  for (alni i = 0; i < length; i++) {
     if (str[i] == val) {
       out++;
     }
@@ -244,10 +253,10 @@ int string::how_many(const char val) {
 }
 
 void to_string(string* str, int val) {
-  to_string(str, (int8)val);
+  to_string(str, (alni)val);
 }
 
-void to_string(string* str, int8 val) {
+void to_string(string* str, alni val) {
   alni iter = val;
   alni len = 0;
   while (iter /= 10) {
@@ -256,7 +265,7 @@ void to_string(string* str, int8 val) {
 
   bool neg = val < 0;
 
-  len += 1 + int(neg);
+  len += 1 + short(neg);
 
   str->alloc(len);
 
@@ -274,7 +283,7 @@ void to_string(string* str, int8 val) {
 
 void to_string(string* str, alnf val) {
   alni left_side = (alni)val;
-  alni mantissa = (val - left_side) * 100000;
+  alni mantissa = (alni)(val - left_side) * 100000;
 
   alni len = 3;
 

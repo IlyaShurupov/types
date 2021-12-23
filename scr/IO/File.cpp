@@ -3,65 +3,27 @@
 
 #include <iostream>
 
-#ifdef _WIN32
-#include <Windows.h>
 
-bool create_dir(const char* path) {
-
-	uint4 path_len = cstr_len(path) + 1;
-
-	wchar_t* wtext = new wchar_t[path_len];
-
-	mbstowcs(wtext, path, path_len);
-
-	LPWSTR ptr = wtext;
-
-	bool res = CreateDirectory(ptr, NULL) || ERROR_ALREADY_EXISTS == GetLastError();
-	delete[] wtext;
-
-	return res;
-}
-
-#endif
-
-void File::open(const string& path) {
+void File::open(const string& path, FileOpenFlags flags) {
 
 	if (!opened) {
-		file.open(path.str, std::ios::in | std::ios::out | std::ios::binary);
+		
+		switch (flags) {
+			case SAVE:
+				file.open(path.str, std::ios::out | std::ios::binary | std::ios::trunc);
+				break;
 
-		//get length of file
-		/*
-		file.seekp(0, std::ios::end);
-		size_t length = file.tellg();
-		file.seekg(0, std::ios::beg);
-		size = (alni)length;
-		*/
+			case LOAD:
+				file.open(path.str, std::ios::in | std::ios::binary | std::ios::app);
+				break;
+		};
 
+		if (!file.is_open()) {
+
+			assert(file.is_open());
+		}
 		opened = true;
 	}
-}
-
-bool File::create(const string& path) {
-
-	alni dir_idx_1 = path.rfind('\\', Range(0, path.len()));
-	alni dir_idx_2 = path.rfind('/', Range(0, path.len()));
-
-	if (dir_idx_2 > dir_idx_1) {
-		dir_idx_1 = dir_idx_2;
-	}
-
-	string directory(path);
-
-	directory.trim(Range(0, dir_idx_1 - 1));
-
-	bool done = create_dir(directory.str);
-
-	if (done) {
-		file.open(path.str, std::ios::in | std::ios::out | std::ios::binary | std::ios::trunc);
-	}
-
-	opened = done && file.is_open();
-	return opened;
 }
 
 void File::close() {
@@ -71,29 +33,38 @@ void File::close() {
 }
 
 
-void File::write(const uint1* in, int size, alni p_adress) {
+void File::write_bytes(const int1* in, alni size, alni p_adress) {
 	if (p_adress == -1) {
 		p_adress = this->adress;
-		file.seekp(p_adress);
-		file.write((const char*)in, size);
-		return;
+		this->adress += size;
 	}
+
 	file.seekp(p_adress);
-	file.write((const char*)in, size);
+	file.write(in, size);
 }
 
 
-void File::read(const uint1* in, int size, alni p_adress) {
+void File::read_bytes(int1* in, alni size, alni p_adress) {
 	if (p_adress == -1) {
 		p_adress = this->adress;
-		//file.read(p_adress, in, size);
-		return;
+		adress += size;
 	}
-	//file.read(this->adress, in, size);
+	file.seekg(p_adress);
+	file.read(in, size);
 }
 
-void File::fill(uint1 val, int len) {
+void File::fill(uint1 val, alni len) {
 	for (int i = 0; i < len; i++) {
 		write<uint1>(&val, i);
 	}
+}
+
+
+alni File::size() {
+	alni out = 0;
+	file.seekg(0, std::ios::beg);
+	out = file.tellg();
+	file.seekg(0, std::ios::end);
+	out = file.tellg() - out;
+	return out;
 }

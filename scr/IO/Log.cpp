@@ -3,7 +3,7 @@
 
 Nd_Log GLB_bd_log;
 
-void Nd_Log::write(const struct string& in) {
+void Nd_Log::write(const class string& in) {
 	buff.PushBack(new string(in));
 
 	if (!cursor) {
@@ -20,7 +20,7 @@ const string* Nd_Log::read() {
 	return nullptr;
 }
 
-void NdLog_write(const struct string& in) {
+void NdLog_write(const class string& in) {
 	GLB_bd_log.write(in);
 }
 

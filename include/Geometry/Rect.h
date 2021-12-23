@@ -27,6 +27,14 @@ struct Rect {
     this->size.assign(sizex, sizey);
   }
 
+  // assign
+  template <typename InType>
+  Rect<Type>& assign(InType p1x, InType p1y, InType p2x, InType p2y) {
+    pos.assign(p1x, p1y);
+    size.assign(p2x, p2y);
+    return *this;
+  }
+
   // conversion
   template <typename ConversionType>
   Rect<Type>& operator=(const Rect<ConversionType>& rect) {
