@@ -12,9 +12,6 @@
 #define HASHMAP_PERTURB_SHIFT 5
 #define HASHMAP_DELETED_SLOT(table, idx) ((table)[idx] == (HashNode<V, K>*)-1)
 
-template <typename K, typename V, typename HF, typename CF, int SZ>
-class MapIterator;
-
 template <typename Val>
 struct CopyBytes {
 	inline const Val& operator() (const Val& val) {
@@ -28,7 +25,23 @@ struct HashNode {
 	V val;
 };
 
-template <typename V, typename K, typename Hashfunc, typename CopyValfunc = CopyBytes<V>, int table_size = HASHMAP_MIN_SIZE>
+template <typename V, typename K>
+void hmap_delete_vals(HashNode<V, K>* node) {
+	delete node->val;
+}
+
+template <typename V, typename K>
+void hmap_release_vals(HashNode<V, K>* node) {}
+
+template <typename K, typename V, typename HF, typename CF, int SZ, void (*VD)(HashNode<V, K>* node)>
+class MapIterator;
+
+template < typename V, typename K, 
+	typename Hashfunc, 
+	typename CopyValfunc = CopyBytes< V > , 
+	int table_size = HASHMAP_MIN_SIZE, 
+	void (*ValDestruct)(HashNode < V, K > * node) = hmap_release_vals < V, K > >
+
 class HashMap {
 
 	void free_table() {
@@ -113,7 +126,7 @@ public:
 			nentries++;
 		}
 		else if (table[idx] && del_values) {
-			delete table[idx]->val;
+			ValDestruct(table[idx]);
 		}
 
 		table[idx]->val = val;
@@ -126,6 +139,15 @@ public:
 	alni Presents(const K& key) {
 		alni idx = find_slot(key, true);
 		return idx == -1 ? -1 : idx;
+	}
+
+	bool Presents(const K& key, alni& idx_out) {
+		idx_out = find_slot(key, true);
+		return idx_out == -1 ? 0 : 1;
+	}
+
+	V& from_slot_idx(alni slot_idx) {
+		return table[slot_idx]->val;
 	}
 
 	V& Get(const K& key) {
@@ -156,7 +178,7 @@ public:
 		}
 
 		if (del_values) {
-			delete table[idx]->val;
+			ValDestruct(table[idx]);
 		}
 
 		delete table[idx];
@@ -185,7 +207,7 @@ public:
 		for (alni i = 0; i < nslots; i++) {
 			if (table[i] && !HASHMAP_DELETED_SLOT(table, i)) {
 				if (del_values) {
-					delete table[i]->val;
+					ValDestruct(table[i]);
 				}
 				delete table[i];
 			}
@@ -193,8 +215,8 @@ public:
 		delete table;
 	}
 
-	MapIterator<K, V, Hashfunc, CopyValfunc, table_size> begin() {
-		return MapIterator<K, V, Hashfunc, CopyValfunc, table_size>(this);
+	MapIterator<K, V, Hashfunc, CopyValfunc, table_size, ValDestruct> begin() {
+		return MapIterator<K, V, Hashfunc, CopyValfunc, table_size, ValDestruct>(this);
 	}
 
 	alni end() {
@@ -224,19 +246,19 @@ public:
 };
 
 
-template <typename K, typename V, typename HF, typename CF, int SZ>
+template <typename K, typename V, typename HF, typename CF, int SZ, void (*VD)(HashNode<V, K>* node)>
 class MapIterator {
 
 public:
 
-	HashMap<V, K, HF, CF, SZ>* map;
+	HashMap<V, K, HF, CF, SZ, VD>* map;
 	HashNode<V, K>* iter;
 	alni slot_idx;
 	alni entry_idx;
 
 	HashNode<V, K>* operator->() { return iter; }
 
-	MapIterator(HashMap<V, K, HF, CF, SZ>* _map) {
+	MapIterator(HashMap<V, K, HF, CF, SZ, VD>* _map) {
 		slot_idx = -1;
 		entry_idx = -1;
 		map = _map;
@@ -272,8 +294,18 @@ struct StrHashPolicy {
 	}
 };
 
-template< typename Type, typename CopyValfunc = CopyBytes<Type>, alni table_size = HASHMAP_MIN_SIZE >
-using Dict = HashMap<Type, string, StrHashPolicy<Type>, CopyValfunc, table_size>;
+template < typename Type, 
+	typename CopyValfunc = CopyBytes<Type>, 
+	alni table_size = HASHMAP_MIN_SIZE,
+	void (*ValDestruct)(HashNode<Type, string>* node) = hmap_delete_vals< Type, string > >
+using Dict = HashMap<Type, string, StrHashPolicy<Type>, CopyValfunc, table_size, ValDestruct>;
 
-template< typename Val, typename Key, typename CopyValfunc = CopyBytes<Val>, alni table_size = HASHMAP_MIN_SIZE >
-using hmap = HashMap<Val, Key, StrHashPolicy<Key>, CopyValfunc, table_size>;
+template < typename Val, typename Key, 
+	typename CopyValfunc = CopyBytes<Val>, 
+	alni table_size = HASHMAP_MIN_SIZE >
+using hmap = HashMap<Val, Key, StrHashPolicy<Key>, CopyValfunc, table_size, hmap_delete_vals>;
+
+template < typename Val, typename Key,
+	typename CopyValfunc = CopyBytes<Val>,
+	alni table_size = HASHMAP_MIN_SIZE>
+using hmap_s = HashMap<Val, Key, StrHashPolicy<Key>, CopyValfunc, table_size, hmap_release_vals>;
