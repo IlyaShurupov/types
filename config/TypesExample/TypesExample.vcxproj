@@ -30,6 +30,9 @@
     <ProjectReference Include="..\..\Types\vsbuild\Types\Types.vcxproj">
       <Project>{96a3651d-6a81-447a-bca8-6c5daa50465d}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\TypesLib\TypesLib.vcxproj">
+      <Project>{98d6ae72-22f4-4498-ace5-21ad0b4abf0a}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\example\example.cpp" />
