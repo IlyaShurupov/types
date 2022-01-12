@@ -298,7 +298,7 @@ template < typename Type,
 	typename CopyValfunc = CopyBytes<Type>, 
 	alni table_size = HASHMAP_MIN_SIZE,
 	void (*ValDestruct)(HashNode<Type, string>* node) = hmap_delete_vals< Type, string > >
-using Dict = HashMap<Type, string, StrHashPolicy<Type>, CopyValfunc, table_size, ValDestruct>;
+using Dict = HashMap<Type, string, StrHashPolicy<string>, CopyValfunc, table_size, ValDestruct>;
 
 template < typename Val, typename Key, 
 	typename CopyValfunc = CopyBytes<Val>, 
