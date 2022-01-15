@@ -7,7 +7,7 @@ template <typename Type>
 class Array {
   
   Type* buff;
-  uint4 length;
+  alni length;
 
  public:
 
@@ -16,16 +16,16 @@ class Array {
     buff = nullptr;
   }
 
-  Array(uint4 p_length) { 
+  Array(alni p_length) { 
     length = p_length;
     Reserve(length);
   }
   
-  uint4 Len() {
+  alni Len() {
     return length;
   }
 
-  void Reserve(uint4 p_bufflen) {
+  void Reserve(alni p_bufflen) {
     length = p_bufflen;
     buff = new Type[length]; 
   }
@@ -36,14 +36,14 @@ class Array {
     buff = nullptr;
   }
 
-  void Insert(Type& p_block, uint4 idx) {
+  void Insert(Type& p_block, alni idx) {
     Type* current = buff;
     Reserve(length + 1);
 
-    for (uint4 befor = 0; befor < idx; befor++) {
+    for (alni befor = 0; befor < idx; befor++) {
       buff[befor] = current[befor];
     }
-    for (uint4 after = idx; after < length - 1; after++) {
+    for (alni after = idx; after < length - 1; after++) {
       buff[after + 1] = current[after];
     }
 
@@ -54,14 +54,14 @@ class Array {
     }
   }
 
-  void Remove(uint4 p_idx) {
+  void Remove(alni p_idx) {
     Type* current = buff;
     Reserve(length - 1);
 
-    for (uint4 befor = 0; befor < p_idx; befor++) {
+    for (alni befor = 0; befor < p_idx; befor++) {
       buff[befor] = current[befor];
     }
-    for (uint4 after = p_idx; after < length + 1; after++) {
+    for (alni after = p_idx; after < length + 1; after++) {
       buff[after - 1] = current[after];
     }
 
@@ -76,7 +76,7 @@ class Array {
     }
   }
 
-  Type& operator[](uint4 idx) {
+  Type& operator[](alni idx) {
     return buff[idx];
   }
 

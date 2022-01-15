@@ -43,6 +43,7 @@
     <ProjectGuid>{5C880F2D-7324-41A0-9507-E45038C12186}</ProjectGuid>
     <RootNamespace>rtc</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>example</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
