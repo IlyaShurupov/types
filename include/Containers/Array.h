@@ -3,6 +3,10 @@
 #include "Memory/Mem.h"
 #include "Macros.h"
 
+
+template <typename Type>
+struct array_iterator;
+
 template <typename Type>
 class Array {
   
@@ -115,7 +119,36 @@ class Array {
     }
   }
 
+  array_iterator<Type> begin() { return array_iterator<Type>(this); }
+  alni end() { return Len(); }
+
   ~Array() {
     Free();
   }
+
+};
+
+template <typename Type>
+struct array_iterator {
+  alni idx = 0;
+  Array<Type>* array;
+  
+  array_iterator(Array<Type>* array) : array(array) {}
+
+  Type* operator->() { return &(*array)[idx]; }
+
+  Type& data() { return (*array)[idx]; }
+
+  inline void operator++() {
+    idx++;
+  }
+
+  bool operator==(alni p_idx) { return idx == p_idx; }
+  bool operator!=(alni p_idx) { return idx != p_idx; }
+  bool operator>(alni p_idx) { return idx > p_idx; }
+  bool operator<(alni p_idx) { return idx < p_idx; }
+  bool operator>=(alni p_idx) { return idx >= p_idx; }
+  bool operator<=(alni p_idx) { return idx <= p_idx; }
+
+  const array_iterator& operator*() { return *this; }
 };
