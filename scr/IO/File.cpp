@@ -68,3 +68,15 @@ alni File::size() {
 	out = file.tellg() - out;
 	return out;
 }
+
+
+string read_file(string path) {
+	File file;
+	file.open(path, FileOpenFlags::LOAD);
+
+	string script;
+	script.alloc(file.size());
+
+	file.read_bytes(script.str, script.len(), 0);
+	return script;
+}

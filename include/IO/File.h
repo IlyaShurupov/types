@@ -57,3 +57,4 @@ public:
 	}
 };
 
+string read_file(string path);

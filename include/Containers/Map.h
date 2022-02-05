@@ -23,6 +23,9 @@ template <typename V, typename K>
 struct HashNode {
 	K key;
 	V val;
+
+	~HashNode() {
+	}
 };
 
 template <typename V, typename K>
@@ -160,6 +163,10 @@ public:
 		return table[idx]->val;
 	}
 
+	V& operator[](alni idx) {
+		return table[idx]->val;
+	}
+
 	HashNode<V, K>* GetEntry(const K& key) {
 		alni idx = find_slot(key, true);
 		
@@ -213,6 +220,9 @@ public:
 			}
 		}
 		delete table;
+		table = NULL;
+		nslots = NULL;
+		nentries = NULL;
 	}
 
 	MapIterator<K, V, Hashfunc, CopyValfunc, table_size, ValDestruct> begin() {
