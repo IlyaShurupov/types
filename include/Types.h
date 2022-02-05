@@ -28,3 +28,5 @@ struct pair {
 
 #undef NULL
 #define NULL 0
+
+#define TYPES_1
