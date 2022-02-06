@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{82402723-4df8-4091-90f3-071a0a132874}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source">
+      <UniqueIdentifier>{2c2c05ff-ad26-4bcb-9258-8e58169b409e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\inc\env.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\alloc_cfg.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\allocator.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\heapalloc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\poolalloc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\new.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\allocators.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\chunkalloc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\heapalloc.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\new.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\poolalloc.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\chunkalloc.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
