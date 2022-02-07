@@ -13,15 +13,23 @@ alni calc_bsize(alni bsize) {
 	return bsize;
 }
 
-chunkalloc::chunkalloc(allocator* alloc, alni bsize, alni nblocks) {
+chunkalloc::chunkalloc(allocator* alloc, alni pbsize, alni pnblocks) {
+	nblocks = pnblocks;
+
 	if (nblocks < 32) {
 		nblocks = 32;
 	}
-	bsize = calc_bsize(bsize);
+	bsize = calc_bsize(pbsize);
 
+#ifdef MEM_TRACE
+	buff = (alni*)alloc->alloc(bsize * nblocks, __FILE__, __LINE__);
+#else
 	buff = (alni*)alloc->alloc(bsize * nblocks);
-	bnext = NULL;
-	bfreec = binitc = 0;
+#endif
+
+	bnext = buff;
+	bfreec = nblocks;
+	binitc = 0;
 }
 
 
@@ -33,27 +41,30 @@ bool chunkalloc::avaliable() { return bfreec; }
 alni chunkalloc::inuse_size() { return (nblocks - bfreec) * (bsize - sizeof(used_slot_head)); }
 alni chunkalloc::reserved_size() { return  bsize * nblocks; }
 
-inline void* chunkalloc::get_addr(alni idx) const { return &buff[idx * bsize]; }
-inline alni chunkalloc::get_idx(const void* address) const { return (((alni)((alni*)address - buff)) / bsize); }
+inline void* chunkalloc::get_addr(alni idx) const { 
+	return ((uint1*)buff) + (idx * bsize); 
+}
+inline alni chunkalloc::get_idx(const void* address) const { 
+	return (((alni)((alni*)address - buff)) / bsize); 
+}
 
 alni chunkalloc::get_bsize() {
 	return bsize;
 }
 
-#ifdef MEM_TRACE
-void* alloc(alni size, const char* file, int line) {
-	alloc(alni size);
+void* chunkalloc::alloc(alni size, const char* file, int line) {
+	return alloc(size);
 }
-#else
+
 void* chunkalloc::alloc(alni size) {
 
 	if (size > alni(bsize - sizeof(used_slot_head))) {
-		return NULL;
+		throw typesExeption("faled allocate on chunk - size exeedes block size", false);
 	}
 
 	if (binitc < nblocks) {
+		((unused_slot_head*)get_addr(binitc))->bnext = (alni*)get_addr(binitc + 1);
 		binitc++;
-		((unused_slot_head*)get_addr(binitc))->bnext = (alni*)get_addr(binitc);
 	}
 
 	alni* out = NULL;
@@ -72,10 +83,12 @@ void* chunkalloc::alloc(alni size) {
 		((used_slot_head*)out)->chunk_p = this;
 		out = (alni*)(((used_slot_head*)out) + 1);
 	}
+	else {
+		throw typesExeption("faled allocate on chunk - chunk is full", false);
+	}
 
 	return out;
 }
-#endif 
 
 void chunkalloc::free(void* p) {
 	alni* bdel = (alni*)((used_slot_head*)p + 1);

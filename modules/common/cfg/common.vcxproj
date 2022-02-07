@@ -27,28 +27,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\inc\allocator.h" />
-    <ClInclude Include="..\inc\chunkalloc.h" />
+    <ClInclude Include="..\inc\cassert.h" />
+    <ClInclude Include="..\inc\common.h" />
     <ClInclude Include="..\inc\env.h" />
-    <ClInclude Include="..\inc\heapalloc.h" />
-    <ClInclude Include="..\inc\alloc_cfg.h" />
-    <ClInclude Include="..\inc\mem.h" />
-    <ClInclude Include="..\inc\new.h" />
-    <ClInclude Include="..\inc\poolalloc.h" />
+    <ClInclude Include="..\inc\exeptions.h" />
+    <ClInclude Include="..\inc\macros.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\chunkalloc.cpp" />
-    <ClCompile Include="..\src\heapalloc.cpp" />
-    <ClCompile Include="..\src\new.cpp" />
-    <ClCompile Include="..\src\poolalloc.cpp" />
+    <ClCompile Include="..\src\cassert.cpp" />
+    <ClCompile Include="..\src\common.cpp" />
+    <ClCompile Include="..\src\exeptions.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{98D6AE72-22F4-4498-ACE5-21AD0B4ABF0A}</ProjectGuid>
+    <ProjectGuid>{1500663A-E20C-4AB8-B3AA-78A2CAE43D86}</ProjectGuid>
     <RootNamespace>rtc</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>allocator</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

@@ -9,39 +9,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\inc\alloc_cfg.h">
+    <ClInclude Include="..\inc\common.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\allocator.h">
+    <ClInclude Include="..\inc\env.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\heapalloc.h">
+    <ClInclude Include="..\inc\cassert.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\poolalloc.h">
+    <ClInclude Include="..\inc\macros.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\new.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inc\allocators.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inc\chunkalloc.h">
+    <ClInclude Include="..\inc\exeptions.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\heapalloc.cpp">
+    <ClCompile Include="..\src\common.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\new.cpp">
+    <ClCompile Include="..\src\cassert.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\poolalloc.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\chunkalloc.cpp">
+    <ClCompile Include="..\src\exeptions.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

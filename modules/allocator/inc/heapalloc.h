@@ -17,6 +17,9 @@ public:
 
 #ifdef MEM_TRACE
 	void* alloc(alni size, const char* file, int line);
+	void* alloc(alni size) {
+		return alloc(size, NULL, 0);
+	}
 #else
 	void* alloc(alni size);
 #endif 

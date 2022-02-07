@@ -1,10 +1,6 @@
 #include "heapalloc.h"
 
-#include "heapalloc.h"
-
-#include <string.h>
 #include <corecrt_malloc.h>
-#include <cassert>
 
 void correct_malloc_free(void* p) {
   free(p);
@@ -34,9 +30,9 @@ struct MemHead {
 
 #ifdef MEM_TRACE
 
-void* heap_alloc::alloc(alni size, const char* file, int line) {
+void* heapalloc::alloc(alni size, const char* file, int line) {
 
-#ifdef MEM_DEBUG_WRAP
+#ifdef MEM_WRAP
 
   alni total = (alni)size + sizeof(MemHead) + WRAP_LEN * 2;
   MemHead* mhptr = (MemHead*)malloc(total);
@@ -71,13 +67,13 @@ void* heap_alloc::alloc(alni size, const char* file, int line) {
     mhptr->type = nullptr;
 
     
-#ifdef MEM_DEBUG_WRAP
+#ifdef MEM_WRAP
     void* out = (void*)((int1*)((MemHead*)mhptr + 1) + WRAP_LEN);
 #else
     void* out = (void*)((MemHead*)mhptr + 1);
 #endif
     #ifdef MEM_ZEROING
-    memset(out, 0, size);
+    memset(out, size, 0);
     #endif
 
     return out;
@@ -86,12 +82,12 @@ void* heap_alloc::alloc(alni size, const char* file, int line) {
   return nullptr;
 }
 
-void heap_alloc::free(void* ptr) {
+void heapalloc::free(void* ptr) {
   if (!ptr) {
     return;
   }
 
-#ifdef MEM_DEBUG_WRAP
+#ifdef MEM_WRAP
 
   MemHead* mhptr = ((MemHead*)((int1*)ptr - WRAP_LEN) - 1);
 
@@ -128,7 +124,7 @@ void heap_alloc::free(void* ptr) {
   correct_malloc_free(mhptr);
 }
 
-alni heap_alloc::use_size() {
+alni heapalloc::inuse_size() {
   alni size = 0;
   MemHead* alloc_iter = entry_ptr;
   while (alloc_iter) {
@@ -142,11 +138,11 @@ alni heap_alloc::use_size() {
 void* heapalloc::alloc(alni size) {
   void* out = malloc(size);
   if (!out) {
-    throw "failed alloc";
+    throw typesExeption("failed allocate on heap", false);
   }
 
   #ifdef MEM_ZEROING
-  memset(out, 0, size);
+  memset(out, size, 0);
   #endif
 
   return out;

@@ -27,7 +27,7 @@ int main() {
 			res = tests[i]();
 		}
 		catch (...) {
-			res == FAILED;
+			res = FAILED;
 		}
 
 		if (res == SUCCEED) {

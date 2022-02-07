@@ -6,6 +6,9 @@
 
 #include "new.h"
 
+
+heapalloc halloc;
+
 struct chunk_node : public chunkalloc {
 	chunk_node(allocator* alloc, alni bsize, alni nblocks) : chunkalloc(alloc, bsize, nblocks) {}
 	chunk_node* next = NULL;
@@ -25,8 +28,6 @@ chunk_node* chunk_list::addchunk(heapalloc* halloc, alni bsize, alni nblocks) {
 
 	first = node;
 
-	len++;
-
 	return node;
 }
 
@@ -42,8 +43,6 @@ void chunk_list::delchunk(chunk_node* node, heapalloc* halloc) {
 	if (node == first) {
 		first = first->next;
 	}
-
-	len--;
 
 	node->finalize(halloc);
 	mfree(halloc, node);
@@ -69,7 +68,7 @@ void chunk_list::finalize(heapalloc* halloc) {
 poolalloc::poolalloc(alni pbsize, alni pnblocks) {
 	chunks.initialize(&halloc);
 	last_used = NULL;
-	bsize = calc_bsize(bsize);
+	bsize = pbsize;
 	nblocks = pnblocks;
 }
 
@@ -98,11 +97,10 @@ alni poolalloc::reserved_size() {
 	return size;
 }
 
-#ifdef MEM_TRACE
 void* poolalloc::alloc(alni size, const char* file, int line) {
-	alloc(alni size);
+	return alloc(size);
 }
-#else
+
 void* poolalloc::alloc(alni size) {
 
 	chunk_node* avalchunk = NULL;
@@ -128,13 +126,17 @@ void* poolalloc::alloc(alni size) {
 
 	return avalchunk->alloc(size);
 }
-#endif 
 
 void poolalloc::free(void* p) {
-	chunkalloc* chunk_p = ((used_slot_head*)p)->chunk_p;
+	chunkalloc* chunk_p = (((used_slot_head*)p) - 1)->chunk_p;
 	chunk_p->free(p);
 
-	if (!chunk_p->inuse_size() && chunks.len > 2) {
+	alni chunks_len = 0;
+	for (chunk_node* iter = chunks.first; iter; iter = iter->next) {
+		chunks_len++;
+	}
+
+	if (!chunk_p->inuse_size() && chunks_len > 2) {
 		chunks.delchunk((chunk_node*)chunk_p, &halloc);
 	}
 }

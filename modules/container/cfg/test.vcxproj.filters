@@ -6,7 +6,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\tests\alloctests.cpp">
+    <ClCompile Include="..\tests\tests.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

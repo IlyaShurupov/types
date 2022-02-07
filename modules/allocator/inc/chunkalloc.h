@@ -36,10 +36,7 @@ public:
 	inline alni get_idx(const void* address) const;
 	alni get_bsize();
 
-#ifdef MEM_TRACE
 	void* alloc(alni size, const char* file, int line);
-#else
 	void* alloc(alni size);
-#endif 
 	void free(void* p);
 };
