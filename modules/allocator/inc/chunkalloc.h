@@ -39,4 +39,6 @@ public:
 	void* alloc(alni size, const char* file, int line);
 	void* alloc(alni size);
 	void free(void* p);
+
+	bool wrap_corrupted() { return true; }
 };

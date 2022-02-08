@@ -6,8 +6,7 @@
 
 #include "new.h"
 
-
-heapalloc halloc;
+heapalloc pool_halloc;
 
 struct chunk_node : public chunkalloc {
 	chunk_node(allocator* alloc, alni bsize, alni nblocks) : chunkalloc(alloc, bsize, nblocks) {}
@@ -66,14 +65,14 @@ void chunk_list::finalize(heapalloc* halloc) {
 
 
 poolalloc::poolalloc(alni pbsize, alni pnblocks) {
-	chunks.initialize(&halloc);
+	chunks.initialize(&pool_halloc);
 	last_used = NULL;
 	bsize = pbsize;
 	nblocks = pnblocks;
 }
 
 poolalloc::~poolalloc() {
-	chunks.finalize(&halloc);
+	chunks.finalize(&pool_halloc);
 }
 
 
@@ -107,7 +106,7 @@ void* poolalloc::alloc(alni size) {
 
 	// first allocation ever
 	if (!last_used) {
-		chunk_node* node = chunks.addchunk(&halloc, bsize, nblocks);
+		chunk_node* node = chunks.addchunk(&pool_halloc, bsize, nblocks);
 		avalchunk = node;
 
 	}
@@ -137,6 +136,6 @@ void poolalloc::free(void* p) {
 	}
 
 	if (!chunk_p->inuse_size() && chunks_len > 2) {
-		chunks.delchunk((chunk_node*)chunk_p, &halloc);
+		chunks.delchunk((chunk_node*)chunk_p, &pool_halloc);
 	}
 }

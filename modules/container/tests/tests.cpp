@@ -1,22 +1,22 @@
 
 #include "containers.h"
 
-struct test_struct {
+struct avl_ts {
 	alni val;
 
-	bool operator==(const test_struct& in) {
+	bool operator==(const avl_ts& in) {
 		return in.val == val;
 	}
 
-	bool operator>(const test_struct& in) {
+	bool operator>(const avl_ts& in) {
 		return val > in.val;
 	}
 };
 
 int main() {
 
-	avltree<test_struct> avl;
-	avl.insert(test_struct({0}));
+	avltree<avl_ts> avl;
+	avl.insert(avl_ts({0}));
 
 
 	HashMap<alni, alni> mp;

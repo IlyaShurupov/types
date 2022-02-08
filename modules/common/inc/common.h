@@ -5,6 +5,8 @@
 #include "cassert.h"
 #include "macros.h"
 #include "exeptions.h"
+#include "timer.h"
+#include "random.h"
 
 void memset(void* p, alni bytesize, uint1 val);
 
@@ -46,6 +48,39 @@ struct tuple {
 	tuple(T1 t1, T2 t2) {
 		this->t1 = t1;
 		this->t2 = t2;
+	}
+};
+
+struct range_iter {
+	alni idx;
+
+	range_iter(alni st) : idx(st) {}
+
+	inline void operator++() {
+		idx++;
+	}
+
+	operator alni() const { return idx; }
+
+	bool operator==(alni p_idx) { return idx == p_idx; }
+	bool operator!=(alni p_idx) { return idx != p_idx; }
+	const range_iter& operator*() { return *this; }
+};
+
+struct range {
+
+	range() : st(0), nd(0) {}
+	range(alni st, alni nd) : st(st), nd(nd) {}
+
+	alni st;
+	alni nd;
+
+	range_iter begin() {
+		return range_iter(st);
+	}
+
+	alni end() {
+		return nd;
 	}
 };
 

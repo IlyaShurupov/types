@@ -12,7 +12,7 @@ struct chunk_list {
 	void finalize(heapalloc* halloc);
 };
 
-extern heapalloc halloc;
+extern heapalloc pool_halloc;
 
 class poolalloc : public allocator {
 
@@ -35,4 +35,6 @@ public:
 	void* alloc(alni size);
 
 	void free(void* p);
+
+	bool wrap_corrupted() { return true; }
 };

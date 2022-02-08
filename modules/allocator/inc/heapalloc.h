@@ -12,8 +12,12 @@ class heapalloc : public allocator {
 
 public:
 
-	alni reserved_size() { return -1; }
+	alni reserved_size() { return inuse_size(); }
 	bool avaliable() { return true; }
+	
+#ifdef MEM_WRAP
+	bool wrap_corrupted();
+#endif 
 
 #ifdef MEM_TRACE
 	void* alloc(alni size, const char* file, int line);

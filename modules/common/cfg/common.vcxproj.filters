@@ -24,6 +24,12 @@
     <ClInclude Include="..\inc\exeptions.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\inc\timer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\random.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\common.cpp">
@@ -33,6 +39,12 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="..\src\exeptions.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\timer.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\random.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

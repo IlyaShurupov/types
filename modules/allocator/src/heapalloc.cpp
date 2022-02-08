@@ -52,11 +52,10 @@ void* heapalloc::alloc(alni size, const char* file, int line) {
 
     mhptr->next = mhptr->prev = nullptr;
 
+    mhptr->next = entry_ptr;
     if (entry_ptr) {
-      entry_ptr->next = mhptr;
+      entry_ptr->prev = mhptr;
     }
-
-    mhptr->prev = entry_ptr;
     entry_ptr = mhptr;
 
     num++;
@@ -104,20 +103,15 @@ void heapalloc::free(void* ptr) {
   MemHead* mhptr = ((MemHead*)ptr - 1);
 #endif
 
-  if (mhptr->prev && mhptr->next) {
+  if (mhptr->next) {
     mhptr->next->prev = mhptr->prev;
-    mhptr->prev->next = mhptr->next;
-
   }
-  else if (mhptr->prev || mhptr->next) {
+  if (mhptr->prev) {
+    mhptr->prev->next = mhptr->next;
+  }
 
-    if (mhptr->next) {
-      mhptr->next->prev = nullptr;
-    }
-    else {
-      mhptr->prev->next = nullptr;
-      entry_ptr = mhptr->prev;
-    }
+  if (mhptr == entry_ptr) {
+    entry_ptr = entry_ptr->next;
   }
 
   num--;
@@ -129,10 +123,31 @@ alni heapalloc::inuse_size() {
   MemHead* alloc_iter = entry_ptr;
   while (alloc_iter) {
     size += alloc_iter->size;
-    alloc_iter = alloc_iter->prev;
+    alloc_iter = alloc_iter->next;
   }
   return size;
 }
+
+#ifdef MEM_WRAP
+bool heapalloc::wrap_corrupted() {
+
+  for (MemHead* mhptr = entry_ptr; mhptr; mhptr = mhptr->next) {
+
+    void* wrap1 = (void*)((MemHead*)mhptr + 1);
+    void* wrap2 = (void*)((int1*)((MemHead*)mhptr + 1) + WRAP_LEN + mhptr->size);
+
+    for (alni i = 0; i < WRAP_LEN; i++) {
+      int1 val1 = ((int1*)wrap1)[i];
+      int1 val2 = ((int1*)wrap2)[i];
+
+      if (val1 != WRAP_FILL_VAL || val2 != WRAP_FILL_VAL) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+#endif
 
 #else
 void* heapalloc::alloc(alni size) {

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -33,7 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\inc\array.h" />
-    <ClInclude Include="..\inc\avl.h" />
+    <ClInclude Include="..\inc\avltree.h" />
     <ClInclude Include="..\inc\containers.h" />
     <ClInclude Include="..\inc\map.h" />
     <ClInclude Include="..\inc\map_policies.h" />
