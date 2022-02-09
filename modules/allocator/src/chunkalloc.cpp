@@ -33,9 +33,15 @@ chunkalloc::chunkalloc(allocator* alloc, alni pbsize, alni pnblocks) {
 	binitc = 0;
 }
 
+chunkalloc::~chunkalloc() {
+	assert(!buff && "chunk allocator hasn't been finalized befor destructor called");
+}
 
 void chunkalloc::finalize(allocator* alloc) {
-	alloc->free(buff);
+	if (buff) {
+		alloc->free(buff);
+		buff = NULL;
+	}
 }
 
 bool chunkalloc::avaliable() { return bfreec; }
@@ -92,13 +98,13 @@ void* chunkalloc::alloc(alni size) {
 }
 
 void chunkalloc::free(void* p) {
-	alni* bdel = (alni*)((used_slot_head*)p + 1);
+	alni* bdel = (alni*)((used_slot_head*)p - 1);
 	if (bnext != NULL) {
 		((unused_slot_head*)bdel)->bnext = bnext;
 		bnext = bdel;
 	}
 	else {
-		((unused_slot_head*)bdel)->bnext = (alni*)get_addr(nblocks);
+		((unused_slot_head*)bdel)->bnext = NULL;
 		bnext = bdel;
 	}
 	++bfreec;

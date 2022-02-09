@@ -20,12 +20,12 @@ chunk_node* chunk_list::addchunk(heapalloc* halloc, alni bsize, alni nblocks) {
 	
 	node->next = node->prev = NULL;
 
-	if (first) {
-		first->next = node;
-		node->prev = first;
+	if (last) {
+		last->next = node;
+		node->prev = last;
 	}
 
-	first = node;
+	last = node;
 
 	return node;
 }
@@ -39,8 +39,8 @@ void chunk_list::delchunk(chunk_node* node, heapalloc* halloc) {
 		node->prev->next = node->next;
 	}
 
-	if (node == first) {
-		first = first->next;
+	if (node == last) {
+		last = last->prev;
 	}
 
 	node->finalize(halloc);
@@ -49,14 +49,14 @@ void chunk_list::delchunk(chunk_node* node, heapalloc* halloc) {
 
 
 void chunk_list::initialize(heapalloc* halloc) {
-	if (first) {
+	if (last) {
 		finalize(halloc);
 	}
-	first = NULL;
+	last = NULL;
 }
 
 void chunk_list::finalize(heapalloc* halloc) {
-	for (chunk_node* iter = first; iter; iter = iter->next) {
+	for (chunk_node* iter = last; iter; iter = iter->next) {
 		iter->finalize(halloc);
 		mfree(halloc, iter);
 	}
@@ -82,7 +82,7 @@ bool poolalloc::avaliable() {
 
 alni poolalloc::inuse_size() {
 	alni size = 0;
-	for (chunk_node* iter = chunks.first; iter; iter = iter->next) {
+	for (chunk_node* iter = chunks.last; iter; iter = iter->prev) {
 		size += iter->inuse_size();
 	}
 	return size;
@@ -90,7 +90,7 @@ alni poolalloc::inuse_size() {
 
 alni poolalloc::reserved_size() {
 	alni size = 0;
-	for (chunk_node* iter = chunks.first; iter; iter = iter->next) {
+	for (chunk_node* iter = chunks.last; iter; iter = iter->prev) {
 		size += iter->reserved_size();
 	}
 	return size;
@@ -104,21 +104,20 @@ void* poolalloc::alloc(alni size) {
 
 	chunk_node* avalchunk = NULL;
 
-	// first allocation ever
-	if (!last_used) {
-		chunk_node* node = chunks.addchunk(&pool_halloc, bsize, nblocks);
-		avalchunk = node;
-
-	}
-	else if (last_used->avaliable()) {
+	if (last_used && last_used->avaliable()) {
 		avalchunk = last_used;
 	}
 	else {
-		for (chunk_node* iter = chunks.first; iter; iter = iter->next) {
+		for (chunk_node* iter = chunks.last; iter; iter = iter->prev) {
 			if (iter->avaliable()) {
 				avalchunk = iter;
 			}
 		}
+	}
+
+	if (!avalchunk) {
+		chunk_node* node = chunks.addchunk(&pool_halloc, bsize, nblocks);
+		avalchunk = node;
 	}
 
 	last_used = avalchunk;
@@ -130,12 +129,10 @@ void poolalloc::free(void* p) {
 	chunkalloc* chunk_p = (((used_slot_head*)p) - 1)->chunk_p;
 	chunk_p->free(p);
 
-	alni chunks_len = 0;
-	for (chunk_node* iter = chunks.first; iter; iter = iter->next) {
-		chunks_len++;
-	}
-
-	if (!chunk_p->inuse_size() && chunks_len > 2) {
+	if (!chunk_p->inuse_size()) {
 		chunks.delchunk((chunk_node*)chunk_p, &pool_halloc);
+		if (last_used == chunk_p) {
+			last_used = NULL;
+		}
 	}
 }

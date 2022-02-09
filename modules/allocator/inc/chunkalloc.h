@@ -25,6 +25,7 @@ class chunkalloc : public allocator {
 public:
 
 	chunkalloc(allocator* alloc, alni bsize, alni nblocks);
+	~chunkalloc();
 
 	void finalize(allocator* alloc);
 
@@ -40,5 +41,5 @@ public:
 	void* alloc(alni size);
 	void free(void* p);
 
-	bool wrap_corrupted() { return true; }
+	bool wrap_corrupted() { return false; }
 };

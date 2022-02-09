@@ -12,9 +12,8 @@ public:
 	virtual alni reserved_size() = 0;
 	virtual alni inuse_size() { return 0; };
 
-#ifdef MEM_WRAP
+	virtual bool wrap_support() { return false; };
 	virtual bool wrap_corrupted() = 0;
-#endif
 
 #ifdef MEM_TRACE
 	virtual void* alloc(alni size, const char* file, int line) = 0;
@@ -24,6 +23,5 @@ public:
 	virtual void free(void* p) = 0;
 
 	~allocator() {
-		assert(!inuse_size() && "memory leaks detected");
 	}
 };

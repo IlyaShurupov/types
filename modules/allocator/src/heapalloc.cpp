@@ -128,7 +128,6 @@ alni heapalloc::inuse_size() {
   return size;
 }
 
-#ifdef MEM_WRAP
 bool heapalloc::wrap_corrupted() {
 
   for (MemHead* mhptr = entry_ptr; mhptr; mhptr = mhptr->next) {
@@ -147,7 +146,6 @@ bool heapalloc::wrap_corrupted() {
   }
   return false;
 }
-#endif
 
 #else
 void* heapalloc::alloc(alni size) {
@@ -171,3 +169,7 @@ alni heapalloc::inuse_size() {
   return 0;
 }
 #endif
+
+bool heapalloc::wrap_corrupted() {
+  return false;
+}

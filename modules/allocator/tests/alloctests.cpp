@@ -30,15 +30,22 @@ struct allocator_test {
 	allocator* parent_alloc;
 	const char* allocator_name = NULL;
 
-	alni rand_idx() {
+	alni rand_idx(bool state) {
+		
+		RAND:
+
 		alni idx = (alni)(randf() * (size + 1));
 		CLAMP(idx, 0, size - 1);
+
+		if (state == is_allocated[idx]) {
+			goto RAND;
+		}
 		return idx;
 	}
 
-	allocator_test(allocator* palloc, const char* pallocator_name, allocator* p_parent_alloc = NULL) {
-		parent_alloc = p_parent_alloc;
+	allocator_test(allocator* palloc, const char* pallocator_name, allocator* p_parent_alloc) {
 		allocator_name = pallocator_name;
+		parent_alloc = p_parent_alloc;
 		alloc = palloc;
 		for (alni i = 0; i < size; i++) {
 			
@@ -61,19 +68,28 @@ struct allocator_test {
 		// verify data integrity
 		for (alni i = 0; i < size; i++) {
 			if (is_allocated[i]) {
-				assert(*allocations[i] == data[i]);
+				assert(*allocations[i] == data[i] && "data is currupted\n");
 			}
 		}
 
-		assert(alloc->inuse_size() == n_loaded * sizeof(test_struct));
-		assert(alloc->reserved_size() >= n_loaded * (alni)sizeof(test_struct));
+		if (alloc->wrap_support())assert(!alloc->wrap_corrupted());
+		if (parent_alloc && parent_alloc->wrap_support()) assert(!parent_alloc->wrap_corrupted());
+
+		verify_sizes();
+	}
+
+	void verify_sizes() {
+		#ifdef MEM_TRACE
+		assert(alloc->inuse_size() == n_loaded * sizeof(test_struct) && "invalid inuse size\n");
+		assert(alloc->reserved_size() >= n_loaded * (alni)sizeof(test_struct) && "invalid reserved size\n");
+		#endif
 	}
 
 	void load_item(alni idx) {
 		if (!is_allocated[idx]) {
 			allocations[idx] = new(alloc) test_struct();
 			
-			assert(allocations[idx]);
+			assert(allocations[idx] && "allocator returned NULL");
 
 			allocations[idx]->val = data[idx].val;
 			is_allocated[idx] = true;
@@ -97,7 +113,7 @@ struct allocator_test {
 			alni idx = i;
 
 			if (random) {
-				idx = rand_idx();
+				idx = rand_idx(state);
 			}
 			else if (reversed) {
 				idx = size - i - 1;
@@ -137,29 +153,36 @@ struct allocator_test {
 		test3();
 	}
 
+	static alnf sineupf(alnf size, alnf x, bool reverse) {
+		alnf end = 4 * Pie;
+		alnf a = (2 / 7.f) * size;
+		alnf b = end / size;
+		
+		alni c = ((-1 * reverse) + (1 * !reverse));
+		alnf c1 = (x - (end * reverse)) / b;
+		alnf c2 = (a * sin(x - (end * reverse)));
+		alnf out = c1 + c2;
+		return c * out;
+	}
+
 	// sin load & sin unload with ~1/2 drop factor
 	void test5() {
 
-		alnf a = (2 / 7.f) * size;
-		alnf b = 4 * Pie / size;
 		alnf end = 4 * Pie;
-		alnf step = b / 100.f;
-
-		alni alloc_num = 0;
+		alnf step = end / 4.f;
 
 		for (char i = 0; i < 2; i++) {
-			for (alnf x = 0; x < b; x += step) {
-			
-				alni target_alloc_count = (alni)ceil((-1 * i) * (a * sin(x - (end * i)) + (x - (end * i)) / b));
+
+			for (alnf x = 0; x <= end; x += step) {
+				
+				alni target_alloc_count = (alni)ceil(sineupf(size, x, i));
 				CLAMP(target_alloc_count, 0, size);
 
-				while (alloc_num > target_alloc_count) {
-					unload_item(rand_idx());
-					alloc_num--;
+				while (n_loaded > target_alloc_count) {
+					unload_item(rand_idx(0));
 				}
-				while (alloc_num < target_alloc_count) {
-					load_item(rand_idx());
-					alloc_num++;
+				while (n_loaded < target_alloc_count) {
+					load_item(rand_idx(1));
 				}
 			}
 		}
@@ -169,7 +192,7 @@ struct allocator_test {
 	void check_wrap(alni offset, bool after) {
 		CLAMP(offset, 1, WRAP_LEN);
 		
-		test_struct* ts = allocations[rand_idx()];
+		test_struct* ts = allocations[rand_idx(0)];
 		alni shift = (sizeof(test_struct) * after) + (offset - 1) * after - offset * (!after);
 		uint1* address = (((uint1*)ts) + shift);
 		
@@ -199,16 +222,13 @@ struct allocator_test {
 		try {
 			
 			test1();
-			test2();
+ 			test2();
 			test3();
 			test4();
 			test5();
-			test6();
-
-			assert(alloc->inuse_size() == 0);
-
-			if (parent_alloc)
-				assert(parent_alloc->inuse_size() == 0);
+			if (alloc->wrap_support()) {
+				test6();
+			}
 
 			printf("%s - passed\n", allocator_name);
 		}
@@ -218,19 +238,38 @@ struct allocator_test {
 	}
 };
 
+void heap_alloc_test() {
+	heapalloc halloc;
+	allocator_test<150> hatest(&halloc, "heap allocator", NULL);
+	hatest.run_tests();
+}
+
+void chunk_alloc_test() {
+	heapalloc halloc;
+	{
+		chunkalloc calloc(&halloc, sizeof(test_struct), 50);
+		allocator_test<50> ca_test(&calloc, "chunk allocator", &halloc);
+		ca_test.run_tests();
+		calloc.finalize(&halloc);
+	}
+	assert(halloc.inuse_size() == 0);
+	assert(!halloc.wrap_corrupted());
+}
+
+void pool_alloc_test() {
+	poolalloc palloc(sizeof(test_struct), 50);
+	allocator_test<150> pa_test(&palloc, "pool allocator", NULL);
+	pa_test.run_tests();
+	assert(pool_halloc.inuse_size() == 0);
+	assert(!pool_halloc.wrap_corrupted());
+}
 
 int main() {
+
 	printf("running tests on alocators:\n");
-
-	heapalloc halloc;
-	allocator_test<150> hatest(&halloc, "heap allocator");
-	hatest.run_tests();
 	
-	chunkalloc calloc(&halloc, sizeof(test_struct), 50);
-	allocator_test<50> ca_test(&calloc, "chunk allocator", &halloc);
-	ca_test.run_tests();
+	heap_alloc_test();
+	chunk_alloc_test();
+	pool_alloc_test();
 
-	poolalloc palloc(sizeof(test_struct), 50);
-	allocator_test<150> pa_test(&palloc, "pool allocator", &pool_halloc);
-	pa_test.run_tests();
 }

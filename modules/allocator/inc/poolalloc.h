@@ -4,7 +4,7 @@
 
 struct chunk_list {
 
-	struct chunk_node* first = NULL;
+	struct chunk_node* last = NULL;
 
 	chunk_node* addchunk(heapalloc* halloc, alni bsize, alni nblocks);
 	void delchunk(chunk_node* node, heapalloc* halloc);
@@ -36,5 +36,5 @@ public:
 
 	void free(void* p);
 
-	bool wrap_corrupted() { return true; }
+	bool wrap_corrupted() { return false; }
 };
