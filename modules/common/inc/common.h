@@ -9,6 +9,8 @@
 #include "random.h"
 
 void memset(void* p, alni bytesize, uint1 val);
+void memcp(void* left, void* right, alni len);
+bool memequal(void* left, void* right, alni len);
 
 template <typename TypeIn, typename TypeOut>
 TypeOut i2f2i(TypeIn in) {

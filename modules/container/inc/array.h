@@ -10,7 +10,7 @@ struct array_iterator;
  extern heapalloc array_buuf_allocator;
 
 template <typename Type>
-class array {
+class Array {
   
   Type* buff;
   alni length;
@@ -18,12 +18,12 @@ class array {
 
  public:
 
-  array() { 
+  Array() { 
     length = 0;
     buff = nullptr;
   }
 
-  array(alni p_length) { 
+  Array(alni p_length) { 
     length = p_length;
     Reserve(length);
   }
@@ -91,7 +91,7 @@ class array {
     Insert(block, length);
   }
 
-  array(Type b1) { 
+  Array(Type b1) { 
     Reserve(1); buff[0] = b1;
   }
 
@@ -99,7 +99,7 @@ class array {
     return buff;
   }
 
-  array(const array& array) {
+  Array(const Array& array) {
     Reserve(array.length);
     for (int i = 0; i < array.length; i++) {
       buff[i] = array.buff[i];
@@ -109,7 +109,7 @@ class array {
   array_iterator<Type> begin() { return array_iterator<Type>(this); }
   alni end() { return Len(); }
 
-  ~array() {
+  ~Array() {
     Free();
   }
 
@@ -118,9 +118,9 @@ class array {
 template <typename Type>
 struct array_iterator {
   alni idx = 0;
-  array<Type>* array_p;
+  Array<Type>* array_p;
   
-  array_iterator(array<Type>* array) : array(array) {}
+  array_iterator(Array<Type>* array) : array_p(array) {}
 
   Type* operator->() { return &(*array_p)[idx]; }
 

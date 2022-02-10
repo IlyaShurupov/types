@@ -56,9 +56,11 @@ void chunk_list::initialize(heapalloc* halloc) {
 }
 
 void chunk_list::finalize(heapalloc* halloc) {
-	for (chunk_node* iter = last; iter; iter = iter->next) {
-		iter->finalize(halloc);
-		mfree(halloc, iter);
+	chunk_node* iter = last;
+	while (iter) {
+		chunk_node* del = iter;
+		iter = iter->prev;
+		delchunk(del, halloc);
 	}
 }
 

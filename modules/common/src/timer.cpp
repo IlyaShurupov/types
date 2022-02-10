@@ -20,7 +20,6 @@ time_ms get_time() {
   return GETTIMEMSC();
 }
 
-
 void sleep(time_ms duration) {
   THREAD_SLEEP(duration);
 }

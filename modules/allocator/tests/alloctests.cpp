@@ -264,7 +264,7 @@ void pool_alloc_test() {
 	assert(!pool_halloc.wrap_corrupted());
 }
 
-int main() {
+void allocators_test() {
 
 	printf("running tests on alocators:\n");
 	

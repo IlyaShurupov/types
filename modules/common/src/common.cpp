@@ -15,8 +15,37 @@ void memset(void* p, alni bytesize, uint1 val) {
 
 	alni unalignedlen = bytesize - (alignedlen * sizeof(alni));
 	for (alni idx = 0; idx < unalignedlen; idx++) {
-		((uint1*)p)[bytesize - idx] = val;
+		((uint1*)p)[bytesize - idx - 1] = val;
 	}
+}
+
+void memcp(void* left, void* right, alni len) {
+	alni alignedlen = len / sizeof(alni);
+	for (alni idx = 0; idx < alignedlen; idx++) {
+		((alni*)left)[idx] = ((alni*)right)[idx];
+	}
+
+	alni unalignedlen = len - (alignedlen * sizeof(alni));
+	for (alni idx = 0; idx < unalignedlen; idx++) {
+		((uint1*)left)[len - idx - 1] = ((uint1*)right)[len - idx - 1];
+	}
+}
+
+bool memequal(void* left, void* right, alni len) {
+	alni alignedlen = len / sizeof(alni);
+	for (alni idx = 0; idx < alignedlen; idx++) {
+		if (((alni*)left)[idx] != ((alni*)right)[idx]) {
+			return false;
+		}
+	}
+
+	alni unalignedlen = len - (alignedlen * sizeof(alni));
+	for (alni idx = 0; idx < unalignedlen; idx++) {
+		if (((uint1*)left)[len - idx - 1] != ((uint1*)right)[len - idx - 1]) {
+			return false;
+		}
+	}
+	return true;
 }
 
 uint8 next_pow_of_2(uint8 v) {

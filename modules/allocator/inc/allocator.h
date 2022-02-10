@@ -17,6 +17,7 @@ public:
 
 #ifdef MEM_TRACE
 	virtual void* alloc(alni size, const char* file, int line) = 0;
+	virtual void* alloc(alni size) = 0;
 #else
 	virtual void* alloc(alni size) = 0;
 #endif 

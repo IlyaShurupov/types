@@ -3,6 +3,7 @@
 #include "env.h"
 
 typedef alni time_ms;
+typedef alni time_ns;
 
 struct timer {
 

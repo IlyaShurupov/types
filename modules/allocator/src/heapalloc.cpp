@@ -168,8 +168,9 @@ void heapalloc::free(void* ptr) {
 alni heapalloc::inuse_size() {
   return 0;
 }
-#endif
 
 bool heapalloc::wrap_corrupted() {
   return false;
 }
+#endif
+

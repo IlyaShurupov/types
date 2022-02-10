@@ -9,5 +9,8 @@
     <ClCompile Include="..\tests\alloctests.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="..\tests\tests.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
