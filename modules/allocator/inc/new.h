@@ -13,9 +13,9 @@
 
 
 void* operator new(size_t size);
-void operator delete(void* p);
+//void operator delete (void* p, void* alloc);
 
-void setalloc(class allocator* alloc);
+void operator delete  (void* ptr, size_t sz) noexcept;
 
 #ifdef MEM_TRACE
 void* operator new(size_t size, class allocator* alloc, const char* file, int line);
@@ -28,4 +28,4 @@ void* operator new(size_t size, class allocator* alloc);
 void operator delete(void* p, class allocator* alloc);
 #endif 
 
-#define mfree(alloc_ptr, ptr) { setalloc(alloc_ptr); delete(ptr); }
+#define mfree(alloc_ptr, ptr) { delete ptr; (alloc_ptr)->free(ptr); }

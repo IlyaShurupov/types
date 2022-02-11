@@ -32,6 +32,8 @@ ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 banchmarker glb_banchmarker;
 
+#include "timer.h"
+
 void draw() {
   glb_banchmarker.draw();
 }
@@ -102,18 +104,20 @@ int main(int, char**)
   //io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
   //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
   //IM_ASSERT(font != NULL);
-
-  ImGui::CreateContext();
+  
   ImPlot::CreateContext();
 
+  timer time((time_ms)(1000/60.f));
   // Main loop
-  while (!glfwWindowShouldClose(window))
-  {
+  while (!glfwWindowShouldClose(window)) {
     // Poll and handle events (inputs, window resize, etc.)
     // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
     // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
     // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
     // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
+
+    time.reset();
+
     glfwPollEvents();
 
     // Start the Dear ImGui frame
@@ -133,10 +137,11 @@ int main(int, char**)
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     glfwSwapBuffers(window);
+
+    time.wait_out();
   }
 
   ImPlot::DestroyContext();
-  ImGui::DestroyContext();
 
   // Cleanup
   ImGui_ImplOpenGL3_Shutdown();

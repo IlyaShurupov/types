@@ -1,4 +1,4 @@
-# pragma once
+#pragma once
 
 #include "heapalloc.h"
 
@@ -39,7 +39,7 @@ class Array {
 
   void Free() {
     length = 0;
-    mfree(&array_buuf_allocator, buff);
+    array_buuf_allocator.free(buff);
     buff = nullptr;
   }
 
@@ -57,7 +57,7 @@ class Array {
     buff[idx] = p_block;
 
     if (current) {
-      mfree(&array_buuf_allocator, current);
+      array_buuf_allocator.free(current);
     }
   }
 
@@ -72,10 +72,10 @@ class Array {
       buff[after - 1] = current[after];
     }
 
-    mfree(&array_buuf_allocator, current);
+    array_buuf_allocator.free(current);
   }
 
-  void Remove(Type val) {
+  void RemoveVal(Type val) {
     for (int i = 0; i < Len(); i++) {
       if (buff[i] == val) {
         Remove(i);
@@ -89,10 +89,6 @@ class Array {
 
   void PushBack(Type block) {
     Insert(block, length);
-  }
-
-  Array(Type b1) { 
-    Reserve(1); buff[0] = b1;
   }
 
   Type* GetBuff() {
@@ -124,7 +120,7 @@ struct array_iterator {
 
   Type* operator->() { return &(*array_p)[idx]; }
 
-  Type& data() { return (*array_p)[idx]; }
+  Type& data() const { return (*array_p)[idx]; }
 
   inline void operator++() {
     idx++;

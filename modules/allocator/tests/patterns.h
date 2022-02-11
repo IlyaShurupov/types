@@ -3,32 +3,33 @@
 
 #include "collector.h"
 
-struct test_pattern_basic : test_pattern {
+class test_pattern_basic : public test_pattern {
 
+public:
 	alni items_count = 100;
-	alni item_size = 100;
+	alni item_size = 60;
 
-	alni pick_size(alni iter) {
-		return item_size;
+	alni pick_size(alni iter) override {
+		return (alni)(randf() * item_size);
 	}
 
-	alni pick_alloc_count(alni iter) {
+	alni pick_alloc_count(alni iter) override {
 		return iter;
 	}
 
-	alni pick_idx(alni iter) {
+	alni pick_idx(alni iter) override {
 		return iter;
 	}
 
-	alni max_size() {
+	alni max_size() override {
 		return item_size;
 	}
 
-	alni iterations_length() {
+	alni max_iterations() override {
 		return items_count;
 	}
 
-	alni data_count() {
+	alni data_count() override {
 		return items_count;
 	}
 };

@@ -21,7 +21,7 @@
     <ClInclude Include="..\inc\map_policies.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\avl.h">
+    <ClInclude Include="..\inc\avltree.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

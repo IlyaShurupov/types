@@ -20,20 +20,23 @@ enum class order_type {
 
 struct config {
 	// general
+	alni update_counter = 0;
+	bool time_per_instruction = 0;
+	bool mem_per_instruction = 0;
 	int avreging;
 
 	// patterns
-	load_type loading;
-	order_type ordering;
-	int max_data_items_count;
-	int max_data_item_size;
+	load_type loading = load_type::LINEAR;
+	order_type ordering = order_type::LINEAR;
+	int max_data_items_count = 0;
+	int max_data_item_size = 0;
 
 	// allocators
-	int chunk_bsize;
-	int chunk_blen;
+	int chunk_bsize = 0;
+	int chunk_blen = 0;
 
-	int pool_bsize;
-	int pool_blen;
+	int pool_bsize = 0;
+	int pool_blen = 0;
 
 	bool operator==(const config& in) {
 		return memequal(this, (config*)(&in), sizeof(config));
@@ -48,16 +51,21 @@ struct banchmarker {
 	heapalloc ownheap;
 
 	// allocators
-	heapalloc* halloc;
-	poolalloc* palloc;
-	chunkalloc* calloc;
-	heapalloc* chunk_heap;
+	heapalloc* halloc = NULL;
+	poolalloc* palloc = NULL;
+	chunkalloc* calloc = NULL;
+	heapalloc* chunk_heap = NULL;
 
 	Array<allocator_histogram*> out;
+	pattern_histogram* pattern_out;
+
+	alni i_count;
+	alnf* x_axis = NULL;
 
 	banchmarker();
+	~banchmarker();
 
-	test_pattern get_pattern(config& cfg);
+	test_pattern* get_pattern(config& cfg);
 
 	void analize(config cfg);
 
@@ -66,4 +74,7 @@ struct banchmarker {
 	void init_allocators(config& cfg);
 
 	void dest_allocators();
+
+	void clear_out();
+	void reserve_out(test_pattern* pattern);
 };

@@ -34,8 +34,9 @@ void* operator new(size_t size, class allocator* alloc) {
 void operator delete(void* p, class allocator* alloc) {}
 #endif 
 
+void operator delete(void* p, void* alloc) {
+	((allocator*)alloc)->free(p);
+}
 
-void operator delete(void* p) {
-	alloc->free(p);
-	alloc = 0;
+void operator delete  (void* ptr, size_t sz) noexcept {
 }
