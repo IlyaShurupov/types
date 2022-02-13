@@ -44,14 +44,21 @@ bool execute_instruction(allocator* alloc, bool load, alni size, uint1*& data) {
 	bool failed = false;
 	try {
 		if (load) {
-			data = (uint1*)alloc->alloc(size);
 			if (!data) {
-				failed = true;
+				data = (uint1*)alloc->alloc(size);
+				if (!data) {
+					failed = true;
+				}
+				else {
+					data = 0;
+				}
 			}
 		}
 		else {
-			alloc->free(data);
-			data = NULL;
+			if (data) {
+				alloc->free(data);
+				data = NULL;
+			}
 		}
 	}
 	catch (...) {
@@ -91,6 +98,7 @@ void collect(test_pattern* pattern, allocator* alloc, allocator_histogram* histo
 			else {
 				histogram->mark_resourses_usage(iter_idx, 0, 0, 0);
 				histogram->failed = true;
+				break;
 			}
 
 			nimtems_loaded += (alni)load + (-1 * (alni)(!load));

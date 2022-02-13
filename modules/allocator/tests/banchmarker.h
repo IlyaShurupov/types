@@ -4,6 +4,7 @@
 #include "patterns.h"
 
 #include "allocators.h"
+#include "array.h"
 
 enum class load_type {
 	LINEAR,
@@ -20,14 +21,19 @@ enum class order_type {
 
 struct config {
 	// general
+	bool heap = true;
+	bool pool = true;
+	bool chunk = true;
+
 	alni update_counter = 0;
 	bool time_per_instruction = 0;
 	bool mem_per_instruction = 0;
 	int avreging;
 
 	// patterns
-	load_type loading = load_type::LINEAR;
-	order_type ordering = order_type::LINEAR;
+	alni loading = 0;
+	alni ordering = 0;
+	alni sizing = 0;
 	int max_data_items_count = 0;
 	int max_data_item_size = 0;
 
@@ -42,7 +48,19 @@ struct config {
 		return memequal(this, (config*)(&in), sizeof(config));
 	}
 };
+						
 
+enum class pr_type {
+	LINEAR, 
+	LINEAR_REVERSED,
+	RANDOM,
+	SINE,
+};
+
+struct pattern_region {
+	alni point;
+	pr_type type;
+};
 
 struct banchmarker {
 
@@ -70,6 +88,7 @@ struct banchmarker {
 	void analize(config cfg);
 
 	void draw();
+	void pattern_generator();
 
 	void init_allocators(config& cfg);
 

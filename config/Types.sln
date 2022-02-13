@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "container", "..\modules\con
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tests", "..\modules\container\cfg\test.vcxproj", "{F9B4E8CD-780D-4D4E-A7A9-28006348499B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "banchmarking", "..\modules\allocator\cfg\banchmarking.vcxproj", "{FEE95CB2-CBDB-4114-8C94-80941A8DB61B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -103,6 +105,18 @@ Global
 		{F9B4E8CD-780D-4D4E-A7A9-28006348499B}.Release-expl|x64.Build.0 = Release-expl|x64
 		{F9B4E8CD-780D-4D4E-A7A9-28006348499B}.Release-expl|x86.ActiveCfg = Release-expl|Win32
 		{F9B4E8CD-780D-4D4E-A7A9-28006348499B}.Release-expl|x86.Build.0 = Release-expl|Win32
+		{FEE95CB2-CBDB-4114-8C94-80941A8DB61B}.Debug|x64.ActiveCfg = Debug|x64
+		{FEE95CB2-CBDB-4114-8C94-80941A8DB61B}.Debug|x64.Build.0 = Debug|x64
+		{FEE95CB2-CBDB-4114-8C94-80941A8DB61B}.Debug|x86.ActiveCfg = Debug|Win32
+		{FEE95CB2-CBDB-4114-8C94-80941A8DB61B}.Debug|x86.Build.0 = Debug|Win32
+		{FEE95CB2-CBDB-4114-8C94-80941A8DB61B}.Release|x64.ActiveCfg = Release|x64
+		{FEE95CB2-CBDB-4114-8C94-80941A8DB61B}.Release|x64.Build.0 = Release|x64
+		{FEE95CB2-CBDB-4114-8C94-80941A8DB61B}.Release|x86.ActiveCfg = Release|Win32
+		{FEE95CB2-CBDB-4114-8C94-80941A8DB61B}.Release|x86.Build.0 = Release|Win32
+		{FEE95CB2-CBDB-4114-8C94-80941A8DB61B}.Release-expl|x64.ActiveCfg = Release-expl|x64
+		{FEE95CB2-CBDB-4114-8C94-80941A8DB61B}.Release-expl|x64.Build.0 = Release-expl|x64
+		{FEE95CB2-CBDB-4114-8C94-80941A8DB61B}.Release-expl|x86.ActiveCfg = Release-expl|Win32
+		{FEE95CB2-CBDB-4114-8C94-80941A8DB61B}.Release-expl|x86.Build.0 = Release-expl|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,6 +128,7 @@ Global
 		{49C64BF1-3D0B-49D7-8125-A6C9A70A91AE} = {D14916BA-08F4-4F41-9E23-DAC4C1EC739B}
 		{FFDD1C2C-9699-44B5-825C-E56EB6274546} = {EFA6EA97-5ACC-442C-872B-A056E06240E3}
 		{F9B4E8CD-780D-4D4E-A7A9-28006348499B} = {EFA6EA97-5ACC-442C-872B-A056E06240E3}
+		{FEE95CB2-CBDB-4114-8C94-80941A8DB61B} = {ABD28709-8062-4D4B-AB43-459FAEC87FB3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CF94800E-EB85-4869-AC9A-B20E17D64027}
