@@ -42,6 +42,11 @@ void draw() {
   glb_banchmarker.draw();
 }
 
+int WinMain(int, char**);
+int main() {
+  return WinMain(NULL, NULL);
+}
+
 int WinMain(int, char**) {
 
   glfwSetErrorCallback(glfw_error_callback);
@@ -77,7 +82,10 @@ int WinMain(int, char**) {
 
   ImPlot::CreateContext();
   ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
   ImFont* font1 = io.Fonts->AddFontFromFileTTF("font.ttf", 18.0f);
+
+  init_notify();
 
   timer time((time_ms)(1000/60.f));
   while (!glfwWindowShouldClose(window)) {
@@ -88,6 +96,8 @@ int WinMain(int, char**) {
     ImGui::NewFrame();
 
     draw();
+    
+    render_notify();
 
     ImGui::Render();
     int display_w, display_h;
@@ -97,6 +107,7 @@ int WinMain(int, char**) {
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     glfwSwapBuffers(window);
+
     time.wait_out();
   }
 

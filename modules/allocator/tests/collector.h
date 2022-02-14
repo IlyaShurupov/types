@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "containers.h"
+#include "array.h"
 
 class test_pattern {
 public:
@@ -11,8 +11,6 @@ public:
 	virtual alni max_iterations() { return 0; };
 	virtual alni pick_idx(alni iter) { return 0; };
 	virtual alni data_count() { return 0; };
-	
-	virtual void init(alni ploading, alni pordering, alni psizing, alni pitems_count, alni pmax_item_size) {};
 };
 
 struct pattern_histogram {

@@ -28,11 +28,11 @@ struct map_policy_default : map_policy<V, K> {
 	}
 
 	HashNode<V, K>* alloc_node() {
-		return (HashNode<V, K>*)palloc.alloc(sizeof(HashNode<V, K>));
+		return new (&palloc) HashNode<V, K>();
 	}
 
 	void free_node(HashNode<V, K>* node) {
-		return palloc.free(node);
+		mfree(&palloc, node);
 	}
 
 	void free_table(HashNode<V, K>** table) {

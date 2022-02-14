@@ -12,6 +12,8 @@
 #define HASHMAP_PERTURB_SHIFT 5
 #define HASHMAP_DELETED_SLOT(table, idx) ((table)[idx] == (HashNode<V, K>*)-1)
 
+#define MAP_VALID_IDX(idx) (idx >= 0)
+
 template <typename V, typename K>
 struct HashNode {
 	K key;
@@ -242,16 +244,14 @@ public:
 	void operator++() {
 		slot_idx++;
 
-		while (HASHMAP_DELETED_SLOT(map->table, slot_idx) || !map->table[slot_idx]) {
+		while ((HASHMAP_DELETED_SLOT(map->table, slot_idx) || !map->table[slot_idx]) && (slot_idx != map->nslots)) {
 			slot_idx++;
-
-			if (slot_idx == map->nslots) {
-				return;
-			}
 		}
 
-		iter = map->table[slot_idx];
-		entry_idx++;
+		if (slot_idx != map->nslots) {
+			iter = map->table[slot_idx];
+			entry_idx++;
+		}
 	}
 
 	bool operator!=(alni p_idx) {

@@ -31,6 +31,9 @@ struct MemHead {
 #ifdef MEM_TRACE
 
 void* heapalloc::alloc(alni size, const char* file, int line) {
+  if (!size) {
+    return nullptr;
+  }
 
 #ifdef MEM_WRAP
 

@@ -2,7 +2,7 @@
 
 #include "heapalloc.h"
 
-#include "new.h"
+//#include "new.h"
 
 template <typename Type>
 struct array_iterator;
@@ -12,11 +12,10 @@ struct array_iterator;
 template <typename Type>
 class Array {
   
+ public:
+  
   Type* buff;
   alni length;
-
-
- public:
 
   Array() { 
     length = 0;
@@ -35,10 +34,16 @@ class Array {
   void Reserve(alni p_bufflen) {
     length = p_bufflen;
     buff = (Type*)array_buuf_allocator.alloc(sizeof(Type) *length);
+    for (alni idx = 0; idx < length; idx++) {
+      new (&buff[idx]) Type();
+    }
   }
 
   void Free() {
     length = 0;
+    for (alni idx = 0; idx < length; idx++) {
+      buff[idx].~Type();
+    }
     array_buuf_allocator.free(buff);
     buff = nullptr;
   }
@@ -63,15 +68,19 @@ class Array {
 
   void Remove(alni p_idx) {
     Type* current = buff;
+    alni current_len = length;
     Reserve(length - 1);
 
     for (alni befor = 0; befor < p_idx; befor++) {
       buff[befor] = current[befor];
     }
-    for (alni after = p_idx; after < length + 1; after++) {
+    for (alni after = p_idx + 1; after < length + 1; after++) {
       buff[after - 1] = current[after];
     }
 
+    for (alni idx = 0; idx < current_len; idx++) {
+      current[idx].~Type();
+    }
     array_buuf_allocator.free(current);
   }
 

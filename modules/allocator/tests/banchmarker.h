@@ -21,21 +21,22 @@ enum class order_type {
 
 struct config {
 	// general
+	bool live_update = false;
+
 	bool heap = true;
 	bool pool = true;
 	bool chunk = true;
 
-	alni update_counter = 0;
+	// pattern
+	pattern* current_sizing_pattern = 0;
+	pattern* current_loading_pattern = 0;
+	pattern* current_ordering_pattern = 0;
+	pattern_scale pt_scale;
+
+	alni update = 0;
 	bool time_per_instruction = 0;
 	bool mem_per_instruction = 0;
 	int avreging;
-
-	// patterns
-	alni loading = 0;
-	alni ordering = 0;
-	alni sizing = 0;
-	int max_data_items_count = 0;
-	int max_data_item_size = 0;
 
 	// allocators
 	int chunk_bsize = 0;
@@ -48,24 +49,11 @@ struct config {
 		return memequal(this, (config*)(&in), sizeof(config));
 	}
 };
-						
-
-enum class pr_type {
-	LINEAR, 
-	LINEAR_REVERSED,
-	RANDOM,
-	SINE,
-};
-
-struct pattern_region {
-	alni point;
-	pr_type type;
-};
 
 struct banchmarker {
 
 	config cfg;
-	
+	bool is_output = false;
 	heapalloc ownheap;
 
 	// allocators
@@ -80,13 +68,21 @@ struct banchmarker {
 	alni i_count;
 	alnf* x_axis = NULL;
 
+	HashMap<pattern*, string> patterns;
+
+	pattern_reader pattern_analizer;
+
+	const char* pattern_generator_active = NULL;
+
 	banchmarker();
 	~banchmarker();
 
 	test_pattern* get_pattern(config& cfg);
 
+	void pattern_combo(const char*&);
 	void analize(config cfg);
-
+	void select_pattern();
+	void output_draw();
 	void draw();
 	void pattern_generator();
 
