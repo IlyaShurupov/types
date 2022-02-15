@@ -20,12 +20,25 @@ enum class leav_pattern_type {
 	CONST,
 };
 
+struct child_pattern {
+	child_pattern() {
+	}
+
+	child_pattern(string _name) {
+		name = _name;
+	}
+
+	float uppernlim = 1.f;
+	float lowerlim = 0.f;
+	float point = 1.f;
+	string name;
+};
+
 struct pattern {
 	leav_pattern_type type = leav_pattern_type::CONST;
-	float point = 1.f;
 	string pattern_name = "";
 
-	Array<string> regions;
+	Array<child_pattern> regions;
 	bool build_in = true;
 
 	alnf get_y(HashMap<pattern*, string>* patterns, alnf x) {
@@ -38,16 +51,16 @@ struct pattern {
 		
 		float offset = 0.f;
 		for (alni i = 0; i < regions.Len(); i++) {
-			alni idx = patterns->Presents(regions[i]);
+			alni idx = patterns->Presents(regions[i].name);
 			if (!MAP_VALID_IDX(idx)) {
 				return 0.f;
 			}
 			pattern* child = patterns->table[idx]->val;
 			assert(child);
 
-			float range = child->point * (1.f - offset);
+			float range = regions[i].point * (1.f - offset);
 			if (offset + range > x) {
-				return child->get_y(patterns, (x - offset) / range);
+				return regions[i].lowerlim + (child->get_y(patterns, (x - offset) / range) * (regions[i].uppernlim - regions[i].lowerlim));
 			}
 			offset += range;
 		}
@@ -67,7 +80,6 @@ struct const_pattern : pattern {
 	float val = 0.f;
 	const_pattern() {
 		type = leav_pattern_type::CONST;
-		point = 1.f;
 		pattern_name = "const";
 		build_in = true;
 	}
@@ -79,13 +91,9 @@ struct const_pattern : pattern {
 
 struct linear_pattern : pattern {
 	
-	float upperlim = 1.f;
-	float lowerlim = 0.f;
-
 	bool reversed = false;
 	linear_pattern() {
 		type = leav_pattern_type::LINEAR;
-		point = 1.f;
 		pattern_name = "linear";
 		build_in = true;
 	}
@@ -96,18 +104,14 @@ struct linear_pattern : pattern {
 };
 
 struct random_pattern : pattern {
-	float upperlim = 1.f;
-	float lowerlim = 0.f;
 
 	random_pattern() {
 		type = leav_pattern_type::RANDOM;
-		point = 1.f;
-		pattern_name = "random";
 		build_in = true;
 	}
 
 	float pure_get_y(float x) override {
-		return lowerlim + (randf() * (upperlim - lowerlim));
+		return randf();
 	}
 };
 
@@ -123,17 +127,22 @@ class pattern_reader : public test_pattern {
 
 public:
 
-	bool init(const pattern* p_lpattern, const pattern* p_opattern, const pattern* p_spattern, pattern_scale* p_scale) {
+	bool init(HashMap<pattern*, string>* p_patterns, pattern* p_lpattern, pattern* p_opattern, pattern* p_spattern, pattern_scale* p_scale) {
 		lpattern = p_lpattern;
 		opattern = p_opattern;
 		spattern = p_spattern;
 
 		scale = p_scale;
 
+		patterns = p_patterns;
 		return verify_rulles();
 	}
 
 	bool verify_rulles() {
+		if (!lpattern || !opattern || !spattern) {
+			return false;
+		}
+
 		bool out = true;
 		out &= scale->items > 0;
 		out &= scale->size > 0;
@@ -141,22 +150,29 @@ public:
 		return out;
 	}
 
-	const pattern* lpattern = NULL;
-	const pattern* opattern = NULL;
-	const pattern* spattern = NULL;
+	HashMap<pattern*, string>* patterns;
+
+	pattern* lpattern = NULL;
+	pattern* opattern = NULL;
+	pattern* spattern = NULL;
 
 	pattern_scale* scale = 0;
 
+	float get_x_val(alni iter) {
+		float out = iter / (float)scale->iterations;
+		return out > 1 ? 1.f : out;
+	}
+
 	alni pick_size(alni iter) override {
-		return scale->size;
+		return scale->size * spattern->get_y(patterns, get_x_val(iter));
 	}
 
 	alni pick_alloc_count(alni iter) override {
-		return iter;
+		return scale->items * lpattern->get_y(patterns, get_x_val(iter));
 	}
 
 	alni pick_idx(alni iter) override {
-		return iter;
+		return scale->items *opattern->get_y(patterns, get_x_val(iter));
 	}
 
 	alni max_size() override {

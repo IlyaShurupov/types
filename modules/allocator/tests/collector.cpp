@@ -81,28 +81,20 @@ void collect(test_pattern* pattern, allocator* alloc, allocator_histogram* histo
 		alni target_nimtems_loaded = pattern->pick_alloc_count(iter_idx);
 		alni data_idx = pattern->pick_idx(iter_idx);
 		alni load_size = pattern->pick_size(iter_idx);
-		bool load = nimtems_loaded < target_nimtems_loaded;
-
-		if (nimtems_loaded == target_nimtems_loaded) {
-			histogram->mark_resourses_usage(iter_idx, 0, 0, 0);
-		}
-		else {
-
-			auto iter_st = std::chrono::high_resolution_clock::now();
-
-			if (execute_instruction(alloc, load, load_size, histogram->data[data_idx])) {
-				auto iter_nd = std::chrono::high_resolution_clock::now();
-				alni dur = std::chrono::duration_cast<std::chrono::nanoseconds>(iter_nd - iter_st).count();
-				histogram->mark_resourses_usage(iter_idx, alnf(dur), alloc->reserved_size(), 1);
-			}
-			else {
+		
+		auto iter_st = std::chrono::high_resolution_clock::now();
+		while (nimtems_loaded != target_nimtems_loaded) {
+			bool load = nimtems_loaded < target_nimtems_loaded;
+			if (!execute_instruction(alloc, load, load_size, histogram->data[data_idx])) {
 				histogram->mark_resourses_usage(iter_idx, 0, 0, 0);
 				histogram->failed = true;
 				break;
 			}
-
 			nimtems_loaded += (alni)load + (-1 * (alni)(!load));
 		}
+		auto iter_nd = std::chrono::high_resolution_clock::now();
+		alni dur = std::chrono::duration_cast<std::chrono::nanoseconds>(iter_nd - iter_st).count();
+		histogram->mark_resourses_usage(iter_idx, alnf(dur), alloc->reserved_size(), 1);
 	}
 
 	// clear all out

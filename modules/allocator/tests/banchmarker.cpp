@@ -335,8 +335,8 @@ void banchmarker::pattern_generator() {
 					ImGui::BeginListBox("");
 					for (alni idx = 0; idx < pattern_edit->regions.length; idx++) {
 						ImGui::PushID(idx);
-						if (ImGui::Button(pattern_edit->regions[idx].c_str())) {
-							child_pattern_active = patterns.Get(pattern_edit->regions[idx]);
+						if (ImGui::Button(pattern_edit->regions[idx].name.c_str())) {
+							child_pattern_active = patterns.Get(pattern_edit->regions[idx].name);
 							selected_idx = idx;
 						}
 						if (selected_idx == idx) {
@@ -346,13 +346,17 @@ void banchmarker::pattern_generator() {
 					}
 					ImGui::EndListBox();
 
+					if (selected_idx >= pattern_edit->regions.length) {
+						selected_idx = -1;
+					}
+
 					static const char* append_pattern = NULL;
 					bool add = ImGui::Button(" + ");
 					ImGui::SameLine();
 					pattern_combo(append_pattern);
 					if (add) {
 						if (append_pattern) {
-							pattern_edit->regions.PushBack(append_pattern);
+							pattern_edit->regions.PushBack(child_pattern(append_pattern));
 						}
 						else {
 							Notify("Select a Pattern to Append");
@@ -363,7 +367,7 @@ void banchmarker::pattern_generator() {
 
 						if (ImGui::Button(" Up ")) {
 							if (selected_idx > 0) {
-								string tmp = pattern_edit->regions.buff[selected_idx];
+								string tmp = pattern_edit->regions.buff[selected_idx].name;
 								pattern_edit->regions.buff[selected_idx] = pattern_edit->regions.buff[selected_idx - 1];
 								pattern_edit->regions.buff[selected_idx - 1] = tmp;
 								selected_idx--;
@@ -372,7 +376,7 @@ void banchmarker::pattern_generator() {
 						ImGui::SameLine();
 						if (ImGui::Button("Down")) {
 							if (selected_idx < pattern_edit->regions.Len() - 1) {
-								string tmp = pattern_edit->regions.buff[selected_idx];
+								string tmp = pattern_edit->regions.buff[selected_idx].name;
 								pattern_edit->regions.buff[selected_idx] = pattern_edit->regions.buff[selected_idx + 1];
 								pattern_edit->regions.buff[selected_idx + 1] = tmp;
 								selected_idx++;
@@ -392,7 +396,9 @@ void banchmarker::pattern_generator() {
 
 				if (child_pattern_active && selected_idx != -1) {
 					if (SubMenuBegin("child Pattern Properties", 2)) {
-						ImGui::SliderFloat("Point", &child_pattern_active->point, 0.f, 1.f);
+						ImGui::SliderFloat("Point", &pattern_edit->regions[selected_idx].point, 0.f, 1.f);
+						ImGui::SliderFloat("Lower lim", &pattern_edit->regions[selected_idx].lowerlim, 0.f, 1.f);
+						ImGui::SliderFloat("Upper lim", &pattern_edit->regions[selected_idx].uppernlim, 0.f, 1.f);
 						if (child_pattern_active->build_in) {
 						}
 						SubMenuEnd(2);
@@ -490,7 +496,7 @@ void banchmarker::analize(config pcfg) {
 
 	clear_out();
 
-	if (!pattern_analizer.init(cfg.current_loading_pattern, cfg.current_ordering_pattern, cfg.current_sizing_pattern, &cfg.pt_scale)) {
+	if (!pattern_analizer.init(&patterns, cfg.current_loading_pattern, cfg.current_ordering_pattern, cfg.current_sizing_pattern, &cfg.pt_scale)) {
 		if (pcfg.update) Notify("invalid pattern configuration", 3);
 		glb_cfg.update = false;
 		cfg.update = false;
