@@ -9,8 +9,8 @@ struct test_struct {
 	
 	alni val = 0;
 	
-	test_struct() {}
-	~test_struct() {}
+	test_struct() { val = 1; }
+	~test_struct() { val = -1; }
 	
 	bool operator==(const test_struct& in) {
 		return in.val == val;
@@ -100,7 +100,7 @@ struct allocator_test {
 
 	void unload_item(alni idx) {
 		if (is_allocated[idx]) {
-			mfree(alloc, allocations[idx]);
+			delete allocations[idx];
 			is_allocated[idx] = false;
 			n_loaded--;
 			verify_integrity();
@@ -250,7 +250,6 @@ void chunk_alloc_test() {
 		chunkalloc calloc(&halloc, sizeof(test_struct), 50);
 		allocator_test<50> ca_test(&calloc, "chunk allocator", &halloc);
 		ca_test.run_tests();
-		calloc.finalize(&halloc);
 	}
 	assert(halloc.inuse_size() == 0);
 	assert(!halloc.wrap_corrupted());
@@ -271,5 +270,4 @@ void allocators_test() {
 	heap_alloc_test();
 	chunk_alloc_test();
 	pool_alloc_test();
-
 }

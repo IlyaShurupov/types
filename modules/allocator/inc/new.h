@@ -3,29 +3,27 @@
 
 #include "alloc_cfg.h"
 
+#include "heapalloc.h"
 
-// raw allocations
-#ifdef MEM_TRACE
-	#define MDBG , __FILE__, __LINE__
-#else
-	#define MDBG
-#endif 
+void* operator new(size_t _Size);
+void* operator new(size_t _Size, allocator* alloc);
+void* operator new(size_t _Size, allocator& alloc);
+void* operator new[](size_t _Size);
+void* operator new[](size_t _Size, heapalloc& alloc);
+void* operator new[](size_t _Size, heapalloc* alloc);
 
+void  operator delete(void* _Block) noexcept;
+void  operator delete(void* _Block, allocator* alloc) noexcept;
+void  operator delete(void* _Block, allocator& alloc) noexcept;
+void  operator delete[](void* _Block) noexcept;
+void  operator delete[](void* _Block, heapalloc* alloc) noexcept;
+void  operator delete[](void* _Block, heapalloc& alloc) noexcept;
 
-void* operator new(size_t size);
-//void operator delete (void* p, void* alloc);
+void  operator delete(void* _Block, size_t _Size) noexcept;
+void  operator delete[](void* _Block, size_t _Size) noexcept;
 
-void operator delete  (void* ptr, size_t sz) noexcept;
+/*
+inline void* operator new(size_t _Size, void* _Where) noexcept { return _Where; }
+inline void* operator new[](size_t _Size, void* _Where) noexcept { return _Where; }
+*/
 
-#ifdef MEM_TRACE
-void* operator new(size_t size, class allocator* alloc, const char* file, int line);
-void operator delete(void* p, class allocator* alloc, const char* file, int line);
-
-#define new(alloc_ptr) new(alloc_ptr, __FILE__, __LINE__)
-
-#else
-void* operator new(size_t size, class allocator* alloc);
-void operator delete(void* p, class allocator* alloc);
-#endif 
-
-#define mfree(alloc_ptr, ptr) { delete ptr; (alloc_ptr)->free(ptr); }

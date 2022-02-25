@@ -1,7 +1,5 @@
 
-#include "containers.h"
+#include "array.h"
 
 void foo() {
 }
-
-heapalloc array_buuf_allocator;

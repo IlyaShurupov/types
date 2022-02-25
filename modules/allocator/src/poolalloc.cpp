@@ -9,14 +9,21 @@
 heapalloc pool_halloc;
 
 struct chunk_node : public chunkalloc {
-	chunk_node(allocator* alloc, alni bsize, alni nblocks) : chunkalloc(alloc, bsize, nblocks) {}
+
+	poolalloc* self;
 	chunk_node* next = NULL;
 	chunk_node* prev = NULL;
+
+	chunk_node(poolalloc* self, allocator* alloc, alni bsize, alni nblocks) : self(self), chunkalloc(alloc, bsize, nblocks) {}
+
+	void free(void* p) override {
+		self->free(p);
+	}
 };
 
 
-chunk_node* chunk_list::addchunk(heapalloc* halloc, alni bsize, alni nblocks) {
-	chunk_node* node = new(halloc) chunk_node(halloc, bsize, nblocks);
+chunk_node* chunk_list::addchunk(poolalloc* self, heapalloc* halloc, alni bsize, alni nblocks) {
+	chunk_node* node = new(halloc) chunk_node(self, halloc, bsize, nblocks);
 	
 	node->next = node->prev = NULL;
 
@@ -43,8 +50,7 @@ void chunk_list::delchunk(chunk_node* node, heapalloc* halloc) {
 		last = last->prev;
 	}
 
-	node->finalize(halloc);
-	mfree(halloc, node);
+	delete node;
 }
 
 
@@ -98,10 +104,6 @@ alni poolalloc::reserved_size() {
 	return size;
 }
 
-void* poolalloc::alloc(alni size, const char* file, int line) {
-	return alloc(size);
-}
-
 void* poolalloc::alloc(alni size) {
 
 	chunk_node* avalchunk = NULL;
@@ -118,7 +120,7 @@ void* poolalloc::alloc(alni size) {
 	}
 
 	if (!avalchunk) {
-		chunk_node* node = chunks.addchunk(&pool_halloc, bsize, nblocks);
+		chunk_node* node = chunks.addchunk(this, &pool_halloc, bsize, nblocks);
 		avalchunk = node;
 	}
 
@@ -129,7 +131,7 @@ void* poolalloc::alloc(alni size) {
 
 void poolalloc::free(void* p) {
 	chunkalloc* chunk_p = (((used_slot_head*)p) - 1)->chunk_p;
-	chunk_p->free(p);
+	chunk_p->chunkalloc::free(p);
 
 	if (!chunk_p->inuse_size()) {
 		chunks.delchunk((chunk_node*)chunk_p, &pool_halloc);

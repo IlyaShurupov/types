@@ -6,7 +6,7 @@ struct chunk_list {
 
 	struct chunk_node* last = NULL;
 
-	chunk_node* addchunk(heapalloc* halloc, alni bsize, alni nblocks);
+	chunk_node* addchunk(class poolalloc* self, heapalloc* halloc, alni bsize, alni nblocks);
 	void delchunk(chunk_node* node, heapalloc* halloc);
 	void initialize(heapalloc* halloc);
 	void finalize(heapalloc* halloc);
@@ -31,7 +31,6 @@ public:
 	alni inuse_size();
 	alni reserved_size();
 
-	void* alloc(alni size, const char* file, int line);
 	void* alloc(alni size);
 
 	void free(void* p);

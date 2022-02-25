@@ -2,12 +2,8 @@
 
 #include "heapalloc.h"
 
-//#include "new.h"
-
 template <typename Type>
 struct array_iterator;
-
- extern heapalloc array_buuf_allocator;
 
 template <typename Type>
 class Array {
@@ -33,19 +29,13 @@ class Array {
 
   void Reserve(alni p_bufflen) {
     length = p_bufflen;
-    buff = (Type*)array_buuf_allocator.alloc(sizeof(Type) *length);
-    for (alni idx = 0; idx < length; idx++) {
-      new (&buff[idx]) Type();
-    }
+    buff = new Type[length]();
   }
 
   void Free() {
     length = 0;
-    for (alni idx = 0; idx < length; idx++) {
-      buff[idx].~Type();
-    }
-    array_buuf_allocator.free(buff);
-    buff = nullptr;
+    delete[] buff;
+    buff = NULL;
   }
 
   void Insert(Type& p_block, alni idx) {
@@ -62,7 +52,7 @@ class Array {
     buff[idx] = p_block;
 
     if (current) {
-      array_buuf_allocator.free(current);
+      delete[] current;
     }
   }
 
@@ -78,10 +68,7 @@ class Array {
       buff[after - 1] = current[after];
     }
 
-    for (alni idx = 0; idx < current_len; idx++) {
-      current[idx].~Type();
-    }
-    array_buuf_allocator.free(current);
+    delete[] current;
   }
 
   void RemoveVal(Type val) {

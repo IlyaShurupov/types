@@ -6,16 +6,6 @@ void correct_malloc_free(void* p) {
   free(p);
 }
 
-struct MemHead {
-  MemHead* next;
-  MemHead* prev;
-  alni size;
-  const char* type;
-  const char* file;
-  alni line;
-  alni reserved;
-};
-
 #ifdef MEM_WRAP
 
 #ifndef MEM_TRACE
@@ -28,9 +18,7 @@ struct MemHead {
 #define MEMH_FROM_PTR(ptr) ((MemHead*)ptr - 1)
 #endif
 
-#ifdef MEM_TRACE
-
-void* heapalloc::alloc(alni size, const char* file, int line) {
+void* heapalloc::alloc(alni size) {
   if (!size) {
     return nullptr;
   }
@@ -53,6 +41,7 @@ void* heapalloc::alloc(alni size, const char* file, int line) {
   if (mhptr) {
 #endif
 
+#ifdef MEM_TRACE
     mhptr->next = mhptr->prev = nullptr;
 
     mhptr->next = entry_ptr;
@@ -60,20 +49,18 @@ void* heapalloc::alloc(alni size, const char* file, int line) {
       entry_ptr->prev = mhptr;
     }
     entry_ptr = mhptr;
+#endif
 
     num++;
-
-    mhptr->line = line;
-    mhptr->file = file;
+    mhptr->alloc = this;
     mhptr->size = (alni)size;
-    mhptr->type = nullptr;
-
     
 #ifdef MEM_WRAP
     void* out = (void*)((int1*)((MemHead*)mhptr + 1) + WRAP_LEN);
 #else
     void* out = (void*)((MemHead*)mhptr + 1);
 #endif
+
     #ifdef MEM_ZEROING
     memset(out, size, 0);
     #endif
@@ -106,6 +93,7 @@ void heapalloc::free(void* ptr) {
   MemHead* mhptr = ((MemHead*)ptr - 1);
 #endif
 
+#ifdef MEM_TRACE
   if (mhptr->next) {
     mhptr->next->prev = mhptr->prev;
   }
@@ -116,11 +104,18 @@ void heapalloc::free(void* ptr) {
   if (mhptr == entry_ptr) {
     entry_ptr = entry_ptr->next;
   }
+#endif
+
+#ifdef MEM_ZEROING
+  memset(mhptr, mhptr->size, 0);
+#endif
 
   num--;
   correct_malloc_free(mhptr);
 }
 
+
+#ifdef  MEM_TRACE
 alni heapalloc::inuse_size() {
   alni size = 0;
   MemHead* alloc_iter = entry_ptr;
@@ -133,6 +128,7 @@ alni heapalloc::inuse_size() {
 
 bool heapalloc::wrap_corrupted() {
 
+#ifdef MEM_WRAP
   for (MemHead* mhptr = entry_ptr; mhptr; mhptr = mhptr->next) {
 
     void* wrap1 = (void*)((MemHead*)mhptr + 1);
@@ -147,27 +143,11 @@ bool heapalloc::wrap_corrupted() {
       }
     }
   }
+#endif
   return false;
 }
 
 #else
-void* heapalloc::alloc(alni size) {
-  void* out = malloc(size);
-  if (!out) {
-    throw typesExeption("failed allocate on heap", false);
-  }
-
-  #ifdef MEM_ZEROING
-  memset(out, size, 0);
-  #endif
-
-  return out;
-}
-
-void heapalloc::free(void* ptr) {
-  correct_malloc_free(ptr);
-}
-
 alni heapalloc::inuse_size() {
   return 0;
 }
@@ -175,5 +155,4 @@ alni heapalloc::inuse_size() {
 bool heapalloc::wrap_corrupted() {
   return false;
 }
-#endif
-
+#endif //  MEM_TRACE

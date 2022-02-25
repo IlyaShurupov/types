@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -27,65 +27,69 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\allocator\cfg\allocator.vcxproj">
+    <ProjectReference Include="..\..\..\..\glew\build\vc12\glew_static.vcxproj">
+      <Project>{664e6f0d-6784-4760-9565-d54f8eb1edf4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\glfw\config\src\glfw.vcxproj">
+      <Project>{8fb23769-990f-3014-9d36-cd40b93cf151}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\imgui-vs\amgui\amgui.vcxproj">
+      <Project>{6e225d12-1c66-4a38-bee5-71c4dbec0521}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\container\cfg\container.vcxproj">
+      <Project>{ffdd1c2c-9699-44b5-825c-e56eb6274546}</Project>
+    </ProjectReference>
+    <ProjectReference Include="allocator.vcxproj">
       <Project>{98d6ae72-22f4-4498-ace5-21ad0b4abf0a}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\inc\array.h" />
-    <ClInclude Include="..\inc\avltree.h" />
-    <ClInclude Include="..\inc\containers.h" />
-    <ClInclude Include="..\inc\avl_policies.h" />
-    <ClInclude Include="..\inc\map.h" />
-    <ClInclude Include="..\inc\map_policies.h" />
-    <ClInclude Include="..\inc\stack.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\containers.cpp" />
+    <ClCompile Include="..\tests\tests.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{FFDD1C2C-9699-44B5-825C-E56EB6274546}</ProjectGuid>
+    <ProjectGuid>{E020A26D-C589-4FB2-A1FC-C46B15B36AD6}</ProjectGuid>
     <RootNamespace>rtc</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>test</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-expl|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-expl|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -117,35 +121,35 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)..\lib\.tmp\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\tests\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\tests\bin\.tmp\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)..\lib\.tmp\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\tests\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\tests\bin\.tmp\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-expl|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)..\lib\.tmp\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\tests\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\tests\bin\.tmp\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)..\lib\.tmp\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\tests\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\tests\bin\.tmp\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)..\lib\.tmp\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\tests\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\tests\bin\.tmp\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-expl|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)..\lib\.tmp\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\tests\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\tests\bin\.tmp\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -154,12 +158,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\allocator\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>math.lib;container.lib;imgui.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\..\..\imgui-vs\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Configuration)\\$(Platform);$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\allocator\lib\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -170,7 +176,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\allocator\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -178,6 +184,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>math.lib;container.lib;imgui.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\..\..\imgui-vs\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Configuration)\\$(Platform);$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\allocator\lib\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-expl|Win32'">
@@ -188,7 +196,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\allocator\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -196,6 +204,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>math.lib;container.lib;imgui.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\..\..\imgui-vs\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Configuration)\\$(Platform);$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\allocator\lib\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -204,13 +214,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\allocator\inc</AdditionalIncludeDirectories>
       <BrowseInformation>true</BrowseInformation>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>math.lib;container.lib;imgui.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\..\..\imgui-vs\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Configuration)\\$(Platform);$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\allocator\lib\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -224,7 +236,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\allocator\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -232,6 +244,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>math.lib;container.lib;imgui.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\..\..\imgui-vs\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Configuration)\\$(Platform);$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\allocator\lib\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-expl|x64'">
@@ -242,7 +256,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\allocator\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -250,6 +264,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>math.lib;container.lib;imgui.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\..\..\imgui-vs\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Configuration)\\$(Platform);$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration);$(ProjectDir)..\..\allocator\lib\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

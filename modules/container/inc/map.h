@@ -1,10 +1,6 @@
 
 #pragma once
 
-#include "heapalloc.h"
-#include "poolalloc.h"
-#include "new.h"
-
 #include "map_policies.h"
 
 #define HASHMAP_LOAD_FACTOR 2/3.f

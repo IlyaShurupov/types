@@ -1,18 +1,18 @@
 #pragma once
 
 
-#define MEM_TRACE
+//#define MEM_TRACE
 
 #ifdef MEM_TRACE
 	
-	#define MEM_WRAP
+	//#define MEM_WRAP
 	
 	#ifdef MEM_WRAP
-		#define WRAP_LEN 8
+		#define WRAP_LEN 8 // bytes
 		#define WRAP_FILL_VAL -1
 	#endif 
 
 #endif 
 
 
-#define MEM_ZEROING
+//#define MEM_ZEROING

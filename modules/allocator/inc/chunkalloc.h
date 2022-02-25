@@ -27,8 +27,6 @@ public:
 	chunkalloc(allocator* alloc, alni bsize, alni nblocks);
 	~chunkalloc();
 
-	void finalize(allocator* alloc);
-
 	bool avaliable();
 	alni inuse_size();
 	alni reserved_size();
@@ -37,9 +35,8 @@ public:
 	inline alni get_idx(const void* address) const;
 	alni get_bsize();
 
-	void* alloc(alni size, const char* file, int line);
 	void* alloc(alni size);
-	void free(void* p);
+	virtual void free(void* p);
 
 	bool wrap_corrupted() { return false; }
 };

@@ -2,7 +2,9 @@
 
 #include "common.h"
 
-template <typename Key> class avltree;
+#include "avl_policies.h"
+
+template <typename Key, typename avl_policy> class avltree;
 
 template <typename Key>
 class AVLNode {
@@ -15,16 +17,15 @@ class AVLNode {
 
 	Key key;
 
-	AVLNode(const Key& key) {
-		this->key = key;
-	}
 };
 
-template <typename Key>
+template <typename Key, typename avl_policy = alv_policy_default<Key> >
 class avltree {
 
 	AVLNode<Key>* root = nullptr;
 	alni entries = 0;
+
+	avl_policy avlp;
 
 	alni node_height(AVLNode<Key>* node) {
 		if (!node) {
@@ -63,7 +64,9 @@ class avltree {
 
 		if (head == nullptr) {
 			entries++;
-			return new AVLNode<Key>(key);
+			AVLNode<V>* out = avlp.alloc_node();
+			out->key = key;
+			return out;
 		}
 		else if (key == head->key) {
 			return head;
@@ -123,20 +126,20 @@ class avltree {
 			if (head->right == nullptr) {
 				tmp = head->left;
 				entries--;
-				delete head;
+				avlp.free_node(head);
 				head = tmp;
 			}
 			else if (head->left == nullptr) {
 				tmp = head->right;
 				entries--;
-				delete head;
+				avlp.free_node(head);
 				head = tmp;
 			}
 			else {
 				
 				AVLNode<Key>* min = min_node(head->right);
 				
-				head->key = min->key;
+				avl.ValCopy(head->key, min->key);
 
 				head->right = remove_util(head->right, min->key);
 			}

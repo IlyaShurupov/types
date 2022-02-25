@@ -34,12 +34,14 @@
     <ClInclude Include="..\inc\allocators.h" />
     <ClInclude Include="..\inc\new.h" />
     <ClInclude Include="..\inc\poolalloc.h" />
+    <ClInclude Include="..\inc\stacktrace.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\chunkalloc.cpp" />
     <ClCompile Include="..\src\heapalloc.cpp" />
     <ClCompile Include="..\src\new.cpp" />
     <ClCompile Include="..\src\poolalloc.cpp" />
+    <ClCompile Include="..\src\stacktrace.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\common\cfg\common.vcxproj">

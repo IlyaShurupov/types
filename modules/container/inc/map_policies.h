@@ -1,30 +1,30 @@
 
 #pragma once
 
+#include "heapalloc.h"
+#include "poolalloc.h"
+
+#include "new.h"
+
 template <typename V, typename K>
 struct HashNode;
 
 template <typename V, typename K>
-struct map_policy {
-	virtual HashNode<V, K>** alloc_table(alni nslots) = 0;
-	virtual void free_table(HashNode<V, K>** table) = 0;
-	virtual alni KeyHash(const K& key) = 0;
-	virtual void ValCopy(HashNode < V, K >* left, HashNode < V, K >* right) = 0;
-	virtual void ValDestruct(HashNode < V, K >* node) = 0;
-};
-
-template <typename V, typename K>
-struct map_policy_default : map_policy<V, K> {
+struct map_policy_default {
 
 	heapalloc halloc;
 	poolalloc palloc;
 
-	map_policy_default() : palloc(sizeof(HashNode<V, K>), 16) {
-
-	}
+	map_policy_default() : palloc(sizeof(HashNode<V, K>), 16) {}
 
 	HashNode<V, K>** alloc_table(alni nslots) {
-		return (HashNode<V, K>**)halloc.alloc(sizeof(HashNode<V, K>*) * nslots);
+		HashNode<V, K>** out = (HashNode<V, K>**)halloc.alloc(sizeof(HashNode<V, K>*) * nslots);
+#ifndef MEM_ZEROING
+		for (auto& i : range(0, nslots)) {
+			out[i] = NULL;
+		}
+#endif // !MEM_ZEROING
+		return out;
 	}
 
 	HashNode<V, K>* alloc_node() {
@@ -32,7 +32,7 @@ struct map_policy_default : map_policy<V, K> {
 	}
 
 	void free_node(HashNode<V, K>* node) {
-		mfree(&palloc, node);
+		delete node;
 	}
 
 	void free_table(HashNode<V, K>** table) {

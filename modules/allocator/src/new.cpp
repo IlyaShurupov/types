@@ -1,42 +1,70 @@
 
 #include "new.h"
 
-#include "allocator.h"
+heapalloc main_heap;
 
-#include "heapalloc.h"
-
-#undef new
-#undef delete
-#undef alloc
-#undef free
-
-allocator* alloc;
-
-void setalloc(class allocator* p_alloc) {
-	alloc = p_alloc;
+void* operator new(size_t size) {
+	return main_heap.alloc(size);
 }
 
-#ifdef MEM_TRACE
-
-void* operator new(size_t size, class allocator* alloc, const char* file, int line) {
-	return alloc->alloc(size, file, line);
-}
-
-void operator delete(void* p, class allocator* alloc, const char* file, int line) {}
-
-
-#else
-
-void* operator new(size_t size, class allocator* alloc) {
+void* operator new(size_t size, allocator* alloc) {
+	assert(alloc);
 	return alloc->alloc(size);
 }
 
-void operator delete(void* p, class allocator* alloc) {}
-#endif 
-
-void operator delete(void* p, void* alloc) {
-	((allocator*)alloc)->free(p);
+void* operator new(size_t size, allocator& alloc) {
+	return alloc.alloc(size);
 }
 
-void operator delete  (void* ptr, size_t sz) noexcept {
+void* operator new[](size_t size) {
+	return main_heap.alloc(size);
+}
+
+void* operator new[](size_t size, heapalloc& halloc) {
+	return halloc.alloc(size);
+}
+
+void* operator new[](size_t size, heapalloc* halloc) {
+	return halloc->alloc(size);
+}
+
+static inline void alloc_free(void* p) {
+#ifdef MEM_WRAP
+	allocator** alloc = ((allocator**)((int1*)p - WRAP_LEN) - 1);
+#else
+	allocator** alloc = ((allocator**)p - 1);
+#endif // MEM_WRAP
+	(*alloc)->free(p);
+}
+
+void  operator delete(void* p) noexcept {
+	alloc_free(p);
+}
+
+void  operator delete(void* p, allocator* alloc) noexcept {
+	alloc_free(p);
+}
+
+void  operator delete(void* p, allocator& alloc) noexcept {
+	alloc_free(p);
+}
+
+void  operator delete[](void* p) noexcept {
+	alloc_free(p);
+}
+
+void  operator delete[](void* p, heapalloc* halloc) noexcept {
+	alloc_free(p);
+}
+
+void  operator delete[](void* p, heapalloc& halloc) noexcept {
+	alloc_free(p);
+}
+
+void  operator delete(void* p, size_t size) noexcept {
+	alloc_free(p);
+}
+
+void  operator delete[](void* p, size_t size) noexcept {
+	alloc_free(p);
 }

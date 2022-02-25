@@ -22,11 +22,7 @@ chunkalloc::chunkalloc(allocator* alloc, alni pbsize, alni pnblocks) {
 	}
 	bsize = calc_bsize(pbsize);
 
-#ifdef MEM_TRACE
-	buff = (alni*)alloc->alloc(bsize * nblocks, __FILE__, __LINE__);
-#else
 	buff = (alni*)alloc->alloc(bsize * nblocks);
-#endif
 
 	bnext = buff;
 	bfreec = nblocks;
@@ -34,13 +30,8 @@ chunkalloc::chunkalloc(allocator* alloc, alni pbsize, alni pnblocks) {
 }
 
 chunkalloc::~chunkalloc() {
-	assert(!buff && "chunk allocator hasn't been finalized befor destructor called");
-}
-
-void chunkalloc::finalize(allocator* alloc) {
 	if (buff) {
-		alloc->free(buff);
-		buff = NULL;
+		delete buff;
 	}
 }
 
@@ -57,10 +48,6 @@ inline alni chunkalloc::get_idx(const void* address) const {
 
 alni chunkalloc::get_bsize() {
 	return bsize;
-}
-
-void* chunkalloc::alloc(alni size, const char* file, int line) {
-	return alloc(size);
 }
 
 void* chunkalloc::alloc(alni size) {

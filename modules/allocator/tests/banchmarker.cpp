@@ -133,7 +133,7 @@ void banchmarker::output_draw() {
 banchmarker::~banchmarker() {
 	for (auto iter : patterns) {
 		if (!iter->val->build_in) {
-			mfree(&ownheap, iter->val);
+			delete iter->val;
 		}
 	}
 	clear_out();
@@ -261,7 +261,7 @@ void banchmarker::pattern_generator() {
 					}
 					else {
 						patterns.Remove(pattern_generator_active);
-						mfree(&ownheap, pattern_edit);
+						delete pattern_edit;
 						pattern_edit = NULL;
 						pattern_generator_active = NULL;
 					}
@@ -534,10 +534,7 @@ void banchmarker::analize(config pcfg) {
 }
 
 void banchmarker::init_allocators(config& pcfg) {
-	halloc = NULL;
-	palloc = NULL;
-	chunk_heap = NULL;
-	calloc = NULL;
+
 
 	if (cfg.heap) halloc = new(&ownheap) heapalloc();
 	if (cfg.pool) palloc = new(&ownheap) poolalloc(pcfg.pool_bsize, pcfg.pool_blen);
@@ -546,19 +543,28 @@ void banchmarker::init_allocators(config& pcfg) {
 }
 
 void banchmarker::dest_allocators() {
-	if (cfg.heap) mfree(&ownheap, halloc);
-	if (cfg.pool) mfree(&ownheap, palloc);
+	if (cfg.heap) delete halloc;
+	if (cfg.pool) delete palloc;
 
-	if (cfg.chunk) calloc->finalize(chunk_heap);
-	if (cfg.chunk) mfree(chunk_heap, calloc);
-	if (cfg.chunk) mfree(&ownheap, chunk_heap);
+	if (cfg.chunk) delete calloc;
+	if (cfg.chunk) delete chunk_heap;
+
+	halloc = NULL;
+	palloc = NULL;
+	chunk_heap = NULL;
+	calloc = NULL;
 }
 
 void banchmarker::clear_out() {
-	if (out[0]) { mfree(&ownheap, out[0]); out[0] = 0; };
-	if (out[1]) { mfree(&ownheap, out[1]); out[1] = 0; };
-	if (out[2]) { mfree(&ownheap, out[2]); out[2] = 0; };
-	if (pattern_out) { mfree(&ownheap, pattern_out); pattern_out = 0; };
+	for (auto i : range(0, 3)) {
+		if (out[i]) {
+			delete out[i];
+			out[i] = NULL;
+		}
+	}
+
+	if (pattern_out) delete pattern_out;
+	pattern_out = NULL;
 }
 
 void banchmarker::reserve_out(test_pattern* pattern) {

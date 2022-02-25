@@ -30,6 +30,9 @@
     <ClInclude Include="..\inc\chunkalloc.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\inc\stacktrace.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\heapalloc.cpp">
@@ -42,6 +45,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="..\src\chunkalloc.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\stacktrace.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

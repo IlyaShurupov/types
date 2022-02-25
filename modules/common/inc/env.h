@@ -12,6 +12,8 @@
 	#else
 		#define ENVIRONMENT32
 	#endif
+
+	#define PLATFORM_WINDOWS
 #else
 	#error "can not determind target architecture"
 #endif

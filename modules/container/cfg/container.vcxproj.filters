@@ -24,6 +24,12 @@
     <ClInclude Include="..\inc\avltree.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\inc\avl_policies.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\stack.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\containers.cpp">

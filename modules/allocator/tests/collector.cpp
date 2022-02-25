@@ -49,9 +49,6 @@ bool execute_instruction(allocator* alloc, bool load, alni size, uint1*& data) {
 				if (!data) {
 					failed = true;
 				}
-				else {
-					data = 0;
-				}
 			}
 		}
 		else {
