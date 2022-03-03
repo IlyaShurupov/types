@@ -14,6 +14,10 @@ template <typename V, typename K>
 struct HashNode {
 	K key;
 	V val;
+
+	~HashNode() {
+		return;
+	}
 };
 
 template <typename K, typename V, typename hmpolicy, int SZ>

@@ -39,6 +39,10 @@ bool chunkalloc::avaliable() { return bfreec; }
 alni chunkalloc::inuse_size() { return (nblocks - bfreec) * (bsize - sizeof(used_slot_head)); }
 alni chunkalloc::reserved_size() { return  bsize * nblocks; }
 
+bool chunkalloc::is_empty() {
+	return !reserved_size();
+}
+
 inline void* chunkalloc::get_addr(alni idx) const { 
 	return ((uint1*)buff) + (idx * bsize); 
 }

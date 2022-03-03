@@ -1,10 +1,26 @@
 
 #include "new.h"
 
-heapalloc main_heap;
+#include <corecrt_malloc.h>
+
+heapalloc* global_heap = NULL;
+bool global_heap_ninitialized = true;
+
+inline void* operator new(size_t _Size, void* _Where) noexcept { return _Where; }
+
+// initializes global_heap
+// I intentionally do not free global heap due to undefined order of destruction of global variables (undefined for me)
+// yep, consistent at-exit 18b memory leak, os shall take care of that
+inline void init_global_heap() {
+	if (global_heap_ninitialized) {
+		global_heap = new (malloc(sizeof(heapalloc))) heapalloc();
+		global_heap_ninitialized = false;
+	}
+}
 
 void* operator new(size_t size) {
-	return main_heap.alloc(size);
+	init_global_heap();
+	return global_heap->alloc(size);
 }
 
 void* operator new(size_t size, allocator* alloc) {
@@ -17,7 +33,8 @@ void* operator new(size_t size, allocator& alloc) {
 }
 
 void* operator new[](size_t size) {
-	return main_heap.alloc(size);
+	init_global_heap();
+	return global_heap->alloc(size);
 }
 
 void* operator new[](size_t size, heapalloc& halloc) {

@@ -3,7 +3,7 @@
 #include "imgui.h"
 #include "imgui_utils.h"
 
-#include "banchmarker.h"
+#include "benchmarker.h"
 
 alni hash(const string& val) {
 	return hash(val.c_str());
@@ -38,7 +38,7 @@ const_pattern bipattern_const;
 linear_pattern bipattern_line;
 random_pattern bipattern_rand;
 
-banchmarker::banchmarker() {
+benchmarker::benchmarker() {
 	i_count = 0;
 	pattern_out = NULL;
 	out.Reserve(3);
@@ -48,7 +48,7 @@ banchmarker::banchmarker() {
 	patterns.Put("random", &bipattern_rand);
 }
 
-void banchmarker::output_draw() {
+void benchmarker::output_draw() {
 	if (EditorWindow("Overview")) {
 
 		if (is_output) {
@@ -130,7 +130,7 @@ void banchmarker::output_draw() {
 	ImGui::End();
 }
 
-banchmarker::~banchmarker() {
+benchmarker::~benchmarker() {
 	for (auto iter : patterns) {
 		if (!iter->val->build_in) {
 			delete iter->val;
@@ -139,7 +139,7 @@ banchmarker::~banchmarker() {
 	clear_out();
 }
 
-void banchmarker::select_pattern() {
+void benchmarker::select_pattern() {
 	if (patterns.nentries) {
 		const char** pattern_names = (const char**)ownheap.alloc(sizeof(const char*) * patterns.nentries);
 
@@ -193,7 +193,7 @@ void banchmarker::select_pattern() {
 	}
 }
 
-void banchmarker::pattern_combo(const char*& current) {
+void benchmarker::pattern_combo(const char*& current) {
 	if (patterns.nentries) {
 		const char** pattern_names = (const char**)ownheap.alloc(sizeof(const char*) * patterns.nentries);
 
@@ -214,7 +214,7 @@ void banchmarker::pattern_combo(const char*& current) {
 	}
 }
 
-void banchmarker::pattern_generator() {
+void benchmarker::pattern_generator() {
 
 	ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.1f);
 
@@ -417,7 +417,7 @@ void banchmarker::pattern_generator() {
 	ImGui::End();
 }
 
-void banchmarker::draw() {
+void benchmarker::draw() {
 	analize(glb_cfg);
 
 	ImGui::BeginGroup();
@@ -486,7 +486,7 @@ void banchmarker::draw() {
 }
 
 
-void banchmarker::analize(config pcfg) {
+void benchmarker::analize(config pcfg) {
 
 	if (!((pcfg.update) || (!(this->cfg == pcfg) && cfg.live_update))) {
 		return;
@@ -533,7 +533,7 @@ void banchmarker::analize(config pcfg) {
 	is_output = true;
 }
 
-void banchmarker::init_allocators(config& pcfg) {
+void benchmarker::init_allocators(config& pcfg) {
 
 
 	if (cfg.heap) halloc = new(&ownheap) heapalloc();
@@ -542,7 +542,7 @@ void banchmarker::init_allocators(config& pcfg) {
 	if (cfg.chunk) calloc = new(chunk_heap) chunkalloc(chunk_heap, pcfg.chunk_bsize, pcfg.chunk_blen);
 }
 
-void banchmarker::dest_allocators() {
+void benchmarker::dest_allocators() {
 	if (cfg.heap) delete halloc;
 	if (cfg.pool) delete palloc;
 
@@ -555,7 +555,7 @@ void banchmarker::dest_allocators() {
 	calloc = NULL;
 }
 
-void banchmarker::clear_out() {
+void benchmarker::clear_out() {
 	for (auto i : range(0, 3)) {
 		if (out[i]) {
 			delete out[i];
@@ -567,7 +567,7 @@ void banchmarker::clear_out() {
 	pattern_out = NULL;
 }
 
-void banchmarker::reserve_out(test_pattern* pattern) {
+void benchmarker::reserve_out(test_pattern* pattern) {
 	pattern_out = new(&ownheap) pattern_histogram(pattern);
 	if (cfg.heap) out[0] = new(&ownheap) allocator_histogram(pattern, "heap", cfg.time_per_instruction, cfg.mem_per_instruction);
 	if (cfg.pool) out[1] = new(&ownheap) allocator_histogram(pattern, "pool", cfg.time_per_instruction, cfg.mem_per_instruction);

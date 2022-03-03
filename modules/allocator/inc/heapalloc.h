@@ -14,14 +14,12 @@ struct MemHead {
 
 
 class heapalloc : public allocator {
+public:
 
 	alni num = 0;
-
 #ifdef MEM_TRACE
 	struct MemHead* entry_ptr = nullptr;
 #endif
-
-public:
 
 	alni reserved_size() { return inuse_size(); }
 	bool avaliable() { return true; }
@@ -32,5 +30,10 @@ public:
 	void* alloc(alni size);
 	void free(void* p);
 
+	bool is_empty();
 	alni inuse_size();
+
+	~heapalloc() {
+		check_err_onexit();
+	}
 };

@@ -50,7 +50,7 @@ struct config {
 	}
 };
 
-struct banchmarker {
+struct benchmarker {
 
 	config cfg;
 	bool is_output = false;
@@ -74,8 +74,8 @@ struct banchmarker {
 
 	const char* pattern_generator_active = NULL;
 
-	banchmarker();
-	~banchmarker();
+	benchmarker();
+	~benchmarker();
 
 	test_pattern* get_pattern(config& cfg);
 

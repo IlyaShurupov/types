@@ -9,13 +9,13 @@
     <ClCompile Include="..\tests\collector.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\tests\window.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tests\banchmarker.cpp">
+    <ClCompile Include="..\tests\benchmarker.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="..\tests\patterns.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\ImGuiMain.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -23,7 +23,7 @@
     <ClInclude Include="..\tests\collector.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="..\tests\banchmarker.h">
+    <ClInclude Include="..\tests\benchmarker.h">
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="..\tests\patterns.h">

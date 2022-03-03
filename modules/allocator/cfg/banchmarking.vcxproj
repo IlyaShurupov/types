@@ -45,14 +45,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tests\collector.cpp" />
+    <ClCompile Include="..\tests\ImGuiMain.cpp" />
     <ClCompile Include="..\tests\patterns.cpp" />
-    <ClCompile Include="..\tests\banchmarker.cpp" />
-    <ClCompile Include="..\tests\window.cpp" />
+    <ClCompile Include="..\tests\benchmarker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tests\collector.h" />
     <ClInclude Include="..\tests\patterns.h" />
-    <ClInclude Include="..\tests\banchmarker.h" />
+    <ClInclude Include="..\tests\benchmarker.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -60,7 +60,7 @@
     <ProjectGuid>{FEE95CB2-CBDB-4114-8C94-80941A8DB61B}</ProjectGuid>
     <RootNamespace>rtc</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>banchmarking</ProjectName>
+    <ProjectName>benchmarking</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

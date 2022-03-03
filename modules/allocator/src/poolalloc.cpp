@@ -104,6 +104,10 @@ alni poolalloc::reserved_size() {
 	return size;
 }
 
+bool poolalloc::is_empty() {
+	return !reserved_size();
+}
+
 void* poolalloc::alloc(alni size) {
 
 	chunk_node* avalchunk = NULL;

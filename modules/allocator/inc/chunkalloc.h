@@ -30,6 +30,7 @@ public:
 	bool avaliable();
 	alni inuse_size();
 	alni reserved_size();
+	bool is_empty();
 
 	inline void* get_addr(alni idx) const;
 	inline alni get_idx(const void* address) const;

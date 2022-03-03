@@ -37,6 +37,7 @@
     <ClInclude Include="..\inc\stacktrace.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\allocators.cpp" />
     <ClCompile Include="..\src\chunkalloc.cpp" />
     <ClCompile Include="..\src\heapalloc.cpp" />
     <ClCompile Include="..\src\new.cpp" />

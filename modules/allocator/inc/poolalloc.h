@@ -30,6 +30,7 @@ public:
 	bool avaliable();
 	alni inuse_size();
 	alni reserved_size();
+	bool is_empty();
 
 	void* alloc(alni size);
 

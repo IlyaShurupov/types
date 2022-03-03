@@ -156,3 +156,7 @@ bool heapalloc::wrap_corrupted() {
   return false;
 }
 #endif //  MEM_TRACE
+
+bool heapalloc::is_empty() {
+  return !num;
+}
