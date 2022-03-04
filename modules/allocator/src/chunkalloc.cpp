@@ -14,7 +14,7 @@ alni calc_bsize(alni bsize) {
 	return bsize;
 }
 
-chunkalloc::chunkalloc(allocator* alloc, alni pbsize, alni pnblocks) {
+chunkalloc::chunkalloc(alni pbsize, alni pnblocks) {
 	nblocks = pnblocks;
 
 	if (nblocks < 32) {
@@ -22,7 +22,7 @@ chunkalloc::chunkalloc(allocator* alloc, alni pbsize, alni pnblocks) {
 	}
 	bsize = calc_bsize(pbsize);
 
-	buff = (alni*)alloc->alloc(bsize * nblocks);
+	buff = new alni[(bsize / (alnf)sizeof(alni)) * nblocks];
 
 	bnext = buff;
 	bfreec = nblocks;
@@ -31,7 +31,7 @@ chunkalloc::chunkalloc(allocator* alloc, alni pbsize, alni pnblocks) {
 
 chunkalloc::~chunkalloc() {
 	if (buff) {
-		delete buff;
+		delete[] buff;
 	}
 }
 

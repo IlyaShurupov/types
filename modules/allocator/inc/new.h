@@ -5,6 +5,8 @@
 
 #include "heapalloc.h"
 
+extern heapalloc* global_heap;
+
 void* operator new(size_t _Size);
 void* operator new(size_t _Size, allocator* alloc);
 void* operator new(size_t _Size, allocator& alloc);

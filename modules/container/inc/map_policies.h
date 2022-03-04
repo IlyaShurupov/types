@@ -12,13 +12,12 @@ struct HashNode;
 template <typename V, typename K>
 struct map_policy_default {
 
-	heapalloc halloc;
 	poolalloc palloc;
 
 	map_policy_default() : palloc(sizeof(HashNode<V, K>), 16) {}
 
 	HashNode<V, K>** alloc_table(alni nslots) {
-		HashNode<V, K>** out = (HashNode<V, K>**)halloc.alloc(sizeof(HashNode<V, K>*) * nslots);
+		HashNode<V, K>** out = new HashNode<V, K>*[nslots];
 #ifndef MEM_ZEROING
 		for (auto& i : range(0, nslots)) {
 			out[i] = NULL;
@@ -36,7 +35,7 @@ struct map_policy_default {
 	}
 
 	void free_table(HashNode<V, K>** table) {
-		return halloc.free(table);
+		return delete[] table;
 	}
 
 	alni KeyHash(const K& key) {

@@ -6,15 +6,13 @@
 
 #include "new.h"
 
-heapalloc pool_halloc;
-
 struct chunk_node : public chunkalloc {
 
 	poolalloc* self;
 	chunk_node* next = NULL;
 	chunk_node* prev = NULL;
 
-	chunk_node(poolalloc* self, allocator* alloc, alni bsize, alni nblocks) : self(self), chunkalloc(alloc, bsize, nblocks) {}
+	chunk_node(poolalloc* self, alni bsize, alni nblocks) : self(self), chunkalloc(bsize, nblocks) {}
 
 	void free(void* p) override {
 		self->free(p);
@@ -22,8 +20,8 @@ struct chunk_node : public chunkalloc {
 };
 
 
-chunk_node* chunk_list::addchunk(poolalloc* self, heapalloc* halloc, alni bsize, alni nblocks) {
-	chunk_node* node = new(halloc) chunk_node(self, halloc, bsize, nblocks);
+chunk_node* chunk_list::addchunk(poolalloc* self, alni bsize, alni nblocks) {
+	chunk_node* node = new chunk_node(self, bsize, nblocks);
 	
 	node->next = node->prev = NULL;
 
@@ -37,7 +35,7 @@ chunk_node* chunk_list::addchunk(poolalloc* self, heapalloc* halloc, alni bsize,
 	return node;
 }
 
-void chunk_list::delchunk(chunk_node* node, heapalloc* halloc) {
+void chunk_list::delchunk(chunk_node* node) {
 
 	if (node->next) {
 		node->next->prev = node->prev;
@@ -54,33 +52,33 @@ void chunk_list::delchunk(chunk_node* node, heapalloc* halloc) {
 }
 
 
-void chunk_list::initialize(heapalloc* halloc) {
+void chunk_list::initialize() {
 	if (last) {
-		finalize(halloc);
+		finalize();
 	}
 	last = NULL;
 }
 
-void chunk_list::finalize(heapalloc* halloc) {
+void chunk_list::finalize() {
 	chunk_node* iter = last;
 	while (iter) {
 		chunk_node* del = iter;
 		iter = iter->prev;
-		delchunk(del, halloc);
+		delchunk(del);
 	}
 }
 
 
 
 poolalloc::poolalloc(alni pbsize, alni pnblocks) {
-	chunks.initialize(&pool_halloc);
+	chunks.initialize();
 	last_used = NULL;
 	bsize = pbsize;
 	nblocks = pnblocks;
 }
 
 poolalloc::~poolalloc() {
-	chunks.finalize(&pool_halloc);
+	chunks.finalize();
 }
 
 
@@ -124,7 +122,7 @@ void* poolalloc::alloc(alni size) {
 	}
 
 	if (!avalchunk) {
-		chunk_node* node = chunks.addchunk(this, &pool_halloc, bsize, nblocks);
+		chunk_node* node = chunks.addchunk(this, bsize, nblocks);
 		avalchunk = node;
 	}
 
@@ -138,7 +136,7 @@ void poolalloc::free(void* p) {
 	chunk_p->chunkalloc::free(p);
 
 	if (!chunk_p->inuse_size()) {
-		chunks.delchunk((chunk_node*)chunk_p, &pool_halloc);
+		chunks.delchunk((chunk_node*)chunk_p);
 		if (last_used == chunk_p) {
 			last_used = NULL;
 		}

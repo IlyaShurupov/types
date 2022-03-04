@@ -245,22 +245,19 @@ void heap_alloc_test() {
 }
 
 void chunk_alloc_test() {
-	heapalloc halloc;
 	{
-		chunkalloc calloc(&halloc, sizeof(test_struct), 50);
-		allocator_test<50> ca_test(&calloc, "chunk allocator", &halloc);
+		chunkalloc calloc(sizeof(test_struct), 50);
+		allocator_test<50> ca_test(&calloc, "chunk allocator", NULL);
 		ca_test.run_tests();
 	}
-	assert(halloc.inuse_size() == 0);
-	assert(!halloc.wrap_corrupted());
+	assert(global_heap->inuse_size() == 0);
 }
 
 void pool_alloc_test() {
 	poolalloc palloc(sizeof(test_struct), 50);
 	allocator_test<150> pa_test(&palloc, "pool allocator", NULL);
 	pa_test.run_tests();
-	assert(pool_halloc.inuse_size() == 0);
-	assert(!pool_halloc.wrap_corrupted());
+	assert(global_heap->inuse_size() == 0);
 }
 
 void allocators_test() {

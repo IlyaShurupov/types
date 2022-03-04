@@ -60,7 +60,7 @@ struct benchmarker {
 	heapalloc* halloc = NULL;
 	poolalloc* palloc = NULL;
 	chunkalloc* calloc = NULL;
-	heapalloc* chunk_heap = NULL;
+
 
 	Array<allocator_histogram*> out;
 	pattern_histogram* pattern_out;

@@ -534,24 +534,18 @@ void benchmarker::analize(config pcfg) {
 }
 
 void benchmarker::init_allocators(config& pcfg) {
-
-
 	if (cfg.heap) halloc = new(&ownheap) heapalloc();
 	if (cfg.pool) palloc = new(&ownheap) poolalloc(pcfg.pool_bsize, pcfg.pool_blen);
-	if (cfg.chunk) chunk_heap = new(&ownheap) heapalloc();
-	if (cfg.chunk) calloc = new(chunk_heap) chunkalloc(chunk_heap, pcfg.chunk_bsize, pcfg.chunk_blen);
+	if (cfg.chunk) calloc = new(&ownheap) chunkalloc(pcfg.chunk_bsize, pcfg.chunk_blen);
 }
 
 void benchmarker::dest_allocators() {
 	if (cfg.heap) delete halloc;
 	if (cfg.pool) delete palloc;
-
 	if (cfg.chunk) delete calloc;
-	if (cfg.chunk) delete chunk_heap;
 
 	halloc = NULL;
 	palloc = NULL;
-	chunk_heap = NULL;
 	calloc = NULL;
 }
 

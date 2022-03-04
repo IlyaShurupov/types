@@ -6,13 +6,11 @@ struct chunk_list {
 
 	struct chunk_node* last = NULL;
 
-	chunk_node* addchunk(class poolalloc* self, heapalloc* halloc, alni bsize, alni nblocks);
-	void delchunk(chunk_node* node, heapalloc* halloc);
-	void initialize(heapalloc* halloc);
-	void finalize(heapalloc* halloc);
+	chunk_node* addchunk(class poolalloc* self, alni bsize, alni nblocks);
+	void delchunk(chunk_node* node);
+	void initialize();
+	void finalize();
 };
-
-extern heapalloc pool_halloc;
 
 class poolalloc : public allocator {
 

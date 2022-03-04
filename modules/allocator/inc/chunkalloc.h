@@ -24,7 +24,7 @@ class chunkalloc : public allocator {
 
 public:
 
-	chunkalloc(allocator* alloc, alni bsize, alni nblocks);
+	chunkalloc(alni bsize, alni nblocks);
 	~chunkalloc();
 
 	bool avaliable();
