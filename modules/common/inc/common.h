@@ -9,8 +9,8 @@
 #include "random.h"
 
 void memset(void* p, alni bytesize, uint1 val);
-void memcp(void* left, void* right, alni len);
-bool memequal(void* left, void* right, alni len);
+void memcp(void* left, const void* right, alni len);
+bool memequal(const void* left, const void* right, alni len);
 
 template <typename TypeIn, typename TypeOut>
 TypeOut i2f2i(TypeIn in) {
@@ -24,7 +24,23 @@ uint8 next_pow_of_2(uint8 v);
 template <typename Type = alni>
 struct bits {
 
-	Type flags = 0;
+	Type flags;
+
+	bits() {
+#ifdef ENVIRONMENT_DEBUG
+		flags = 0;
+#endif // DEBUGs
+	}
+
+	bits(Type val) {
+		flags = val;
+	}
+
+	bits(bool val) {
+		for (int bit = 0; bit < sizeof(Type); bit++) {
+			set(bit, val);
+		}
+	}
 
 	bool get(int1 idx) {
 		return flags & (1l << idx);

@@ -6,6 +6,13 @@
 #include <limits.h>
 #include <float.h>
 
+#ifdef _DEBUG
+#define ENVIRONMENT_DEBUG
+#else  
+#define ENVIRONMENT_RELEASE
+#endif // _DEBUG
+
+
 #if _WIN32 || _WIN64
 	#if _WIN64
 		#define ENVIRONMENT64

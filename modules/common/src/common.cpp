@@ -19,7 +19,7 @@ void memset(void* p, alni bytesize, uint1 val) {
 	}
 }
 
-void memcp(void* left, void* right, alni len) {
+void memcp(void* left, const void* right, alni len) {
 	alni alignedlen = len / sizeof(alni);
 	for (alni idx = 0; idx < alignedlen; idx++) {
 		((alni*)left)[idx] = ((alni*)right)[idx];
@@ -31,7 +31,7 @@ void memcp(void* left, void* right, alni len) {
 	}
 }
 
-bool memequal(void* left, void* right, alni len) {
+bool memequal(const void* left, const void* right, alni len) {
 	alni alignedlen = len / sizeof(alni);
 	for (alni idx = 0; idx < alignedlen; idx++) {
 		if (((alni*)left)[idx] != ((alni*)right)[idx]) {
