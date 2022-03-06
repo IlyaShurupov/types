@@ -14,5 +14,4 @@ int main() {
 	string str5(str4);
 	string str6(str3);
 
-	string str6(str4 + str1);
 }

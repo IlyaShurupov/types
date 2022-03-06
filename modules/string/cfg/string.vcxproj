@@ -32,10 +32,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\strings.h" />
+    <ClCompile Include="..\src\algorithms.cpp" />
+    <ClCompile Include="..\src\strdata.cpp" />
+    <ClCompile Include="..\src\user.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\strings.cpp" />
+    <ClInclude Include="..\inc\algorithms.h" />
+    <ClInclude Include="..\inc\strdata.h" />
+    <ClInclude Include="..\inc\strings.h" />
+    <ClInclude Include="..\inc\user.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

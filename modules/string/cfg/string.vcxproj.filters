@@ -9,13 +9,28 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\strings.h">
-      <Filter>inc</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\strings.cpp">
+    <ClCompile Include="..\src\strdata.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\user.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\algorithms.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\inc\strings.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\strdata.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\algorithms.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\user.h">
+      <Filter>inc</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
