@@ -93,6 +93,10 @@ struct range {
 	alni st;
 	alni nd;
 
+	bool valid() {
+		return st < nd;
+	}
+
 	range_iter begin() {
 		return range_iter(st);
 	}

@@ -3,6 +3,8 @@
 
 #include "allocators.h"
 
+#include "algorithms.h"
+
 str_data::str_data(str_user* p_owner, const char* p_buff, bool p_ref) {
 	owner = p_owner;
 
@@ -21,9 +23,9 @@ str_data::str_data(str_user* p_owner, const char* p_buff, bool p_ref) {
 }
 
 str_data::str_data(const str_data& in) {
-	alni len = slen(in.buff);
-	reserve(len);
-	memcp(buff, in.buff, len);
+	buff = in.buff; 
+	flags.set(SD_CONST, true);
+	flags.set(SD_PROTECTED, true);
 }
 
 str_data::~str_data() {
@@ -49,18 +51,40 @@ void str_data::reserve(alni len) {
 	buff[len] = '\0';
 }
 
-alni str_data::slen(const char* in) {
-	alni out = 0;
-	for (const char* iter = in; *iter != '\0'; iter++) {
-		out++;
+void str_data::assert_modifiable() {
+	if (flags.get(SD_CONST)) {
+		alni len = slen(buff);
+		
+		char* target = buff; buff = NULL;
+		
+		reserve(len);
+		memcp(buff, target, len);
 	}
-	return out;
+}
+
+void str_data::clear() {
+	if (buff && !flags.get(SD_CONST)) {
+		delete[] buff;
+	}
+	flags.set(SD_CONST, true);
+	buff = (char*)" ";
 }
 
 void str_data::insert(const char* in, alni atidx, alni len) {
-
+	assert_modifiable();
+	char* cur = buff;
+	buff = sinsert(buff, in, atidx, len);
+	delete[] cur;
 }
 
 void str_data::remove(alni start, alni end) {
+	assert_modifiable();
+	char* cur = buff;
+	buff = sremove(buff, start, end);
+	delete[] cur;
+}
 
+void str_data::override(const char* in, alni atidx, alni len) {
+	assert_modifiable();
+	soverride(buff, in, atidx, len);
 }

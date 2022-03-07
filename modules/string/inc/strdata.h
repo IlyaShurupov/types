@@ -13,7 +13,7 @@ class str_data {
 	uint4 refc; // number of users of this string data
 	class str_user* owner; // only used to check if user is the owner (user == owner)
 	char* buff; // actual string data
-
+	
 	friend str_user;
 
 	str_data(str_user* p_owner, const char* p_buff, bool p_ref);
@@ -25,14 +25,11 @@ class str_data {
 	// control utils
 	void release();
 	void reserve(alni len);
-	alni slen(const char* in);
-
-	inline bool modifiable(str_user* user) {
-		return !flags.get(SD_CONST) && user == owner;
-	}
+	void assert_modifiable();
 
 	// modification functionallity
+	void clear();
 	void insert(const char* in, alni atidx, alni len);
 	void remove(alni start, alni end);
-
+	void override(const char* in, alni atidx, alni len);
 };
