@@ -4,20 +4,20 @@
 #include "new.h"
 
 #define FOREACH_STACK(type, stack, iter) \
-  for (StackNode<type>* iter = stack->last; iter; iter = iter->prev)
+  for (stack_node<type>* iter = stack->last; iter; iter = iter->prev)
 
 template <typename Type>
-class StackNode {
+class stack_node {
  public:
-  StackNode<Type>* prev;
+  stack_node<Type>* prev;
   Type data;
 
  public:
-  StackNode(Type data, StackNode<Type>* prev) {
+  stack_node(Type data, stack_node<Type>* prev) {
     this->prev = prev;
     this->data = data;
   }
-  ~StackNode() {
+  ~stack_node() {
   }
 };
 
@@ -26,11 +26,11 @@ class stack {
  public:
   
   alni length;
-  StackNode<Type>* last;
+  stack_node<Type>* last;
 
   poolalloc palloc;
 
-  stack(alni palloc_chunk_size = 16) : palloc(sizeof(StackNode<Type>), palloc_chunk_size) {
+  stack(alni palloc_chunk_size = 16) : palloc(sizeof(stack_node<Type>), palloc_chunk_size) {
     length = 0;
     last = nullptr;
   }
@@ -40,23 +40,23 @@ class stack {
   }
 
   void push(Type data) {
-    StackNode<Type>* NewNode = new(&palloc) StackNode<Type>(data, last);
+    stack_node<Type>* NewNode = new(&palloc) stack_node<Type>(data, last);
     last = NewNode;
     length++;
   }
 
   void pop() {
-    StackNode<Type>* del = last;
+    stack_node<Type>* del = last;
     last = last->prev;
-    mfree(&palloc, del);
+    delete del;
     length--;
   }
 
   void free() {
-    StackNode<Type>* del = last;
+    stack_node<Type>* del = last;
     for (alni i = 0; i < length; i++) {
-      StackNode<Type>* prev = del->prev;
-      mfree(&palloc, del);
+      stack_node<Type>* prev = del->prev;
+      delete del;
       del = prev;
     }
   }

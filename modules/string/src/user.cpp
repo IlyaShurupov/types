@@ -18,16 +18,16 @@ str_user::str_user(const str_user& in) {
 
 str_user::operator alni() const {
 	alni val;
-	return (datap && datap->buff && str2val(datap->buff, val)) ? val : -1;
+	return (datap && datap->buff && str2val(datap->buff, val, 10, NULL)) ? val : -1;
 }
 
 str_user::operator alnf() const {
 	alnf val;
-	return (datap && datap->buff && str2val(datap->buff, val)) ? val : -1;
+	return (datap && datap->buff && str2val(datap->buff, val, 10)) ? val : -1;
 }
 
 str_user::operator bool() const {
-	alni val;
+	bool val;
 	return (datap && datap->buff && str2val(datap->buff, val)) ? val : -1;
 }
 
@@ -97,9 +97,10 @@ bool str_user::operator!=(const str_user& in) const {
 
 str_user& str_user::insert(const char* in, alni at, alni len) {
 	assert_modifiable();
-	alni len = slen(datap->buff);
-	assert(len > at && at >= 0);
+	alni own_len = slen(datap->buff);
+	assert(own_len > at && at >= 0);
 	datap->insert(in, at, len ? len : slen(in));
+	return *this;
 }
 
 str_user& str_user::insert(const str_user& in, alni at, alni len) {
@@ -114,6 +115,7 @@ str_user& str_user::remove(range rng) {
 	assert(len > rng.nd && rng.nd >= 0);
 	assert_modifiable();
 	datap->remove(rng.st, rng.nd);
+	return *this;
 }
 
 void str_user::operator=(const str_user& in) {
