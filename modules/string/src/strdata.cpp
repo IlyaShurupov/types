@@ -40,7 +40,7 @@ void* str_data::operator new(size_t size) {
 }
 
 void str_data::release() {
-	if (buff) {
+	if (buff && !flags.get(SD_CONST)) {
 		delete[] buff;
 	}
 }

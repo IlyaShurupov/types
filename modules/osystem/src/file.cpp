@@ -5,7 +5,6 @@
 
 
 void osfile::open(const string& path, osfile_openflags flags) {
-
 	if (!opened) {
 
 		switch (flags) {
@@ -19,8 +18,8 @@ void osfile::open(const string& path, osfile_openflags flags) {
 		};
 
 		if (!fh.is_open()) {
-
-			assert(fh.is_open());
+			opened = false;
+			return;
 		}
 		opened = true;
 	}

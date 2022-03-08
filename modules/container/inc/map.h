@@ -241,6 +241,18 @@ public:
 		this->operator++();
 	}
 
+	operator K&() {
+		return iter->key;
+	}
+
+	operator HashNode<V, K>* () {
+		return iter;
+	}
+
+	operator V& () {
+		return iter->val;
+	}
+
 	void operator++() {
 		slot_idx++;
 

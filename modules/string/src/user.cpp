@@ -79,6 +79,10 @@ void str_user::assert_modifiable() {
 	}
 }
 
+void str_user::capture() {
+	assert_modifiable();
+}
+
 void str_user::set_protected(bool val) {
 	datap->flags.set(SD_PROTECTED, val);
 }

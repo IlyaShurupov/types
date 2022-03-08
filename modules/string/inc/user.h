@@ -33,6 +33,7 @@ private: // own utils
 	void assert_modifiable();
 
 public: // policy interface	
+	void capture();
 	bool get_protected();
 	void set_protected(bool val);
 
