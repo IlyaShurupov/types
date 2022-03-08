@@ -1,4 +1,4 @@
-
+#pragma once
 
 #include "common.h"
 
@@ -25,7 +25,6 @@ class str_data {
 	// control utils
 	void release();
 	void reserve(alni len);
-	void assert_modifiable();
 
 	// modification functionallity
 	void clear();

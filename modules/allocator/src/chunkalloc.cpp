@@ -22,7 +22,7 @@ chunkalloc::chunkalloc(alni pbsize, alni pnblocks) {
 	}
 	bsize = calc_bsize(pbsize);
 
-	buff = new alni[(bsize / (alnf)sizeof(alni)) * nblocks];
+	buff = new alni[alni(bsize / (alnf)sizeof(alni)) * nblocks];
 
 	bnext = buff;
 	bfreec = nblocks;

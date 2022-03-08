@@ -51,17 +51,6 @@ void str_data::reserve(alni len) {
 	buff[len] = '\0';
 }
 
-void str_data::assert_modifiable() {
-	if (flags.get(SD_CONST)) {
-		alni len = slen(buff);
-		
-		char* target = buff; buff = NULL;
-		
-		reserve(len);
-		memcp(buff, target, len);
-	}
-}
-
 void str_data::clear() {
 	if (buff && !flags.get(SD_CONST)) {
 		delete[] buff;
@@ -71,20 +60,17 @@ void str_data::clear() {
 }
 
 void str_data::insert(const char* in, alni atidx, alni len) {
-	assert_modifiable();
 	char* cur = buff;
 	buff = sinsert(buff, in, atidx, len);
 	delete[] cur;
 }
 
 void str_data::remove(alni start, alni end) {
-	assert_modifiable();
 	char* cur = buff;
 	buff = sremove(buff, start, end);
 	delete[] cur;
 }
 
 void str_data::override(const char* in, alni atidx, alni len) {
-	assert_modifiable();
 	soverride(buff, in, atidx, len);
 }

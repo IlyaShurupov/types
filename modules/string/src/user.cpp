@@ -12,6 +12,10 @@ str_user::str_user(const char* in) {
 	operator=(in);
 }
 
+str_user::str_user(char* in) {
+	operator=((const char*)in);
+}
+
 str_user::str_user(const str_user& in) {
 	operator=(in);
 }
@@ -64,6 +68,15 @@ void str_user::assert_modifiable() {
 	if (datap->flags.get(SD_PROTECTED) && this != datap->owner) {
 		datap = new str_data(*datap);
 	}
+
+	if (datap->flags.get(SD_CONST)) {
+		alni len = slen(datap->buff);
+
+		char* target = datap->buff; datap->buff = NULL;
+
+		datap->reserve(len);
+		memcp(datap->buff, target, len);
+	}
 }
 
 void str_user::set_protected(bool val) {
@@ -101,6 +114,18 @@ str_user& str_user::insert(const char* in, alni at, alni len) {
 	assert(own_len > at && at >= 0);
 	datap->insert(in, at, len ? len : slen(in));
 	return *this;
+}
+
+char* str_user::get_writable() {
+	assert_modifiable();
+	return datap->buff;
+}
+
+void str_user::reserve(alni len) {
+	if (datap->flags.get(SD_PROTECTED) && this != datap->owner) {
+		datap = new str_data(*datap);
+	}
+	datap->reserve(len);
 }
 
 str_user& str_user::insert(const str_user& in, alni at, alni len) {

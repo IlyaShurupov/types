@@ -1,23 +1,24 @@
 #pragma once
 
-#include "Memory/Allocators.h"
-#include "Sort.h"
-#include "Macros.h"
+#include "allocators.h"
+#include "sort.h"
 
+#include "list_policies.h"
 
-#include <cstdarg>
+//#include <cstdarg>
 
 template <class Type> class ListIterator;
-template <class Type> class List;
+template <class Type, typename list_pol> class list;
 
 template <typename Type>
-class Node {
+class list_node {
 public:
 	Type data;
-	Node<Type>* next = nullptr;
-	Node<Type>* prev = nullptr;
+	list_node<Type>* next = nullptr;
+	list_node<Type>* prev = nullptr;
 
-	Node(Type p_data) { data = p_data; }
+	list_node(Type p_data) { data = p_data; }
+	list_node() {}
 
 	Type operator->() { return data; }
 
@@ -26,30 +27,30 @@ public:
 	}
 };
 
-template <typename Type>
-class List {
+template <typename Type, typename list_pol = list_policy_default<Type>>
+class list {
 
-	Node<Type>* first = nullptr;
-	Node<Type>* last = nullptr;
+	list_node<Type>* first = nullptr;
+	list_node<Type>* last = nullptr;
 	alni length = 0;
 
+	list_pol listh;
+
 public:
-	bool recursive_free_on_destruction = true;
 	bool shared_nodes = false;
 
 public:
-	List() {}
-	List(bool recursive_free_on_destruction) : recursive_free_on_destruction(recursive_free_on_destruction) {}
+	list() {}
 
-	inline Node<Type>* First() { return first; }
-	inline Node<Type>* Last() { return last; }
+	inline list_node<Type>* First() { return first; }
+	inline list_node<Type>* Last() { return last; }
 
-	inline const Node<Type>* First() const { return first; }
-	inline const Node<Type>* Last() const { return last; }
+	inline const list_node<Type>* First() const { return first; }
+	inline const list_node<Type>* Last() const { return last; }
 	
 	inline alni Len() { return length; }
 
-	void Attach(Node<Type>* node, Node<Type>* node_to) {
+	void Attach(list_node<Type>* node, list_node<Type>* node_to) {
 		if (node_to) {
 			if (node_to->next) {
 				node->next = node_to->next;
@@ -74,7 +75,7 @@ public:
 		length++;
 	}
 
-	void Detach(Node<Type>* node) {
+	void Detach(list_node<Type>* node) {
 		if (node->next) {
 			node->next->prev = node->prev;
 		}
@@ -92,19 +93,19 @@ public:
 		length--;
 	}
 
-	Node<Type>* Find(alni idx) {
+	list_node<Type>* Find(alni idx) {
 		if (!First() || idx < 0 || idx > Len() - 1) {
 			return nullptr;
 		}
-		Node<Type>* found = First();
+		list_node<Type>* found = First();
 		for (int i = 0; i != idx; i++) {
 			found = found->next;
 		}
 		return found;
 	}
 
-	Node<Type>* Find(Type data) {
-		Node<Type>* found = First();
+	list_node<Type>* Find(Type data) {
+		list_node<Type>* found = First();
 		for (alni i = 0; data != found->data; i++) {
 			if (!found->next) {
 				return nullptr;
@@ -114,14 +115,16 @@ public:
 		return found;
 	}
 
-	void ForEach(void (*functor)(List<Type>* list, Node<Type>* node)) {
-		Node<Type>* node = First();
+	void ForEach(void (*functor)(list<Type>* in, list_node<Type>* node)) {
+		list_node<Type>* node = First();
 		while (node) {
-			Node<Type>* next = node->next;
+			list_node<Type>* next = node->next;
 			functor(this, node);
 			node = next;
 		}
 	}
+
+	/*
 
 	template <typename SortPolicy = SortMerge>
 	void Sort(bool (*compare)(const Type& obj1, const Type& obj2)) {
@@ -155,21 +158,26 @@ public:
 			--j;
 		}
 	}
+	*/
 
 	inline Type& operator[](ListIterator<Type>& iter) { return iter.node()->data; }
 	inline Type& operator[](alni idx) { return Find(idx)->data; }
 
-	void PushBack(Node<Type>* new_node) { Attach(new_node, Last()); }
-	void PushFront(Node<Type>* new_node) { Attach(new_node, nullptr); }
+	void PushBack(list_node<Type>* new_node) { Attach(new_node, Last()); }
+	void PushFront(list_node<Type>* new_node) { Attach(new_node, nullptr); }
 
 	void PushBack(Type data) {
-		PushBack(new Node<Type>(data));
+		list_node<Type>* node = listh.alloc_node();
+		node->data = data;
+		PushBack(node);
 	}
 	void PushFront(Type data) {
-		PushFront(new Node<Type>(data));
+		list_node<Type>* node = listh.alloc_node();
+		node->data = data;
+		PushFront(node);
 	}
 
-	void Insert(Node<Type>* node, alni idx) {
+	void Insert(list_node<Type>* node, alni idx) {
 		if (idx >= Len()) {
 			Attach(node, Last());
 		}
@@ -182,53 +190,52 @@ public:
 	}
 
 	void Insert(Type data, alni idx) {
-		Insert(new Node<Type>(data), idx);
+		list_node<Type>* node = listh.alloc_node();
+		node->data = data;
+		Insert(node, idx);
 	}
 
-	void DelNode(Node<Type>* node) {
+	void DelNode(list_node<Type>* node) {
 		Detach(node);
-		node->FreeData();
-		delete node;
+		listh.ValDestruct(node);
+		listh.free_node(node);
 	}
 
+	/*
 	void Release() {
 		if (shared_nodes) {
-			ForEach([](List<Type>* list, Node<Type>* node) { list->Detach(node); });
+			ForEach([](list<Type>* list, list_node<Type>* node) { list->Detach(node); });
 		}
 		else {
-			ForEach([](List<Type>* list, Node<Type>* node) { Node<Type>* del_node = node;  list->Detach(node); delete del_node; });
+			ForEach([](list<Type>* list, list_node<Type>* node) { list_node<Type>* del_node = node;  list->Detach(node); delete del_node; });
 		}
 		length = 0;
 		first = last = nullptr;
 	}
+	*/
 
 	void Delete() {
-		ForEach([](List<Type>* list, Node<Type>* node) { list->DelNode(node); });
+		ForEach([](list<Type>* list, list_node<Type>* node) { list->DelNode(node); });
 		length = 0;
 		first = last = nullptr;
 	}
 
-	List<Type>& operator += (const List<Type>& in) {
-		for (Node<Type>* node = in.first; node; node = node->next) {
+	list<Type>& operator += (const list<Type>& in) {
+		for (list_node<Type>* node = in.first; node; node = node->next) {
 			PushBack(node->data);
 		}
 		return *this;
 	}
 
-	List<Type>& operator = (const List<Type>& in) {
-
+	list<Type>& operator = (const list<Type>& in) {
 		Clear();
-
 		*this += in;
-
-		recursive_free_on_destruction = in.recursive_free_on_destruction;
-
 		return *this;
 	}
 
 	template <typename compare_val>
-	Node<Type>* Find(bool (*found)(Node<Type>* node, compare_val val), compare_val value) {
-		for (Node<Type>* node = First(); node; node = node->next) {
+	list_node<Type>* Find(bool (*found)(list_node<Type>* node, compare_val val), compare_val value) {
+		for (list_node<Type>* node = First(); node; node = node->next) {
 			if (found(node, value)) {
 				return node;
 			}
@@ -237,12 +244,7 @@ public:
 	}
 
 	void Clear() {
-		if (recursive_free_on_destruction) {
-			Delete();
-		}
-		else {
-			Release();
-		}
+		Delete();
 	}
 
 	ListIterator<Type> begin() {
@@ -253,7 +255,7 @@ public:
 		return Len();
 	}
 
-	~List() {
+	~list() {
 		Clear();
 	}
 };
@@ -261,16 +263,16 @@ public:
 template <typename Type>
 class ListIterator {
 
-	Node<Type>* iter;
+	list_node<Type>* iter;
 	alni idx;
 
 public:
 	alni Idx() { return idx; }
 	Type& operator->() { return iter->data; }
 	Type& Data() { return iter->data; }
-	Node<Type>* node() { return iter; }
+	list_node<Type>* node() { return iter; }
 
-	ListIterator(List<Type>* list, alni p_idx) {
+	ListIterator(list<Type>* list, alni p_idx) {
 		idx = p_idx;
 		iter = list->Find(idx);
 	}

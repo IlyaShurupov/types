@@ -6,10 +6,10 @@
 
 template <typename Key, typename avl_policy> class avltree;
 
-template <typename Key>
+template <typename Key, typename avl_policy>
 class AVLNode {
 
-	friend class avltree<Key>;
+	friend class avltree<Key, avl_policy>;
 
 	AVLNode* left = nullptr;
 	AVLNode* right = nullptr;
@@ -22,12 +22,12 @@ class AVLNode {
 template <typename Key, typename avl_policy = alv_policy_default<Key> >
 class avltree {
 
-	AVLNode<Key>* root = nullptr;
+	AVLNode<Key, avl_policy>* root = nullptr;
 	alni entries = 0;
 
 	avl_policy avlp;
 
-	alni node_height(AVLNode<Key>* node) {
+	alni node_height(AVLNode<Key, avl_policy>* node) {
 		if (!node) {
 			return -1;
 		}
@@ -35,8 +35,8 @@ class avltree {
 	}
 
 	// returns new head
-	AVLNode<Key>* node_rotate_left(AVLNode<Key>* pivot) {
-		AVLNode<Key>* new_head = pivot->right;
+	AVLNode<Key, avl_policy>* node_rotate_left(AVLNode<Key, avl_policy>* pivot) {
+		AVLNode<Key, avl_policy>* new_head = pivot->right;
 		pivot->right = pivot->right->left;
 		new_head->left = pivot;
 
@@ -46,8 +46,8 @@ class avltree {
 		return new_head;
 	}
 
-	AVLNode<Key>* node_rotate_right(AVLNode<Key>* pivot) {
-		AVLNode<Key>* new_head = pivot->left;
+	AVLNode<Key, avl_policy>* node_rotate_right(AVLNode<Key, avl_policy>* pivot) {
+		AVLNode<Key, avl_policy>* new_head = pivot->left;
 		pivot->left = pivot->left->right;
 		new_head->right = pivot;
 
@@ -58,13 +58,13 @@ class avltree {
 	}
 
 	// recursevly returns valid left or right child or root
-	AVLNode<Key>* insert_util(AVLNode<Key>* head, Key key) {
+	AVLNode<Key, avl_policy>* insert_util(AVLNode<Key, avl_policy>* head, Key key) {
 
-		AVLNode<Key>* inserted_node = nullptr;
+		AVLNode<Key, avl_policy>* inserted_node = nullptr;
 
 		if (head == nullptr) {
 			entries++;
-			AVLNode<V>* out = avlp.alloc_node();
+			AVLNode<Key, avl_policy>* out = avlp.alloc_node();
 			out->key = key;
 			return out;
 		}
@@ -108,7 +108,7 @@ class avltree {
 		return head;
 	}
 
-	AVLNode<Key>* remove_util(AVLNode<Key>* head, Key key) {
+	AVLNode<Key, avl_policy>* remove_util(AVLNode<Key, avl_policy>* head, Key key) {
 		
 		if (head == NULL) {
 			return head;
@@ -121,7 +121,7 @@ class avltree {
 		}
 		else {
 
-			AVLNode<Key>* tmp;
+			AVLNode<Key, avl_policy>* tmp;
 
 			if (head->right == nullptr) {
 				tmp = head->left;
@@ -137,9 +137,9 @@ class avltree {
 			}
 			else {
 				
-				AVLNode<Key>* min = min_node(head->right);
+				AVLNode<Key, avl_policy>* min = min_node(head->right);
 				
-				avl.ValCopy(head->key, min->key);
+				avlp.ValCopy(head->key, min->key);
 
 				head->right = remove_util(head->right, min->key);
 			}
@@ -180,7 +180,7 @@ public:
 		return entries;
 	}
 
-	AVLNode<Key>* head() {
+	AVLNode<Key, avl_policy>* head() {
 		return this->root;
 	}
 
@@ -192,7 +192,7 @@ public:
 		root = remove_util(root, key);
 	}
 
-	AVLNode<Key>* max_node(AVLNode<Key>* head) {
+	AVLNode<Key, avl_policy>* max_node(AVLNode<Key, avl_policy>* head) {
 		if (head) {
 			while (head->right != nullptr) {
 				head = head->right;
@@ -201,7 +201,7 @@ public:
 		return head;
 	}
 
-	AVLNode<Key>* min_node(AVLNode<Key>* head) {
+	AVLNode<Key, avl_policy>* min_node(AVLNode<Key, avl_policy>* head) {
 		if (head) {
 			while (head->left != nullptr) {
 				head = head->left;
@@ -210,8 +210,8 @@ public:
 		return head;
 	}
 
-	AVLNode<Key>* find(Key key) {
-		AVLNode<Key>* iter = root;
+	AVLNode<Key, avl_policy>* find(Key key) {
+		AVLNode<Key, avl_policy>* iter = root;
 
 		while (true) {
 			if (!iter) {
@@ -232,7 +232,7 @@ public:
 	}
 
 	// returns first invalid node
-	AVLNode<Key>* invalid_tree(AVLNode<Key>* head) {
+	AVLNode<Key, avl_policy>* invalid_tree(AVLNode<Key, avl_policy>* head) {
 
 		if (head == nullptr) {
 			return nullptr;
@@ -255,7 +255,7 @@ public:
 			return head;
 		}
 
-		AVLNode<Key>* ret = invalid_tree(head->right);
+		AVLNode<Key, avl_policy>* ret = invalid_tree(head->right);
 		if (ret) {
 			return ret;
 		}

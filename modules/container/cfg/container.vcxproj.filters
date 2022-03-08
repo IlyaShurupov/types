@@ -30,6 +30,15 @@
     <ClInclude Include="..\inc\stack.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\inc\list.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\sort.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\list_policies.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\containers.cpp">

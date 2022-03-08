@@ -9,8 +9,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\dummy.cpp">
+    <ClCompile Include="..\src\file.cpp">
       <Filter>source</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\inc\file.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\osystem.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

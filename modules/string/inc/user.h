@@ -1,7 +1,8 @@
-
+#pragma once
 
 #include "common.h"
 #include "algorithms.h"
+#include "strdata.h"
 
 class str_user {
 
@@ -46,6 +47,9 @@ public: // data info access
 	bool operator!=(const str_user& string) const;
 
 public: // editing interface	
+
+	char* get_writable();
+	void reserve(alni len);
 
 	str_user& insert(const str_user& string, alni at, alni len = 0);
 	str_user& insert(const char* string, alni at, alni len = 0);

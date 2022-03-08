@@ -72,7 +72,7 @@ LOOP:
   return false;
 }
 
-char* val2srt(alni val, char* ownbuff = NULL, alni base = 10) {
+char* val2str(alni val, char* ownbuff, alni base) {
   char* out = NULL;
 
   alni iter = val;
@@ -102,7 +102,7 @@ char* val2srt(alni val, char* ownbuff = NULL, alni base = 10) {
   return out;
 }
 
-char* val2srt(alnf val, alni base = 10) {
+char* val2str(alnf val, alni base) {
   char* out = NULL;
 
   alni rounded = (alni)val;
@@ -137,15 +137,15 @@ char* val2srt(alnf val, alni base = 10) {
     out[rounded_len + neg] = '.';
   }
 
-  val2srt(rounded, out + neg);
+  val2str(rounded, out + neg);
   if (mantissa_len) {
-    val2srt(mantissa, out + rounded_len + neg + dot);
+    val2str(mantissa, out + rounded_len + neg + dot);
   }
 
   return out;
 }
 
-char* val2srt(bool val) {
+char* val2str(bool val) {
   alni len = val ? 4 : 5;
   char* out = new char[len];
   out[len] = '\0';
@@ -155,11 +155,11 @@ char* val2srt(bool val) {
   return out;
 }
 
-char* val2srt(int val, alni base = 10) {
-  return val2srt((alni)val, NULL, base);
+char* val2str(int val, alni base) {
+  return val2str((alni)val, NULL, base);
 }
 
-char* val2srt(char val) {
+char* val2str(char val) {
   char* out = new char[2];
   out[1] = '\0';
   out[0] = val;
@@ -167,7 +167,7 @@ char* val2srt(char val) {
 }
 
 
-bool str2val(const char* in, alni& val, alni base = 10, alni ownlen = 0)   {
+bool str2val(const char* in, alni& val, alni base, alni ownlen)   {
   val = 0;
   alni len = ownlen? ownlen :slen(in);
   bool neg = in[0] == '-';
@@ -185,7 +185,7 @@ bool str2val(const char* in, alni& val, alni base = 10, alni ownlen = 0)   {
   return true;
 }
 
-bool str2val(const char* in, alnf& val, alni base = 10) {
+bool str2val(const char* in, alnf& val, alni base) {
   alni len = slen(in);
   alni dot_idx = -1;
   

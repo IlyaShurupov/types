@@ -8,6 +8,9 @@
 
 #include <iostream> 
 
+void f(string g) {
+}
+
 int main() {
 	string str1;
 	string& str2 = *new string();
@@ -19,4 +22,5 @@ int main() {
 	str5 += "add";
 	std::cout << str5.cstr();
 
+	f("sad");
 }

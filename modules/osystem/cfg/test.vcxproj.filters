@@ -1,15 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="include">
-      <UniqueIdentifier>{82402723-4df8-4091-90f3-071a0a132874}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source">
-      <UniqueIdentifier>{2c2c05ff-ad26-4bcb-9258-8e58169b409e}</UniqueIdentifier>
+      <UniqueIdentifier>{eddd62d4-6053-4d99-a773-7f4e45a5dacc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\dummy.cpp">
+    <ClCompile Include="..\tests\tests.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
