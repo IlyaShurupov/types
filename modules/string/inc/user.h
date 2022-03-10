@@ -24,6 +24,7 @@ public:
 	operator alni() const;
 	operator alnf() const;
 	operator bool() const;
+	//operator const char*() const;
 
 	~str_user();
 
@@ -62,8 +63,8 @@ public: // editing interface
 
 	str_user& operator+=(const str_user& string);
 	str_user& operator+=(const char* string);
-	str_user operator+(const str_user& string);
-	str_user operator+(const char* string);
+	str_user operator+(const str_user& string) const;
+	str_user operator+(const char* string) const;
 
 	void trim(range range);
 	void clear();

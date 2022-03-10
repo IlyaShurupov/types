@@ -17,6 +17,7 @@ str_user::str_user(char* in) {
 }
 
 str_user::str_user(const str_user& in) {
+	datap = NULL;
 	operator=(in);
 }
 
@@ -66,7 +67,9 @@ void str_user::refdec(str_data* dp) {
 void str_user::assert_modifiable() {
 	// if have no rights to modify create new copy of string data
 	if (datap->flags.get(SD_PROTECTED) && this != datap->owner) {
+		refdec(datap);
 		datap = new str_data(*datap);
+		refinc(datap);
 	}
 
 	if (datap->flags.get(SD_CONST)) {
@@ -171,12 +174,12 @@ str_user& str_user::operator+=(const str_user& in) {
 	return operator+=(in.datap->buff);
 }
 
-str_user str_user::operator+(const str_user& in) {
+str_user str_user::operator+(const str_user& in)  const {
 	str_user out(*this);
 	return out += in;
 }
 
-str_user str_user::operator+(const char* in) {
+str_user str_user::operator+(const char* in)  const {
 	str_user out(*this);
 	return out += in;
 }
