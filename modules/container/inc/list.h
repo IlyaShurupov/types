@@ -104,7 +104,7 @@ public:
 		return found;
 	}
 
-	list_node<Type>* Find(Type data) {
+	list_node<Type>* Find(Type& data) {
 		list_node<Type>* found = First();
 		for (alni i = 0; data != found->data; i++) {
 			if (!found->next) {
@@ -166,12 +166,12 @@ public:
 	void PushBack(list_node<Type>* new_node) { Attach(new_node, Last()); }
 	void PushFront(list_node<Type>* new_node) { Attach(new_node, nullptr); }
 
-	void PushBack(Type data) {
+	void PushBack(const Type& data) {
 		list_node<Type>* node = listh.alloc_node();
 		node->data = data;
 		PushBack(node);
 	}
-	void PushFront(Type data) {
+	void PushFront(const Type& data) {
 		list_node<Type>* node = listh.alloc_node();
 		node->data = data;
 		PushFront(node);

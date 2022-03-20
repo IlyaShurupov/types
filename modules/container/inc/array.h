@@ -8,6 +8,11 @@ struct array_iterator;
 template <typename Type>
 class Array {
   
+  void allocate(alni p_bufflen) {
+    length = p_bufflen;
+    buff = new Type[length]();
+  }
+
  public:
   
   Type* buff;
@@ -28,19 +33,22 @@ class Array {
   }
 
   void Reserve(alni p_bufflen) {
+    Free();
     length = p_bufflen;
     buff = new Type[length]();
   }
 
   void Free() {
     length = 0;
-    delete[] buff;
+    if (buff) {
+      delete[] buff;
+    }
     buff = NULL;
   }
 
   void Insert(Type& p_block, alni idx) {
     Type* current = buff;
-    Reserve(length + 1);
+    allocate(length + 1);
 
     for (alni befor = 0; befor < idx; befor++) {
       buff[befor] = current[befor];
@@ -59,7 +67,7 @@ class Array {
   void Remove(alni p_idx) {
     Type* current = buff;
     alni current_len = length;
-    Reserve(length - 1);
+    allocate(length - 1);
 
     for (alni befor = 0; befor < p_idx; befor++) {
       buff[befor] = current[befor];
@@ -79,6 +87,13 @@ class Array {
     }
   }
 
+  void operator=(const Array& array) {
+    allocate(array.length);
+    for (int i = 0; i < array.length; i++) {
+      buff[i] = array.buff[i];
+    }
+  }
+
   Type& operator[](alni idx) {
     return buff[idx];
   }
@@ -92,7 +107,7 @@ class Array {
   }
 
   Array(const Array& array) {
-    Reserve(array.length);
+    allocate(array.length);
     for (int i = 0; i < array.length; i++) {
       buff[i] = array.buff[i];
     }

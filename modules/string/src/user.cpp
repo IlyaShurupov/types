@@ -4,7 +4,7 @@
 #include "strdata.h"
 
 str_user::str_user() {
-	datap = new str_data(this, NULL, true);
+	datap = new str_data(NULL, true);
 	refinc(datap);
 }
 
@@ -66,7 +66,7 @@ void str_user::refdec(str_data* dp) {
 
 void str_user::assert_modifiable() {
 	// if have no rights to modify create new copy of string data
-	if (datap->flags.get(SD_PROTECTED) && this != datap->owner) {
+	if (datap->refc > 1) {
 		refdec(datap);
 		datap = new str_data(*datap);
 		refinc(datap);
@@ -81,19 +81,6 @@ void str_user::assert_modifiable() {
 		memcp(datap->buff, target, len);
 	}
 }
-
-void str_user::capture() {
-	assert_modifiable();
-}
-
-void str_user::set_protected(bool val) {
-	datap->flags.set(SD_PROTECTED, val);
-}
-
-bool str_user::get_protected() {
-	return datap->flags.get(SD_PROTECTED);
-}
-
 
 bool str_user::operator==(const char* cstring) const {
 	if (!datap || !datap->buff || !cstring) {
@@ -123,13 +110,18 @@ str_user& str_user::insert(const char* in, alni at, alni len) {
 	return *this;
 }
 
+str_user& str_user::capture() {
+	assert_modifiable();
+	return *this;
+}
+
 char* str_user::get_writable() {
 	assert_modifiable();
 	return datap->buff;
 }
 
 void str_user::reserve(alni len) {
-	if (datap->flags.get(SD_PROTECTED) && this != datap->owner) {
+	if (datap->refc > 1) {
 		datap = new str_data(*datap);
 	}
 	datap->reserve(len);
@@ -159,7 +151,7 @@ void str_user::operator=(const str_user& in) {
 }
 
 void str_user::operator=(const char* in) {
-	datap = new str_data(this, in, true);
+	datap = new str_data(in, true);
 	refinc(datap);
 }
 

@@ -76,6 +76,6 @@ string read_file(string path) {
 	string script;
 	script.reserve(file.size());
 
-	file.read_bytes(script.get_writable(), script.size(), 0);
+	file.read_bytes(script.get_writable(), file.size(), 0);
 	return script;
 }

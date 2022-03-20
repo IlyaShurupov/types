@@ -17,7 +17,7 @@ public:
 
 	template <typename Type>
 	str_user(Type val) {
-		datap = new str_data(this, val2str(val), false);
+		datap = new str_data(val2str(val), false);
 		refinc(datap);
 	}
 
@@ -33,11 +33,6 @@ private: // own utils
 	void refdec(str_data* dp);
 	void assert_modifiable();
 
-public: // policy interface	
-	void capture();
-	bool get_protected();
-	void set_protected(bool val);
-
 public: // data info access 
 	const char* cstr() const;
 	char operator[](alni idx) const;
@@ -49,6 +44,8 @@ public: // data info access
 	bool operator!=(const str_user& string) const;
 
 public: // editing interface	
+	
+	str_user& capture();
 
 	char* get_writable();
 	void reserve(alni len);

@@ -5,8 +5,7 @@
 
 #include "algorithms.h"
 
-str_data::str_data(str_user* p_owner, const char* p_buff, bool p_ref) {
-	owner = p_owner;
+str_data::str_data(const char* p_buff, bool p_ref) {
 
 	if (p_buff) {
 		buff = (char*)p_buff;
@@ -19,13 +18,11 @@ str_data::str_data(str_user* p_owner, const char* p_buff, bool p_ref) {
 	refc = 0;
 
 	flags.set(SD_CONST, p_ref);
-	flags.set(SD_PROTECTED, true);
 }
 
 str_data::str_data(const str_data& in) {
 	buff = in.buff; 
 	flags.set(SD_CONST, true);
-	flags.set(SD_PROTECTED, true);
 }
 
 str_data::~str_data() {
