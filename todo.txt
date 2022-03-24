@@ -1,5 +1,4 @@
-color 
-logging
 string formating
 pattern search
 window module
+debug

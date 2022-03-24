@@ -33,11 +33,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\algorithms.cpp" />
+    <ClCompile Include="..\src\log.cpp" />
     <ClCompile Include="..\src\strdata.cpp" />
     <ClCompile Include="..\src\user.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\inc\algorithms.h" />
+    <ClInclude Include="..\inc\log.h" />
     <ClInclude Include="..\inc\strdata.h" />
     <ClInclude Include="..\inc\strings.h" />
     <ClInclude Include="..\inc\user.h" />

@@ -18,6 +18,9 @@
     <ClCompile Include="..\src\algorithms.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\log.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\inc\strings.h">
@@ -30,6 +33,9 @@
       <Filter>inc</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\user.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\log.h">
       <Filter>inc</Filter>
     </ClInclude>
   </ItemGroup>
