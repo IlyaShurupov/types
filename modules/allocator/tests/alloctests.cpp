@@ -154,7 +154,7 @@ struct allocator_test {
 	}
 
 	static alnf sineupf(alnf size, alnf x, bool reverse) {
-		alnf end = 4 * Pie;
+		alnf end = 4 * PI;
 		alnf a = (2 / 7.f) * size;
 		alnf b = end / size;
 		
@@ -168,7 +168,7 @@ struct allocator_test {
 	// sin load & sin unload with ~1/2 drop factor
 	void test5() {
 
-		alnf end = 4 * Pie;
+		alnf end = 4 * PI;
 		alnf step = end / 4.f;
 
 		for (char i = 0; i < 2; i++) {

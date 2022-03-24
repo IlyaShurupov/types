@@ -12,6 +12,9 @@
     <ClCompile Include="..\src\file.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\window.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\inc\file.h">

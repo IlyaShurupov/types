@@ -2,6 +2,11 @@
 
 #include "allocator.h"
 
+#ifdef MEM_WRAP
+extern const alni chunk_wrap_len_bytes;
+#define CHUNK_WRAP_LEN chunk_wrap_len_bytes
+#endif
+
 struct unused_slot_head {
 	alni* bnext;
 };

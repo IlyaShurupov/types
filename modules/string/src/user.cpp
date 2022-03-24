@@ -122,8 +122,11 @@ char* str_user::get_writable() {
 
 void str_user::reserve(alni len) {
 	if (datap->refc > 1) {
+		refdec(datap);
 		datap = new str_data(*datap);
+		refinc(datap);
 	}
+
 	datap->reserve(len);
 }
 

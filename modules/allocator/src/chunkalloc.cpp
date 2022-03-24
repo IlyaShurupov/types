@@ -1,8 +1,27 @@
 
 #include "chunkalloc.h"
 
+#ifdef MEM_WRAP
+alni align(alni out) {
+	if (out < sizeof(alni)) {
+		out = sizeof(alni);
+	}
+	if (out % sizeof(alni) != 0) {
+		out += sizeof(alni);
+	}
+	return out;
+}
+const alni chunk_wrap_len_bytes = align(WRAP_LEN);
+#define CHUNK_WRAP_LEN chunk_wrap_len_bytes
+#undef WRAP_LEN
+#endif
 
 alni calc_bsize(alni bsize) {
+
+#ifdef MEM_WRAP
+	bsize += CHUNK_WRAP_LEN * 2;
+#endif // MEM_WRAP
+
 	if (bsize < sizeof(alni)) {
 		bsize = sizeof(alni);
 	}
@@ -36,7 +55,14 @@ chunkalloc::~chunkalloc() {
 }
 
 bool chunkalloc::avaliable() { return bfreec; }
-alni chunkalloc::inuse_size() { return (nblocks - bfreec) * (bsize - sizeof(used_slot_head)); }
+alni chunkalloc::inuse_size() { 
+#ifdef MEM_WRAP
+	return (nblocks - bfreec) * (bsize - sizeof(used_slot_head) - CHUNK_WRAP_LEN * 2);
+#else
+	return (nblocks - bfreec) * (bsize - sizeof(used_slot_head));
+#endif
+}
+
 alni chunkalloc::reserved_size() { return  bsize * nblocks; }
 
 bool chunkalloc::is_empty() {
@@ -80,6 +106,21 @@ void* chunkalloc::alloc(alni size) {
 
 		((used_slot_head*)out)->chunk_p = this;
 		out = (alni*)(((used_slot_head*)out) + 1);
+
+		#ifdef MEM_WRAP
+		int1* wrap1 = ((int1*)out);
+		int1* wrap2 = ((int1*)((used_slot_head*)out - 1)) + bsize - CHUNK_WRAP_LEN;
+
+		for (alni i = 0; i < CHUNK_WRAP_LEN; i++) {
+			wrap1[i] = WRAP_FILL_VAL;
+			wrap2[i] = WRAP_FILL_VAL;
+		}
+
+		out = (alni*)((int1*)out + CHUNK_WRAP_LEN);
+		#endif // MEM_WRAP
+		#ifdef MEM_ZEROING
+		memset(out, size, 0);
+		#endif
 	}
 	else {
 		throw typesExeption("faled allocate on chunk - chunk is full", false);
@@ -89,14 +130,29 @@ void* chunkalloc::alloc(alni size) {
 }
 
 void chunkalloc::free(void* p) {
-	alni* bdel = (alni*)((used_slot_head*)p - 1);
-	if (bnext != NULL) {
-		((unused_slot_head*)bdel)->bnext = bnext;
-		bnext = bdel;
+
+	alni* bdel = (alni*)p;
+
+	#ifdef MEM_WRAP
+	int1* wrap1 = ((int1*)p) - CHUNK_WRAP_LEN;
+	int1* wrap2 = ((int1*)((used_slot_head*)p - 1)) + bsize - CHUNK_WRAP_LEN * 2;
+
+	for (alni i = 0; i < CHUNK_WRAP_LEN; i++) {
+		int1 val1 = ((int1*)wrap1)[i];
+		int1 val2 = ((int1*)wrap2)[i];
+		assert((val1 == WRAP_FILL_VAL && val2 == WRAP_FILL_VAL));
 	}
-	else {
-		((unused_slot_head*)bdel)->bnext = NULL;
-		bnext = bdel;
-	}
+
+	bdel = (alni*)((int1*)bdel - CHUNK_WRAP_LEN);
+	#endif
+	#ifdef MEM_ZEROING
+		memset(bdel, bsize - sizeof(used_slot_head), 0);
+	#endif
+
+	bdel = (alni*)((used_slot_head*)bdel - 1);
+
+	((unused_slot_head*)bdel)->bnext = bnext;
+	bnext = bdel;
+
 	++bfreec;
 }

@@ -5,6 +5,9 @@
 
 
 void osfile::open(const string& path, osfile_openflags flags) {
+	adress = 0;
+	avl_adress = 0;
+
 	if (!opened) {
 
 		switch (flags) {
@@ -28,6 +31,7 @@ void osfile::open(const string& path, osfile_openflags flags) {
 void osfile::close() {
 	if (opened) {
 		fh.close();
+		opened = false;
 	}
 }
 

@@ -46,6 +46,7 @@ void str_data::reserve(alni len) {
 	release();
 	buff = new char[len + 1];
 	buff[len] = '\0';
+	flags.set(SD_CONST, 0);
 }
 
 void str_data::clear() {

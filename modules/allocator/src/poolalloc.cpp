@@ -132,7 +132,12 @@ void* poolalloc::alloc(alni size) {
 }
 
 void poolalloc::free(void* p) {
+#ifdef MEM_WRAP
+	chunkalloc* chunk_p = (((used_slot_head*)((int1*)p - CHUNK_WRAP_LEN)) - 1)->chunk_p;
+#else
 	chunkalloc* chunk_p = (((used_slot_head*)p) - 1)->chunk_p;
+#endif // MEM_WRAP
+
 	chunk_p->chunkalloc::free(p);
 
 	if (!chunk_p->inuse_size()) {

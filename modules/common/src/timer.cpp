@@ -27,7 +27,7 @@ void sleep(time_ms duration) {
 
 timer::timer() {
   duration = 0;
-  start = 0;
+  start = GETTIMEMSC();
 }
 
 timer::timer(time_ms duration) {

@@ -1,9 +1,7 @@
 
 
-#include "common.h"
-#include "containers.h"
-#include "allocators.h"
+#include "osystem.h"
 
 int main() {
-	return 0;
+	read_file("test file.txt");
 }
