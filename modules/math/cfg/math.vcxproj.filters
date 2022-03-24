@@ -9,8 +9,37 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\dummy.cpp">
+    <ClCompile Include="..\src\mesh.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ray.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\trig.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\inc\matrix.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\mesh.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\ray.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\rect.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\trig.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\vec2.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\vec3.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

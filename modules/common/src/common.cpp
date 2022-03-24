@@ -1,6 +1,8 @@
 
 #include "common.h"
 
+#include <stdlib.h>
+
 void memset(void* p, alni bytesize, uint1 val) {
 
 	alni alignedval = 0;
@@ -70,3 +72,35 @@ alni hash(const char* bytes) {
 alni hash(alni bytes) {
 	return bytes;
 }
+
+void char2wide(const char* c, wchar_t* out, alni len) {
+	mbstowcs(out, c, len);
+}
+
+void wide2char(const wchar_t* c, char* out) {
+	alni len = 0; for (const wchar_t* iter = c; *iter != '\0'; iter++) { len++; }
+	wcstombs(out, c, len);
+}
+
+#ifdef PLATFORM_WINDOWS
+
+#include <Windows.h>
+
+const char* working_dir() {
+	static TCHAR szFileName[MAX_PATH];
+	static char out[MAX_PATH];
+	static bool initialized = false;
+	if (!initialized) {
+		GetModuleFileName(NULL, szFileName, MAX_PATH);
+		wide2char(szFileName, out);
+		for (char* iter = out + strlen(out); ; iter--) {
+			if (iter == "\\") {
+				*(iter++) = '\0';
+				break;
+			}
+		}
+	}
+	return out;
+}
+
+#endif // WIN

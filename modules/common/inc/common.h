@@ -8,6 +8,9 @@
 #include "timer.h"
 #include "random.h"
 
+
+#include <limits>
+
 void memset(void* p, alni bytesize, uint1 val);
 void memcp(void* left, const void* right, alni len);
 bool memequal(const void* left, const void* right, alni len);
@@ -56,19 +59,6 @@ struct bits {
 	}
 };
 
-template <typename T1, typename T2>
-struct tuple {
-
-	T1 t1;
-	T2 t2;
-
-	tuple() {}
-	tuple(T1 t1, T2 t2) {
-		this->t1 = t1;
-		this->t2 = t2;
-	}
-};
-
 struct range_iter {
 	alni idx;
 
@@ -108,3 +98,11 @@ struct range {
 
 alni hash(const char* bytes);
 alni hash(alni bytes);
+
+#ifdef PLATFORM_WINDOWS
+const char* working_dir();
+#endif
+
+void char2wide(const char* c, wchar_t* out, alni len);
+void wide2char(const wchar_t* c, char* out);
+

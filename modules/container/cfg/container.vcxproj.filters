@@ -39,6 +39,9 @@
     <ClInclude Include="..\inc\list_policies.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\inc\tuple.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\containers.cpp">

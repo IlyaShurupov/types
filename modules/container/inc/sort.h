@@ -4,7 +4,7 @@
 #include "allocators.h"
 
 template <typename Type>
-bool compare(const Type& val1, const Type& val2) {
+inline bool compare(const Type& val1, const Type& val2) {
   return val1 > val2;
 }
 
@@ -94,17 +94,7 @@ struct SortInsert {
   }
 };
 
-struct SortQuic {
-  static void Sort(void* pxlbuff, char itemsize, char offset) {
-  }
-};
-
 struct SortRadix {
-  static void Sort(void* pxlbuff, char itemsize, char offset) {
-  }
-};
-
-struct SortCount {
   static void Sort(void* pxlbuff, char itemsize, char offset) {
   }
 };

@@ -42,6 +42,7 @@
     <ClInclude Include="..\inc\map_policies.h" />
     <ClInclude Include="..\inc\sort.h" />
     <ClInclude Include="..\inc\stack.h" />
+    <ClInclude Include="..\inc\tuple.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\containers.cpp" />

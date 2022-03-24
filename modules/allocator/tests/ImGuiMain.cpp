@@ -1,16 +1,18 @@
 
 #include "benchmarker.h"
 
-benchmarker* bmk;
+class ImgUIbenchmarker : public imGuiDefaultApp {
+	benchmarker bnm;
 
-void imGuiWindowInitialize() {
-	bmk = new benchmarker();
-}
+public: 
+	ImgUIbenchmarker() {}
+	bool mainloop_tick() override {
+		bnm.draw();
+		return true;
+	}
+};
 
-void imGuiWindowFinalize() {
-	delete bmk;
-}
-
-void imGuiWindowDraw() {
-	bmk->draw();
+int main() {
+	ImgUIbenchmarker app;
+	app.mainloop();
 }

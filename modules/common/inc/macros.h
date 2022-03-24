@@ -14,3 +14,6 @@
 
 #define PTR_OFFSET(first, offset) (*((&first) + offset))
 #define MEMBER_OFFSET(s, m) (alni(&(((s*)0)->m)))
+
+
+#define assert_static(x, message) static_assert(x, message)
