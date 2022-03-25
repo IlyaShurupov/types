@@ -66,3 +66,5 @@ public: // editing interface
 	void trim(range range);
 	void clear();
 };
+
+str_user sfmt(const char* fmt, ...);

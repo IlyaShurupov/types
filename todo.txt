@@ -1,4 +1,4 @@
-string formating
-pattern search
+string formating pattern search
+
 window module
 debug

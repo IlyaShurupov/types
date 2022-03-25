@@ -300,7 +300,7 @@ void benchmarker::pattern_generator() {
 
 		if (SubMenuBegin("Preview", 1)) {
 			static float preview_res_scale = 0.05f;
-			int resolution = 1000 * preview_res_scale;
+			int resolution = (int)(1000 * preview_res_scale);
 			float* x_axis = (float*)ownheap.alloc(resolution * sizeof(float));
 			float* y_axis = (float*)ownheap.alloc(resolution * sizeof(float));
 
@@ -308,7 +308,7 @@ void benchmarker::pattern_generator() {
 			float step = 1.f / (resolution - 1);
 			for (alni idx = 0; idx < resolution; idx++) {
 				x_axis[idx] = x;
-				y_axis[idx] = pattern_edit->get_y(&patterns, x);
+				y_axis[idx] = (flt4)pattern_edit->get_y(&patterns, x);
 				x += step;
 			}
 
@@ -334,7 +334,7 @@ void benchmarker::pattern_generator() {
 				if (SubMenuBegin("Child Patterns", 2)) {
 					ImGui::BeginListBox("");
 					for (alni idx = 0; idx < pattern_edit->regions.length; idx++) {
-						ImGui::PushID(idx);
+						ImGui::PushID((int)idx);
 						if (ImGui::Button(pattern_edit->regions[idx].name.c_str())) {
 							child_pattern_active = patterns.Get(pattern_edit->regions[idx].name);
 							selected_idx = idx;
