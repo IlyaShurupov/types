@@ -16,7 +16,7 @@ char* sinsert(const char* cur, const char* tar, alni atidx, alni len) {
 
   assert(cur_len > 0);
   assert(len > 0);
-  assert(atidx < cur_len && atidx >= 0);
+  assert(atidx < cur_len + 1 && atidx >= 0);
 
   for (alni idx = 0; idx < atidx; idx++) {
     out[idx] = cur[idx];
@@ -26,9 +26,11 @@ char* sinsert(const char* cur, const char* tar, alni atidx, alni len) {
     out[idx + atidx] = tar[idx];
   }
 
-  for (alni idx = atidx + len; idx <= all_len; idx++) {
+  for (alni idx = atidx + len; idx < all_len; idx++) {
     out[idx] = cur[idx - len];
   }
+
+  out[all_len] = '\0';
 
   return out;
 }
