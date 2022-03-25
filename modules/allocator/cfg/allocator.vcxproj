@@ -211,7 +211,6 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc</AdditionalIncludeDirectories>
-      <BrowseInformation>true</BrowseInformation>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>

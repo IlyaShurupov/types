@@ -203,7 +203,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\string\inc</AdditionalIncludeDirectories>
-      <BrowseInformation>true</BrowseInformation>
+      <BrowseInformation>false</BrowseInformation>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>

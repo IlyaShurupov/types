@@ -212,7 +212,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc</AdditionalIncludeDirectories>
-      <BrowseInformation>true</BrowseInformation>
+      <BrowseInformation>false</BrowseInformation>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
