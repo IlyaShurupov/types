@@ -201,9 +201,10 @@ str_user sfmt(const char* fmt, ...) {
   va_start(args, fmt);
   for (alni idx = 0; fmt[idx] != '\0'; idx++) {
     if (fmt[idx] != '%') {
+      outlen++;
       continue;
     }
-    switch (fmt[idx]) {
+    switch (fmt[idx + 1]) {
       case 'i': {
         sizes[arg_len] = val2str_len(va_arg(args, alni), 10);
         break;
@@ -231,7 +232,9 @@ str_user sfmt(const char* fmt, ...) {
     }
     outlen += sizes[arg_len];
     arg_len++;
+    idx++;
   }
+  outlen++;
   va_end(args);
 
   out.reserve(outlen);
@@ -249,7 +252,7 @@ str_user sfmt(const char* fmt, ...) {
       out_idx++;
       continue;
     }
-    switch (fmt[in_idx]) {
+    switch (fmt[in_idx + 1]) {
       case 'i': {
         val2str(va_arg(args, alni), &outbuff[out_idx], 10);
         break;
@@ -277,7 +280,9 @@ str_user sfmt(const char* fmt, ...) {
     }
     out_idx += sizes[arg_idx];
     arg_idx++;
+    in_idx++;
   }
+  outbuff[out_idx] = '\0';
   va_end(args);
   return out;
 }

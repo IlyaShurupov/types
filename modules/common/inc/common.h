@@ -8,10 +8,7 @@
 #include "timer.h"
 #include "random.h"
 
-
-#include <limits>
-
-void memset(void* p, alni bytesize, uint1 val);
+void memsetv(void* p, alni bytesize, uint1 val);
 void memcp(void* left, const void* right, alni len);
 bool memequal(const void* left, const void* right, alni len);
 

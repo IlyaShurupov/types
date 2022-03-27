@@ -12,7 +12,7 @@ enum osfile_openflags {
 	LOAD,
 };
 
-class osfile {
+class File {
 
 	osfstream fh;
 
@@ -23,10 +23,10 @@ public:
 
 	alni avl_adress = 0;
 
-	osfile() {
+	File() {
 	}
 
-	osfile(const string& path, osfile_openflags flags) {
+	File(const string& path, osfile_openflags flags) {
 		open(path, flags);
 	}
 
@@ -52,7 +52,7 @@ public:
 
 	void close();
 
-	~osfile() {
+	~File() {
 		close();
 	}
 };

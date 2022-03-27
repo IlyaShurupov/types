@@ -12,15 +12,12 @@
     <ClCompile Include="..\src\file.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\window.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\inc\file.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\osystem.h">
+    <ClInclude Include="..\inc\filesystem.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

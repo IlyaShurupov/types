@@ -8,8 +8,7 @@
 	#define MEM_WRAP
 	
 	#ifdef MEM_WRAP
-		#define WRAP_LEN 8 // bytes
-		#define WRAP_FILL_VAL 3
+		#define WRAP_LEN 64 // bytes
 	#endif 
 
 #endif 

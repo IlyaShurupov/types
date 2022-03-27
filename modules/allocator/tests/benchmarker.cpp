@@ -141,7 +141,7 @@ benchmarker::~benchmarker() {
 
 void benchmarker::select_pattern() {
 	if (patterns.nentries) {
-		const char** pattern_names = (const char**)ownheap.alloc(sizeof(const char*) * patterns.nentries);
+		const char** pattern_names = new const char*[patterns.nentries];
 
 		const char* current_opattern_name = NULL;
 		const char* current_lpattern_name = NULL;
@@ -189,13 +189,13 @@ void benchmarker::select_pattern() {
 			}
 			ImGui::EndCombo();
 		}
-		ownheap.free(pattern_names);
+		delete pattern_names;
 	}
 }
 
 void benchmarker::pattern_combo(const char*& current) {
 	if (patterns.nentries) {
-		const char** pattern_names = (const char**)ownheap.alloc(sizeof(const char*) * patterns.nentries);
+    const char** pattern_names = new const char*[patterns.nentries];
 
 		for (auto pattern_name : patterns) {
 			pattern_names[pattern_name.entry_idx] = pattern_name->key.c_str();
@@ -210,7 +210,7 @@ void benchmarker::pattern_combo(const char*& current) {
 			}
 			ImGui::EndCombo();
 		}
-		ownheap.free(pattern_names);
+		delete pattern_names;
 	}
 }
 
@@ -243,7 +243,7 @@ void benchmarker::pattern_generator() {
 
 			if (ImGui::Button("Create")) {
 				if (patterns.Presents(create_name) == -1) {
-					pattern* new_pt = new(&ownheap) pattern();
+					pattern* new_pt = new pattern();
 					new_pt->build_in = false;
 					new_pt->pattern_name = create_name;
 					patterns.Put(create_name, new_pt);
@@ -301,8 +301,8 @@ void benchmarker::pattern_generator() {
 		if (SubMenuBegin("Preview", 1)) {
 			static float preview_res_scale = 0.05f;
 			int resolution = (int)(1000 * preview_res_scale);
-			float* x_axis = (float*)ownheap.alloc(resolution * sizeof(float));
-			float* y_axis = (float*)ownheap.alloc(resolution * sizeof(float));
+      float* x_axis = new float[resolution];
+			float* y_axis = new float[resolution];
 
 			float x = 0;
 			float step = 1.f / (resolution - 1);
@@ -318,8 +318,8 @@ void benchmarker::pattern_generator() {
 				ImPlot::EndPlot();
 			}
 
-			ownheap.free(x_axis);
-			ownheap.free(y_axis);
+			delete x_axis;
+			delete y_axis;
 			ImGui::SliderFloat("graph resolution", &preview_res_scale, 0.f, 1.f);
 			SubMenuEnd(1);
 		}
@@ -520,10 +520,10 @@ void benchmarker::analize(config pcfg) {
 
 	i_count = pattern_analizer.max_iterations();
 	if (x_axis) {
-		ownheap.free(x_axis);
+		delete x_axis;
 		x_axis = NULL;
 	}
-	x_axis = (alnf*)ownheap.alloc(sizeof(alnf) * i_count);
+	x_axis = new alnf[i_count];
 	for (alni iter = 0; iter < i_count; iter++) {
 		x_axis[iter] = (alnf)iter;
 	}
@@ -534,9 +534,9 @@ void benchmarker::analize(config pcfg) {
 }
 
 void benchmarker::init_allocators(config& pcfg) {
-	if (cfg.heap) halloc = new(&ownheap) heapalloc();
-	if (cfg.pool) palloc = new(&ownheap) poolalloc(pcfg.pool_bsize, pcfg.pool_blen);
-	if (cfg.chunk) calloc = new(&ownheap) chunkalloc(pcfg.chunk_bsize, pcfg.chunk_blen);
+	if (cfg.heap) halloc = new heapalloc();
+	if (cfg.pool) palloc = new poolalloc(pcfg.pool_bsize, pcfg.pool_blen);
+	if (cfg.chunk) calloc = new chunkalloc(pcfg.chunk_bsize, pcfg.chunk_blen);
 }
 
 void benchmarker::dest_allocators() {
@@ -562,8 +562,8 @@ void benchmarker::clear_out() {
 }
 
 void benchmarker::reserve_out(test_pattern* pattern) {
-	pattern_out = new(&ownheap) pattern_histogram(pattern);
-	if (cfg.heap) out[0] = new(&ownheap) allocator_histogram(pattern, "heap", cfg.time_per_instruction, cfg.mem_per_instruction);
-	if (cfg.pool) out[1] = new(&ownheap) allocator_histogram(pattern, "pool", cfg.time_per_instruction, cfg.mem_per_instruction);
-	if (cfg.chunk) out[2] = new(&ownheap) allocator_histogram(pattern, "chunk", cfg.time_per_instruction, cfg.mem_per_instruction);
+	pattern_out = new pattern_histogram(pattern);
+	if (cfg.heap) out[0] = new allocator_histogram(pattern, "heap", cfg.time_per_instruction, cfg.mem_per_instruction);
+	if (cfg.pool) out[1] = new allocator_histogram(pattern, "pool", cfg.time_per_instruction, cfg.mem_per_instruction);
+	if (cfg.chunk) out[2] = new allocator_histogram(pattern, "chunk", cfg.time_per_instruction, cfg.mem_per_instruction);
 }

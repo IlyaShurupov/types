@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-void osfile::open(const string& path, osfile_openflags flags) {
+void File::open(const string& path, osfile_openflags flags) {
 	adress = 0;
 	avl_adress = 0;
 
@@ -28,7 +28,7 @@ void osfile::open(const string& path, osfile_openflags flags) {
 	}
 }
 
-void osfile::close() {
+void File::close() {
 	if (opened) {
 		fh.close();
 		opened = false;
@@ -36,7 +36,7 @@ void osfile::close() {
 }
 
 
-void osfile::write_bytes(const int1* in, alni size, alni p_adress) {
+void File::write_bytes(const int1* in, alni size, alni p_adress) {
 	if (p_adress == -1) {
 		p_adress = this->adress;
 		this->adress += size;
@@ -47,7 +47,7 @@ void osfile::write_bytes(const int1* in, alni size, alni p_adress) {
 }
 
 
-void osfile::read_bytes(int1* in, alni size, alni p_adress) {
+void File::read_bytes(int1* in, alni size, alni p_adress) {
 	if (p_adress == -1) {
 		p_adress = this->adress;
 		adress += size;
@@ -56,14 +56,14 @@ void osfile::read_bytes(int1* in, alni size, alni p_adress) {
 	fh.read(in, size);
 }
 
-void osfile::fill(uint1 val, alni len) {
+void File::fill(uint1 val, alni len) {
 	for (int i = 0; i < len; i++) {
 		write<uint1>(&val, i);
 	}
 }
 
 
-alni osfile::size() {
+alni File::size() {
 	alni out = 0;
 	fh.seekg(0, std::ios::beg);
 	out = fh.tellg();
@@ -74,12 +74,14 @@ alni osfile::size() {
 
 
 string read_file(string path) {
-	osfile file;
+	File file;
 	file.open(path, osfile_openflags::LOAD);
 
+	alni len = file.size();
 	string script;
-	script.reserve(file.size());
+	script.reserve(len);
 
-	file.read_bytes(script.get_writable(), file.size(), 0);
+	int1* buff = script.get_writable();
+	file.read_bytes(buff, len, 0);
 	return script;
 }

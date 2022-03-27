@@ -21,6 +21,9 @@
     <ClCompile Include="..\src\color.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\trigonometry.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\inc\matrix.h">
@@ -45,6 +48,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\color.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\trigonometry.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

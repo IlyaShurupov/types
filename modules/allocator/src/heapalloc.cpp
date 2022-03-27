@@ -31,7 +31,7 @@ void* heapalloc::alloc(alni size) {
   if (mhptr) {
 
     for (alni i = 0; i < total; i++) {
-      ((int1*)mhptr)[i] = WRAP_FILL_VAL;
+      ((int1*)mhptr)[i] = WRAP_FILL_VAL_HEAPALLOC;
     }
 
 #else
@@ -62,7 +62,7 @@ void* heapalloc::alloc(alni size) {
 #endif
 
     #ifdef MEM_ZEROING
-    memset(out, size, 0);
+    memsetv(out, size, 0);
     #endif
 
     return out;
@@ -86,7 +86,7 @@ void heapalloc::free(void* ptr) {
   for (alni i = 0; i < WRAP_LEN; i++) {
     int1 val1 = ((int1*)wrap1)[i];
     int1 val2 = ((int1*)wrap2)[i];
-    assert((val1 == WRAP_FILL_VAL && val2 == WRAP_FILL_VAL));
+    assert((val1 == WRAP_FILL_VAL_HEAPALLOC && val2 == WRAP_FILL_VAL_HEAPALLOC));
   }
 
 #else
@@ -107,7 +107,7 @@ void heapalloc::free(void* ptr) {
 #endif
 
 #ifdef MEM_ZEROING
-  memset(mhptr, mhptr->size, 0);
+  memsetv(mhptr, mhptr->size, 0);
 #endif
 
   num--;
@@ -138,7 +138,7 @@ bool heapalloc::wrap_corrupted() {
       int1 val1 = ((int1*)wrap1)[i];
       int1 val2 = ((int1*)wrap2)[i];
 
-      if (val1 != WRAP_FILL_VAL || val2 != WRAP_FILL_VAL) {
+      if (val1 != WRAP_FILL_VAL_HEAPALLOC || val2 != WRAP_FILL_VAL_HEAPALLOC) {
         return true;
       }
     }

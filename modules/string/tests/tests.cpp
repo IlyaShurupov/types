@@ -20,6 +20,7 @@ int main() {
 	string str6(str3);
 
 	str5 += "add";
+	
 	std::cout << str5.cstr();
 
 	f("sad");

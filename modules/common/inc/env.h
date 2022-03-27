@@ -42,14 +42,14 @@ typedef double									flt8;
 
 	#define ALIGNED_MAX LLONG_MAX
 	#define ALIGNED_MIN -LLONG_MAX
-
+  #define ALIGNED_SIZE 64
 #else
 	typedef flt4										alnf;
 	typedef int4                    alni;
 
 	#define ALIGNED_MAX INT_MAX
 	#define ALIGNED_MIN -INT_MAX
-
+  #define ALIGNED_SIZE 34
 #endif
 
 

@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-void memset(void* p, alni bytesize, uint1 val) {
+void memsetv(void* p, alni bytesize, uint1 val) {
 
 	alni alignedval = 0;
 	for (alni idx = 0; idx < sizeof(alni); idx++) {

@@ -54,7 +54,6 @@ struct benchmarker {
 
 	config cfg;
 	bool is_output = false;
-	heapalloc ownheap;
 
 	// allocators
 	heapalloc* halloc = NULL;

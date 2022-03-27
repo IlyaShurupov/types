@@ -11,9 +11,6 @@ alni align(alni out) {
 	}
 	return out;
 }
-const alni chunk_wrap_len_bytes = align(WRAP_LEN);
-#define CHUNK_WRAP_LEN chunk_wrap_len_bytes
-#undef WRAP_LEN
 #endif
 
 alni calc_bsize(alni bsize) {
@@ -112,14 +109,14 @@ void* chunkalloc::alloc(alni size) {
 		int1* wrap2 = ((int1*)((used_slot_head*)out - 1)) + bsize - CHUNK_WRAP_LEN;
 
 		for (alni i = 0; i < CHUNK_WRAP_LEN; i++) {
-			wrap1[i] = WRAP_FILL_VAL;
-			wrap2[i] = WRAP_FILL_VAL;
+			wrap1[i] = WRAP_FILL_VAL_CHUNK;
+			wrap2[i] = WRAP_FILL_VAL_CHUNK;
 		}
 
 		out = (alni*)((int1*)out + CHUNK_WRAP_LEN);
 		#endif // MEM_WRAP
 		#ifdef MEM_ZEROING
-		memset(out, size, 0);
+		memsetv(out, size, 0);
 		#endif
 	}
 	else {
@@ -140,13 +137,19 @@ void chunkalloc::free(void* p) {
 	for (alni i = 0; i < CHUNK_WRAP_LEN; i++) {
 		int1 val1 = ((int1*)wrap1)[i];
 		int1 val2 = ((int1*)wrap2)[i];
-		assert((val1 == WRAP_FILL_VAL && val2 == WRAP_FILL_VAL));
+		assert((val1 == WRAP_FILL_VAL_CHUNK && val2 == WRAP_FILL_VAL_CHUNK));
 	}
 
 	bdel = (alni*)((int1*)bdel - CHUNK_WRAP_LEN);
 	#endif
+
+
 	#ifdef MEM_ZEROING
-		memset(bdel, bsize - sizeof(used_slot_head), 0);
+  #ifdef MEM_WRAP
+  memsetv((int1*)bdel + CHUNK_WRAP_LEN, bsize - sizeof(used_slot_head) - CHUNK_WRAP_LEN * 2, 0);
+	#else
+	memsetv(bdel, bsize - sizeof(used_slot_head), 0);
+	#endif
 	#endif
 
 	bdel = (alni*)((used_slot_head*)bdel - 1);
@@ -155,4 +158,31 @@ void chunkalloc::free(void* p) {
 	bnext = bdel;
 
 	++bfreec;
+}
+
+
+bool chunkalloc::wrap_corrupted() {
+
+#ifdef MEM_WRAP
+
+	assert(sizeof(unused_slot_head) == sizeof(used_slot_head) && "chunk corruption detection will fail in full buff scan");
+
+  for (alni bidx = 0; bidx < binitc; bidx++) {
+
+		alni* bp = (alni*)get_addr(bidx);
+		alni* bp_next = (alni*)get_addr(bidx + 1);
+
+    int1* wrap1 = ((int1*)(bp + 1));
+    int1* wrap2 = ((int1*)(bp_next)) - CHUNK_WRAP_LEN;
+
+    for (alni i = 0; i < CHUNK_WRAP_LEN; i++) {
+      int1 val1 = ((int1*)wrap1)[i];
+      int1 val2 = ((int1*)wrap2)[i];
+      if (val1 != WRAP_FILL_VAL_CHUNK || val2 != WRAP_FILL_VAL_CHUNK) {
+        return true;
+      }
+    }
+  }
+#endif  // MEM_WRAP
+  return false;
 }

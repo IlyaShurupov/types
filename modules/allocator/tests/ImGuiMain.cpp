@@ -2,17 +2,17 @@
 #include "benchmarker.h"
 
 class ImgUIbenchmarker : public imGuiDefaultApp {
-	benchmarker bnm;
+  benchmarker bnm;
 
-public: 
-	ImgUIbenchmarker() {}
-	bool mainloop_tick() override {
-		bnm.draw();
-		return true;
-	}
+ public:
+  ImgUIbenchmarker() {}
+  bool mainloop_tick() override {
+    bnm.draw();
+    return true;
+  }
 };
 
 int main() {
-	ImgUIbenchmarker app;
-	app.mainloop();
+  ImgUIbenchmarker app;
+  app.mainloop();
 }

@@ -3,46 +3,50 @@
 #include "allocator.h"
 
 #ifdef MEM_WRAP
-extern const alni chunk_wrap_len_bytes;
-#define CHUNK_WRAP_LEN chunk_wrap_len_bytes
+#define WRAP_FILL_VAL_CHUNK 4
+#if WRAP_LEN % ALIGNED_SIZE != 0
+#error "WRAP_LEN must by multiple of sizeof(alni)"
+#endif
+#define CHUNK_WRAP_LEN WRAP_LEN
 #endif
 
+
 struct unused_slot_head {
-	alni* bnext;
+  alni* bnext;
 };
 
 struct used_slot_head {
-	class chunkalloc* chunk_p;
+  class chunkalloc* chunk_p;
 };
 
 alni calc_bsize(alni bsize);
 
 class chunkalloc : public allocator {
-	
-	alni bsize = 0;
-	alni nblocks = 0;
+  alni bsize = 0;
+  alni nblocks = 0;
 
-	alni* buff = NULL;
-	alni* bnext = NULL;
-	alni bfreec = 0;
-	alni binitc = 0;
+  alni* buff = NULL;
+  alni* bnext = NULL;
+  alni bfreec = 0;
+  alni binitc = 0;
 
-public:
+  inline void* get_addr(alni idx) const;
+  inline alni get_idx(const void* address) const;
 
-	chunkalloc(alni bsize, alni nblocks);
-	~chunkalloc();
+ public:
+  chunkalloc(alni bsize, alni nblocks);
+  ~chunkalloc();
 
-	bool avaliable();
-	alni inuse_size();
-	alni reserved_size();
-	bool is_empty();
+  bool avaliable() override;
+  alni inuse_size() override;
+  alni reserved_size() override;
+  bool is_empty() override;
 
-	inline void* get_addr(alni idx) const;
-	inline alni get_idx(const void* address) const;
-	alni get_bsize();
+  alni get_bsize();
 
-	void* alloc(alni size);
-	virtual void free(void* p);
+  void* alloc(alni size) override;
+  virtual void free(void* p) override;
 
-	bool wrap_corrupted() { return false; }
+  bool wrap_support() override { return true; }
+  bool wrap_corrupted() override;
 };

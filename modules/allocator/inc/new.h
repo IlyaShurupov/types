@@ -4,6 +4,14 @@
 #include "alloc_cfg.h"
 
 #include "heapalloc.h"
+#include "chunkalloc.h"
+
+#ifdef MEM_WRAP
+#if WRAP_FILL_VAL_HEAPALLOC == WRAP_FILL_VAL_CHUNK
+#error "WRAP_FILL_VAL_HEAPALLOC == WRAP_FILL_VAL_CHUNK"
+#endif
+#endif  // WRAP_
+
 
 extern heapalloc* global_heap;
 

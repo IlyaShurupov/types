@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.h"
+#include "trigonometry.h"
 
 template <typename Type> class vec2;
 using vec2f = vec2<alnf>;

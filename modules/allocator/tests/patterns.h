@@ -33,7 +33,7 @@ struct child_pattern {
 
 struct pattern {
   leav_pattern_type type = leav_pattern_type::CONST;
-  string pattern_name = "";
+  string pattern_name;
 
   Array<child_pattern> regions;
   bool build_in = true;
@@ -73,7 +73,7 @@ struct pattern {
 // -------------------- build-in patterns ---------------------------- //
 
 struct const_pattern : pattern {
-  float val = 0.f;
+  float val = 1.f;
   const_pattern() {
     type = leav_pattern_type::CONST;
     pattern_name = "const";
