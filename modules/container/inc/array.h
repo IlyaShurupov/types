@@ -88,13 +88,33 @@ class Array {
   }
 
   void operator=(const Array& array) {
-    allocate(array.length);
+    Reserve(array.length);
     for (int i = 0; i < array.length; i++) {
       buff[i] = array.buff[i];
     }
   }
 
-  Type& operator[](alni idx) {
+  void operator+=(const Array& array) {
+    if (!buff) {
+      return operator=(array);
+    }
+
+    alni new_len = array.length + length;
+    Type* newbuff = new Type[new_len]();
+
+    for (halni i = 0; i < length; i++) {
+      newbuff[i] = buff[i];
+    }
+    for (halni i = 0; i < array.length; i++) {
+      newbuff[length + i] = array.buff[i];
+    }
+
+    delete[] buff;
+    buff = newbuff;
+    length = new_len;
+  }
+
+  inline Type& operator[](alni idx) {
     return buff[idx];
   }
 

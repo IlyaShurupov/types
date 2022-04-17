@@ -1,27 +1,14 @@
 #pragma once
 
-#include "mesh.h"
+#include "vec3.h"
 
-#include "list.h"
-
-struct RayHitData {
-	bool Hit = false;
-	class Mesh* Obj = nullptr;
-	Trig* trig = nullptr;
-	vec3f HitPos;
-};
-
-class Ray
-{
-public:
+class Ray {
+	public:
 	vec3f Dir;
 	vec3f Pos;
 
-	RayHitData HitData;
-
-public:
-	Ray(vec3f& Dir, vec3f& Pos);
+	public:
+	Ray(const vec3f& Dir, const  vec3f& Pos);
 	Ray();
 	~Ray();
-	void Cast(list<Mesh*>* objects, float ray_length);
 };

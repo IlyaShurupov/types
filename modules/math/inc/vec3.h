@@ -3,12 +3,12 @@
 #include "trigonometry.h"
 
 template <typename Type> class vec3;
-using vec3f = vec3<alnf>;
-using vec3i = vec3<alni>;
+using vec3f = vec3<halnf>;
+using vec3i = vec3<halni>;
 
 template <typename Type>
 class vec3 {
-public:
+	public:
 	union {
 		Type x;
 		Type r;
@@ -24,9 +24,9 @@ public:
 		Type b;
 	};
 
-public:
+	public:
 
-	// Initialization
+		// Initialization
 
 	vec3(Type x, Type y, Type z) {
 		this->x = x;
@@ -40,6 +40,9 @@ public:
 	}
 	vec3() {
 		x = y = z = 0;
+	}
+	vec3(Type x) {
+		assign(x);
 	}
 	vec3(const vec3& vec) {
 		x = vec.x;
@@ -56,10 +59,10 @@ public:
 		y = vec.y;
 		z = vec.z;
 	}
-	void assign(Type vec[3]) {
-		x = vec[0];
-		y = vec[1];
-		z = vec[2];
+	void assign(Type val) {
+		x = val;
+		y = val;
+		z = val;
 	}
 	vec3& operator=(const vec3& vec) {
 		x = vec.x;
@@ -68,23 +71,55 @@ public:
 		return *this;
 	}
 
+	vec3& operator=(const Type* in) {
+		x = in[0];
+		y = in[1];
+		z = in[2];
+		return *this;
+	}
+
 	//  create on stack
-	vec3 operator+(const vec3& vec) const { return vec3(x + vec.x, y + vec.y, z + vec.z); }
-	vec3 operator-(const vec3& vec) const { return vec3(x - vec.x, y - vec.y, z - vec.z); }
-	vec3 operator+(Type val) const { return vec3(x + val, y + val, z + val); }
-	vec3 operator-(Type val) const { return vec3(x - val, y - val, z - val); }
-	vec3 operator*(Type val) const { return vec3(x * val, y * val, z * val); }
-	vec3 operator/(Type val) const { return vec3(x / val, y / val, z / val);; }
+	vec3 operator+(const vec3& vec) const {
+		return vec3(x + vec.x, y + vec.y, z + vec.z);
+	}
+	vec3 operator-(const vec3& vec) const {
+		return vec3(x - vec.x, y - vec.y, z - vec.z);
+	}
+	vec3 operator+(Type val) const {
+		return vec3(x + val, y + val, z + val);
+	}
+	vec3 operator-(Type val) const {
+		return vec3(x - val, y - val, z - val);
+	}
+	vec3 operator*(Type val) const {
+		return vec3(x * val, y * val, z * val);
+	}
+	vec3 operator/(Type val) const {
+		return vec3(x / val, y / val, z / val);;
+	}
 
 
-	// compare
-	bool operator>(const vec3<Type>& vec) const { return lenpow2() > vec.lenpow2(); }
-	bool operator<(const vec3<Type>& vec) const { return lenpow2() < vec.lenpow2(); }
-	bool operator>=(const vec3<Type>& vec) const { return lenpow2() >= vec.lenpow2(); }
-	bool operator<=(const vec3<Type>& vec) const { return lenpow2() <= vec.lenpow2(); }
-	bool operator==(const vec3<Type>& vec) const { return (x == vec.x && y == vec.y && z == vec.z); }
-	
-	//  write
+// compare
+	bool operator>(const vec3<Type>& vec) const {
+		return lenpow2() > vec.lenpow2();
+	}
+	bool operator<(const vec3<Type>& vec) const {
+		return lenpow2() < vec.lenpow2();
+	}
+	bool operator>=(const vec3<Type>& vec) const {
+		return lenpow2() >= vec.lenpow2();
+	}
+	bool operator<=(const vec3<Type>& vec) const {
+		return lenpow2() <= vec.lenpow2();
+	}
+	bool operator==(const vec3<Type>& vec) const {
+		return (x == vec.x && y == vec.y && z == vec.z);
+	}
+
+//  write
+	vec3 operator-() {
+		return vec3(-x, -y, -z);
+	}
 	void operator -= (Type val) {
 		x -= val;
 		y -= val;
@@ -118,11 +153,21 @@ public:
 
 	// Vector Properties
 
-	Type Dot(const vec3& vec) const { return (x * vec.x + y * vec.y + z * vec.z); }
-	alnf Length() const { return sqrt((alnf)(x * x + y * y + z * z)); }
-	Type lenpow2() const { return (x * x + y * y + z * z); }
-	vec3 Dir() const { return *this / this->Length(); }
-	void Normalize() { *this /= this->Length(); }
+	Type Dot(const vec3& vec) const {
+		return (x * vec.x + y * vec.y + z * vec.z);
+	}
+	alnf Length() const {
+		return trigs::sqrt((halnf) (x * x + y * y + z * z));
+	}
+	Type lenpow2() const {
+		return (x * x + y * y + z * z);
+	}
+	vec3 Dir() const {
+		return *this / (Type) this->Length();
+	}
+	void Normalize() {
+		*this /= (Type) this->Length();
+	}
 	vec3 Cross(const vec3& vec) const {
 		Type x = this->y * vec.z - this->z * vec.y;
 		Type y = this->z * vec.x - this->x * vec.z;
@@ -134,18 +179,47 @@ public:
 
 	void RotZ(alnf cosa, alnf sina) {
 		Type tmp = x;
-		x = (Type)(x * cosa - y * sina);
-		y = (Type)(tmp * sina + y * cosa);
+		x = (Type) (x * cosa - y * sina);
+		y = (Type) (tmp * sina + y * cosa);
 	}
 	void RotY(float cosa, float sina) {
 		Type tmp = x;
-		x = (Type)(x * cosa - z * sina);
-		z = (Type)(tmp * sina + z * cosa);
+		x = (Type) (x * cosa - z * sina);
+		z = (Type) (tmp * sina + z * cosa);
 	}
 	void RotX(float cosa, float sina) {
 		Type tmp = y;
-		y = (Type)(y * cosa - z * sina);
-		z = (Type)(tmp * sina + z * cosa);
+		y = (Type) (y * cosa - z * sina);
+		z = (Type) (tmp * sina + z * cosa);
 	}
 
+	vec3<Type> RotateAround(const vec3<Type>& axis, halnf angle) {
+		vec3f out(*this);
+
+		halnf angl_x = axis.anglex();
+
+		halnf sin_angl_x = (halnf)trigs::sin(angl_x);
+		halnf cos_angl_x = (halnf) trigs::cos(angl_x);
+
+		halnf angl_y = axis.angley();
+
+		halnf sin_angl_y = (halnf) trigs::sin(angl_y);
+		halnf cos_angl_y = (halnf) trigs::cos(angl_y);
+
+		out.RotX(cos_angl_x, sin_angl_x);
+		out.RotY(cos_angl_y, sin_angl_y);
+		out.RotZ(trigs::cos(angle), trigs::sin(angle));
+		out.RotY(cos_angl_y, -sin_angl_y);
+		out.RotX(cos_angl_x, -sin_angl_x);
+
+		return out;
+	}
+
+	halnf anglex() const {
+		return (halnf) trigs::atan2(y, z);
+	}
+
+	halnf angley() const {
+		return (halnf) trigs::atan2(x, z);
+	}
 };

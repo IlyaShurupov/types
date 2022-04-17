@@ -27,33 +27,85 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\glew\build\vc12\glew_static.vcxproj">
+      <Project>{664e6f0d-6784-4760-9565-d54f8eb1edf4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\glfw\config\src\glfw.vcxproj">
+      <Project>{8fb23769-990f-3014-9d36-cd40b93cf151}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\lunasvg\config\lunasvg_static.vcxproj">
+      <Project>{4feb32b5-cd61-4d66-93e7-473da0fc5ec5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\soil\config\soil_static.vcxproj">
+      <Project>{2330bd62-8f88-4135-bb43-4740c2d4dc55}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\allocator\cfg\allocator.vcxproj">
+      <Project>{98d6ae72-22f4-4498-ace5-21ad0b4abf0a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\allocator\cfg\allocator_banchmarking.vcxproj">
+      <Project>{fee95cb2-cbdb-4114-8c94-80941a8db61b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\allocator\cfg\allocator_tests.vcxproj">
+      <Project>{57a857c1-606d-4e65-8c36-982e841c63b0}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\common\cfg\common.vcxproj">
       <Project>{1500663a-e20c-4ab8-b3aa-78a2cae43d86}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\common\cfg\common_tests.vcxproj">
+      <Project>{49c64bf1-3d0b-49d7-8125-a6c9a70a91ae}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\container\cfg\container.vcxproj">
+      <Project>{ffdd1c2c-9699-44b5-825c-e56eb6274546}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\container\cfg\container_tests.vcxproj">
+      <Project>{f9b4e8cd-780d-4d4e-a7a9-28006348499b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\filesystem\cfg\filesystem.vcxproj">
+      <Project>{7ea2e75d-25ec-482f-b57d-ba08e085e1cf}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\filesystem\cfg\filesystem_tests.vcxproj">
+      <Project>{46d23f9c-5305-45f2-b6a9-eeea1d136f37}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\math\cfg\math.vcxproj">
+      <Project>{0ca3a8a9-d599-4c36-845f-65591a7be69f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\math\cfg\math_tests.vcxproj">
+      <Project>{e020a26d-c589-4fb2-a1fc-c46b15b36ad6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\string\cfg\string.vcxproj">
+      <Project>{3dec959d-9484-4bb6-819c-2a8074ea3600}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\string\cfg\string_tests.vcxproj">
+      <Project>{d9c69523-caf0-40a1-bfe4-c3f9a01e2792}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\color.cpp" />
-    <ClCompile Include="..\src\topology.cpp" />
-    <ClCompile Include="..\src\ray.cpp" />
-    <ClCompile Include="..\src\trig.cpp" />
-    <ClCompile Include="..\src\trigonometry.cpp" />
+    <ClInclude Include="..\inc\easytab.h" />
+    <ClInclude Include="..\inc\fbuffer.h" />
+    <ClInclude Include="..\inc\gl.h" />
+    <ClInclude Include="..\inc\glcommon.h" />
+    <ClInclude Include="..\inc\glutils.h" />
+    <ClInclude Include="..\inc\glw.h" />
+    <ClInclude Include="..\inc\objloader.h" />
+    <ClInclude Include="..\inc\shader.h" />
+    <ClInclude Include="..\inc\tablet.h" />
+    <ClInclude Include="..\inc\texture.h" />
+    <ClInclude Include="..\inc\window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\inc\color.h" />
-    <ClInclude Include="..\inc\mat3.h" />
-    <ClInclude Include="..\inc\matrix.h" />
-    <ClInclude Include="..\inc\topology.h" />
-    <ClInclude Include="..\inc\ray.h" />
-    <ClInclude Include="..\inc\rect.h" />
-    <ClInclude Include="..\inc\trig.h" />
-    <ClInclude Include="..\inc\trigonometry.h" />
-    <ClInclude Include="..\inc\vec2.h" />
-    <ClInclude Include="..\inc\vec3.h" />
+    <ClCompile Include="..\src\fbuffer.cpp" />
+    <ClCompile Include="..\src\gl.cpp" />
+    <ClCompile Include="..\src\glutils.cpp" />
+    <ClCompile Include="..\src\glw.cpp" />
+    <ClCompile Include="..\src\shader.cpp" />
+    <ClCompile Include="..\src\tablet.cpp" />
+    <ClCompile Include="..\src\texture.cpp" />
+    <ClCompile Include="..\src\window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{0CA3A8A9-D599-4C36-845F-65591A7BE69F}</ProjectGuid>
+    <ProjectGuid>{89C59FE4-0566-4A6B-B3D5-B6F11076E744}</ProjectGuid>
     <RootNamespace>rtc</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -159,9 +211,9 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);GLEW_STATIC;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\allocator\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\math\inc;$(ProjectDir)..\..\string\inc;$(ProjectDir)..\..\filesystem\inc;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\..\..\glm;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\soil\include;$(ProjectDir)..\..\..\..\lunasvg\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -175,9 +227,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);GLEW_STATIC;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\allocator\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\math\inc;$(ProjectDir)..\..\string\inc;$(ProjectDir)..\..\filesystem\inc;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\..\..\glm;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\soil\include;$(ProjectDir)..\..\..\..\lunasvg\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -193,9 +245,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);GLEW_STATIC;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\allocator\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\math\inc;$(ProjectDir)..\..\string\inc;$(ProjectDir)..\..\filesystem\inc;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\..\..\glm;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\soil\include;$(ProjectDir)..\..\..\..\lunasvg\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -209,11 +261,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\allocator\inc</AdditionalIncludeDirectories>
-      <BrowseInformation>false</BrowseInformation>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\math\inc;$(ProjectDir)..\..\string\inc;$(ProjectDir)..\..\filesystem\inc;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\..\..\glm;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\soil\include;$(ProjectDir)..\..\..\..\lunasvg\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <BrowseInformation>false</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -229,9 +281,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\allocator\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\math\inc;$(ProjectDir)..\..\string\inc;$(ProjectDir)..\..\filesystem\inc;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\..\..\glm;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\soil\include;$(ProjectDir)..\..\..\..\lunasvg\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -247,9 +299,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;GLEW_STATIC</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;GLEW_STATIC;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\allocator\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\math\inc;$(ProjectDir)..\..\string\inc;$(ProjectDir)..\..\filesystem\inc;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\..\..\glm;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\soil\include;$(ProjectDir)..\..\..\..\lunasvg\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>

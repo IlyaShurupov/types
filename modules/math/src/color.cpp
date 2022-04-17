@@ -1,18 +1,17 @@
 
 #include "color.h"
 
-rgba::rgba() { r = g = b = a = 1.f; }
-rgba::rgba(flt4 pr, flt4 pg, flt4 pb, flt4 pa) { set(pr, pg, pb, pa); }
-rgba::rgba(flt4 val) { set(val, val, val, val); }
-void rgba::set(flt4 pr, flt4 pg, flt4 pb, flt4 pa) {
+rgb::rgb() { r = g = b = 1.f; }
+rgb::rgb(flt4 pr, flt4 pg, flt4 pb) { set(pr, pg, pb); }
+rgb::rgb(flt4 val) { set(val, val, val); }
+void rgb::set(flt4 pr, flt4 pg, flt4 pb) {
   r = pr;
   b = pb;
   g = pg;
-  a = pa;
 }
 
-rgba::operator hsva() {
-  hsva out;
+rgb::operator hsv() {
+  hsv out;
 
   if (!(r || g || b)) {
     return out;
@@ -50,17 +49,16 @@ rgba::operator hsva() {
   return out;
 }
 
-hsva::hsva() { h = s = v = a = 0.f; }
-hsva::hsva(flt4 ph, flt4 ps, flt4 pv, flt4 pa) { set(ph, ps, pv, pa); }
-void hsva::set(flt4 ph, flt4 ps, flt4 pv, flt4 pa) {
+hsv::hsv() { h = s = v = 0.f; }
+hsv::hsv(flt4 ph, flt4 ps, flt4 pv) { set(ph, ps, pv); }
+void hsv::set(flt4 ph, flt4 ps, flt4 pv) {
   h = ph;
   s = ps;
   v = pv;
-  a = pa;
 }
 
-hsva::operator rgba() {
-  rgba out;
+hsv::operator rgb() {
+  rgb out;
   flt4 hh, p, q, t, ff;
   long i;
 

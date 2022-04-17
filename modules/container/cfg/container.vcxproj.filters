@@ -39,7 +39,10 @@
     <ClInclude Include="..\inc\list_policies.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\tuple.h">
+    <ClInclude Include="..\inc\npple.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\array2d.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

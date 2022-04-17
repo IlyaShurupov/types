@@ -3,8 +3,8 @@
 #include "trigonometry.h"
 
 template <typename Type> class vec2;
-using vec2f = vec2<alnf>;
-using vec2i = vec2<alni>;
+using vec2f = vec2<halnf>;
+using vec2i = vec2<halni>;
 
 template <typename Type>
 class vec2 {
@@ -128,7 +128,7 @@ class vec2 {
   }
   alnf Length() const {
     Type sqred = (Type)(x * x + y * y);
-    return sqrt(sqred);
+    return trigs::sqrt(sqred);
   }
 
   // Vector Transformation

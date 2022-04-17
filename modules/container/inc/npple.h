@@ -26,3 +26,19 @@ struct tuple {
 		T2 y;
 	};
 };
+
+template <typename T1, typename T2, typename T3>
+struct tripple {
+	union {
+		T1 x;
+		T1 v1;
+	};
+	union {
+		T2 y;
+		T2 v2;
+	};
+	union {
+		T3 z;
+		T3 v3;
+	};
+};

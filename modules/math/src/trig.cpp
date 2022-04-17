@@ -9,7 +9,13 @@ Trig::Trig() {
 	V2.assign(0.f, 0.f, 0.f);
 }
 
-Trig::Trig(vec3f& v0, vec3f& v1, vec3f& v2) {
+Trig::Trig(const vec3f& v0, const vec3f& v1, const vec3f& v2) {
+	V0 = v0;
+	V1 = v1;
+	V2 = v2;
+}
+
+void Trig::assign(const vec3f& v0, const vec3f& v1, const vec3f& v2) {
 	V0 = v0;
 	V1 = v1;
 	V2 = v2;
@@ -24,12 +30,12 @@ void Trig::Normal(vec3f& dir)
 	dir.Normalize();
 }
 
+vec3f edge1, edge2, h, s, q;
+halnf a, f, u, v;
+halnf t;
 
 bool Trig::RayHit(class Ray& ray, vec3f& HitPos) {
 
-	vec3f edge1, edge2, h, s, q;
-
-	alnf a, f, u, v;
 	edge1 = V1 - V0;
 	edge2 = V2 - V0;
 
@@ -55,8 +61,8 @@ bool Trig::RayHit(class Ray& ray, vec3f& HitPos) {
 		return false;
 	}
 
-	alnf t = f * edge2.Dot(q);
-        if (t > MATH_EPSILON) {
+	t = f * edge2.Dot(q);
+  if (t > MATH_EPSILON) {
 		HitPos = ray.Pos + ray.Dir * t;
 		return true;
 	}

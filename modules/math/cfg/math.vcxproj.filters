@@ -9,7 +9,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\mesh.cpp">
+    <ClCompile Include="..\src\topology.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ray.cpp">
@@ -26,10 +26,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\inc\matrix.h">
+    <ClInclude Include="..\inc\mat3.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\mesh.h">
+    <ClInclude Include="..\inc\topology.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\ray.h">
@@ -51,6 +51,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\trigonometry.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\matrix.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

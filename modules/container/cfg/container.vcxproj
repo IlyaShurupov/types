@@ -33,9 +33,13 @@
     <ProjectReference Include="..\..\common\cfg\common.vcxproj">
       <Project>{1500663a-e20c-4ab8-b3aa-78a2cae43d86}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\math\cfg\math.vcxproj">
+      <Project>{0ca3a8a9-d599-4c36-845f-65591a7be69f}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\inc\array.h" />
+    <ClInclude Include="..\inc\array2d.h" />
     <ClInclude Include="..\inc\avltree.h" />
     <ClInclude Include="..\inc\containers.h" />
     <ClInclude Include="..\inc\avl_policies.h" />
@@ -45,7 +49,7 @@
     <ClInclude Include="..\inc\map_policies.h" />
     <ClInclude Include="..\inc\sort.h" />
     <ClInclude Include="..\inc\stack.h" />
-    <ClInclude Include="..\inc\tuple.h" />
+    <ClInclude Include="..\inc\npple.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\containers.cpp" />
@@ -161,7 +165,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\math\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -177,7 +181,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\math\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -195,7 +199,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\math\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -211,7 +215,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\math\inc</AdditionalIncludeDirectories>
       <BrowseInformation>false</BrowseInformation>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -231,7 +235,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\math\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -249,7 +253,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\allocator\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\math\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>

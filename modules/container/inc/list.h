@@ -42,13 +42,9 @@ public:
 public:
 	list() {}
 
-	inline list_node<Type>* First() { return first; }
-	inline list_node<Type>* Last() { return last; }
-
-	inline const list_node<Type>* First() const { return first; }
-	inline const list_node<Type>* Last() const { return last; }
-	
-	inline alni Len() { return length; }
+	inline list_node<Type>* First() const { return first; }
+	inline list_node<Type>* Last() const { return last; }
+	inline alni Len() const { return length; }
 
 	void Attach(list_node<Type>* node, list_node<Type>* node_to) {
 		if (node_to) {
@@ -93,7 +89,7 @@ public:
 		length--;
 	}
 
-	list_node<Type>* Find(alni idx) {
+	list_node<Type>* Find(alni idx) const {
 		if (!First() || idx < 0 || idx > Len() - 1) {
 			return nullptr;
 		}
@@ -104,7 +100,7 @@ public:
 		return found;
 	}
 
-	list_node<Type>* Find(Type& data) {
+	list_node<Type>* Find(Type& data) const {
 		list_node<Type>* found = First();
 		for (alni i = 0; data != found->data; i++) {
 			if (!found->next) {
@@ -234,7 +230,7 @@ public:
 	}
 
 	template <typename compare_val>
-	list_node<Type>* Find(bool (*found)(list_node<Type>* node, compare_val val), compare_val value) {
+	list_node<Type>* Find(bool (*found)(list_node<Type>* node, compare_val val), compare_val value) const {
 		for (list_node<Type>* node = First(); node; node = node->next) {
 			if (found(node, value)) {
 				return node;
@@ -247,11 +243,12 @@ public:
 		Delete();
 	}
 
-	ListIterator<Type> begin() {
-		return ListIterator<Type>(this, 0);
+	ListIterator<Type> begin() const {
+		ListIterator<Type> out(this, 0);
+		return out;
 	}
 
-	alni end() {
+	alni end() const {
 		return Len();
 	}
 
@@ -272,7 +269,7 @@ public:
 	Type& Data() { return iter->data; }
 	list_node<Type>* node() { return iter; }
 
-	ListIterator(list<Type>* list, alni p_idx) {
+	ListIterator(const list<Type>* list, alni p_idx) {
 		idx = p_idx;
 		iter = list->Find(idx);
 	}

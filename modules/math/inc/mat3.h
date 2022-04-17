@@ -3,7 +3,7 @@
 #include "Vec3.h"
 
 template <typename Type> class mat3;
-using mat3f = mat3<alnf>;
+using mat3f = mat3<halnf>;
 
 template <typename Type>
 class mat3
@@ -106,10 +106,10 @@ public:
 		return out; 
 	}
 
-	void Rotate(const vec& Dir, alnf angle) {
+	void Rotate(vec Dir, alnf angle) {
 
-		alnf cosa = (alnf)cos(angle);
-		alnf sina = (alnf)sin(angle);
+		alnf cosa = (alnf)trigs::cos(angle);
+		alnf sina = (alnf)trigs::sin(angle);
 		alnf tmp = 1 - cosa;
 
 		I.x = cosa + Dir.x * Dir.x * tmp;

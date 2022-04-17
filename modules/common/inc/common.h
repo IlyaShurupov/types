@@ -75,6 +75,7 @@ struct range_iter {
 struct range {
 
 	range() : st(0), nd(0) {}
+	range(alni end) : st(0), nd(end) {}
 	range(alni st, alni nd) : st(st), nd(nd) {}
 
 	alni st;
