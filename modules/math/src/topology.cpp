@@ -3,10 +3,108 @@
 
 #define MATH_EPSILON 0.00001
 
+vec3f camera::get_target() {
+	return pos + mat.K * targetlnegth;
+}
+
+void camera::lookat(vec3f target, vec3f pos, vec3f up) {
+	if (target == pos) {
+		return;
+	}
+	up.Normalize();
+
+	camera prev_cfg(*this);
+	this->pos = pos;
+	targetlnegth = (halnf) (target - pos).Length();
+	mat.K = (target - pos) / targetlnegth;
+	mat.J = mat.K.Cross(up);
+	mat.I = mat.J.Cross(mat.K);
+
+	if (!memequal(&prev_cfg, this, sizeof(camera))) {
+		updated = true;
+	}
+}
+
+void camera::set_ratio(halnf ratio) {
+	if (this->ratio != ratio) {
+		this->ratio = ratio;
+		updated = true;
+	}
+}
+
+void camera::set_fov(halnf fov) {
+	if (this->fov != fov) {
+		this->fov = fov;
+		updated = true;
+	}
+}
+
+vec3f camera::project(vec2f normalized) {
+	vec3f target = get_target();
+	halnf scale = (halnf) (trigs::tan(fov / 2) * (target - pos).Length());
+	vec3 out = target + (mat.J * normalized.x * scale * ratio) + (mat.I * normalized.y * scale);
+	return out;
+}
+
+vec2f camera::project(vec3f world) {
+	//vec4 transformed = (projmat() * viewmat()) * vec4(world, 1);
+	//vec2 screen_pos = vec2(transformed.x / transformed.w, transformed.y / transformed.w);
+	vec2f screen_pos;
+	return screen_pos;
+}
+
+void camera::zoom(halnf ratio) {
+	
+	ratio = ABS(ratio);
+	
+	if (ratio < 0.01 || abs(targetlnegth) < 0.1) {
+		return;
+	}
+
+	vec3f target = get_target();
+	pos = target + (pos - target) * ratio;
+	lookat(target, pos, mat.I);
+	updated = true;
+}
+
+void camera::move(vec2f mpos, vec2f mprevpos) {
+	vec3f target = get_target();
+	vec3 p1 = project(mprevpos);
+	vec3 p2 = project(mpos);
+	vec3 move = p1 - p2;
+	pos += move * 2.f;
+	target += move * 2.f;
+
+	lookat(target, pos, mat.I);
+	updated = true;
+}
+
+void camera::rotate(halnf anglex, halnf angley) {
+	vec3f up(0, 0, 1);
+	vec3f target = get_target();
+	pos -= target;
+
+	pos = pos.RotateAround(up, anglex);
+
+	mat.K = (-pos).Dir();
+	mat.J = mat.K.Cross(up).Dir();
+	mat.I = mat.J.Cross(mat.K);
+
+	pos = pos.RotateAround(mat.J, -angley);
+
+	mat.K = (-pos).Dir();
+	mat.I = mat.J.Cross(mat.K);
+
+	pos += target;
+	updated = true;
+}
+
 vec3f indexed_trig::HitPos;
 
-indexed_trig::indexed_trig() : v1(0), v2(0), v3(0) {}
-indexed_trig::indexed_trig(halni v1, halni v2, halni v3) : v1(v1), v2(v2), v3(v3) {}
+indexed_trig::indexed_trig() : v1(0), v2(0), v3(0) {
+}
+indexed_trig::indexed_trig(halni v1, halni v2, halni v3) : v1(v1), v2(v2), v3(v3) {
+}
 
 void indexed_trig::update_cache(Array<vec3f>& points) {
 	v1_val = points[v1];
@@ -61,7 +159,7 @@ vec3f indexed_trig::get_normal() {
 
 void topology::add_trig(vec3f v1, vec3f v2, vec3f v3) {
 
-	halni trig_idx = points.Len();
+	halni trig_idx = (halni) points.Len();
 	Array<vec3f> newpoints(3);
 	newpoints[0] = v1;
 	newpoints[1] = v2;

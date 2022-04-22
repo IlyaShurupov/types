@@ -14,6 +14,57 @@ using namespace ogl;
 
 string shader_path = "../rsc/shaders/";
 
+shader::shader() {
+	programm = 0;
+	VertexShaderID = 0;
+	FragmentShaderID = 0;
+	GeometryShaderID = 0;
+}
+
+void shader::vert_bind_source(const char* vert_src) {
+	VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+	compile_shader(vert_src, VertexShaderID);
+}
+
+void shader::frag_bind_source(const char* frag_src) {
+	FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+	compile_shader(frag_src, FragmentShaderID);
+}
+
+void shader::geom_bind_source(const char* geom_src) {
+	GeometryShaderID = glCreateShader(GL_GEOMETRY_SHADER);
+	compile_shader(geom_src, GeometryShaderID);
+}
+
+void shader::compile() {
+	GLint Result = GL_FALSE;
+	int InfoLogLength;
+
+	programm = glCreateProgram();
+	glAttachShader(programm, VertexShaderID);
+	if (GeometryShaderID) glAttachShader(programm, GeometryShaderID);
+	glAttachShader(programm, FragmentShaderID);
+	glLinkProgram(programm);
+
+	// Check the program
+	glGetProgramiv(programm, GL_LINK_STATUS, &Result);
+	glGetProgramiv(programm, GL_INFO_LOG_LENGTH, &InfoLogLength);
+
+	if (InfoLogLength > 0) {
+		Array<char> ProgramErrorMessage(InfoLogLength + 1);
+		glGetProgramInfoLog(programm, InfoLogLength, NULL, &ProgramErrorMessage[0]);
+		printf("%s\n", &ProgramErrorMessage[0]);
+	}
+
+	glDetachShader(programm, VertexShaderID);
+	glDetachShader(programm, FragmentShaderID);
+	if (GeometryShaderID) glDetachShader(programm, GeometryShaderID);
+
+	glDeleteShader(VertexShaderID);
+	glDeleteShader(FragmentShaderID);
+	if (GeometryShaderID) glDeleteShader(GeometryShaderID);
+}
+
 bool shader::compile_shader(const char* ShaderCode, GLuint ShaderID) {
 	GLint Result = GL_FALSE;
 	int InfoLogLength;
@@ -42,9 +93,10 @@ void shader::load(const char* pvert, const char* pgeom, const char* pfrag) {
 	VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 	if (pgeom) GeometryShaderID = glCreateShader(GL_GEOMETRY_SHADER);
+	else GeometryShaderID = 0;
 
 	GLint Result = GL_FALSE;
-	int InfoLogLength;
+	int InfoLogLength = 0;
 
 	string vert = sfmt("%s%c.vert", shader_path, pvert);
   string geom = pgeom ? sfmt("%s%c.geom", shader_path, pgeom) : " ";
@@ -64,33 +116,7 @@ void shader::load(const char* pvert, const char* pgeom, const char* pfrag) {
 	printf("Compiling shader : %s\n", frag.cstr());
 	compile_shader(read_file(frag.cstr()).get_writable(), FragmentShaderID);
 
-	// Link the program
-	printf("Linking program\n");
-	GLuint ProgramID = glCreateProgram();
-	glAttachShader(ProgramID, VertexShaderID);
-	if (GeometryShaderID) glAttachShader(ProgramID, GeometryShaderID);
-	glAttachShader(ProgramID, FragmentShaderID);
-	glLinkProgram(ProgramID);
-
-	// Check the program
-	glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
-	glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-
-	if (InfoLogLength > 0) {
-		Array<char> ProgramErrorMessage(InfoLogLength + 1);
-		glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
-		printf("%s\n", &ProgramErrorMessage[0]);
-	}
-
-	glDetachShader(ProgramID, VertexShaderID);
-	glDetachShader(ProgramID, FragmentShaderID);
-	if (GeometryShaderID) glDetachShader(ProgramID, GeometryShaderID);
-
-	glDeleteShader(VertexShaderID);
-	glDeleteShader(FragmentShaderID);
-	if (GeometryShaderID) glDeleteShader(GeometryShaderID);
-
-	programm = ProgramID;
+	compile();
 }
 
 shader::shader(const char* vert, const char* geom, const char* frag) {

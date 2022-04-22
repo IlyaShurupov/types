@@ -12,6 +12,11 @@ void memsetv(void* p, alni bytesize, uint1 val);
 void memcp(void* left, const void* right, alni len);
 bool memequal(const void* left, const void* right, alni len);
 
+template <typename Type>
+constexpr Type abs(const Type& val) {
+	return ABS(val);
+}
+
 template <typename TypeIn, typename TypeOut>
 TypeOut i2f2i(TypeIn in) {
 	union { TypeIn in; TypeOut out; } un;
@@ -103,4 +108,6 @@ const char* working_dir();
 
 void char2wide(const char* c, wchar_t* out, alni len);
 void wide2char(const wchar_t* c, char* out);
+
+
 

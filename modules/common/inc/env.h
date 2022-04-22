@@ -37,6 +37,7 @@ typedef float										flt4;
 typedef double									flt8;
 	
 #ifdef ENVIRONMENT64
+	typedef uint4										uhalni;
 	typedef int4										halni;
 	typedef flt4										halnf;
 
@@ -49,6 +50,7 @@ typedef double									flt8;
   #define ALIGNED_SIZE_B 8
 
 #else
+	typedef uint2										uhalni;
 	typedef int2										halni;
 	typedef flt2										halnf;
 	typedef flt4										alnf;
