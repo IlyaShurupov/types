@@ -30,6 +30,18 @@
     <ClInclude Include="..\inc\random.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\inc\typetraits.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\typeselect.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\typeconversion.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\typelist.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\common.cpp">

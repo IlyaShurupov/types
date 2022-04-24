@@ -26,9 +26,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\inc\mat3.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\inc\topology.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -54,6 +51,12 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\matrix.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\mat.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\vec.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

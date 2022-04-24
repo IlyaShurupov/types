@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -29,11 +29,15 @@
   <ItemGroup>
     <ClInclude Include="..\inc\cassert.h" />
     <ClInclude Include="..\inc\common.h" />
+    <ClInclude Include="..\inc\typeconversion.h" />
     <ClInclude Include="..\inc\env.h" />
     <ClInclude Include="..\inc\exeptions.h" />
     <ClInclude Include="..\inc\macros.h" />
+    <ClInclude Include="..\inc\typetraits.h" />
     <ClInclude Include="..\inc\random.h" />
     <ClInclude Include="..\inc\timer.h" />
+    <ClInclude Include="..\inc\typelist.h" />
+    <ClInclude Include="..\inc\typeselect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\cassert.cpp" />
