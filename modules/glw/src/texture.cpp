@@ -22,7 +22,7 @@ texture::~texture() { glDeleteTextures(1, &id); }
 
 
 void texture::update(const array2d<rgba>& buff) {
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, buff.size.x, buff.size.y, 0, GL_RGBA, GL_FLOAT, buff.buff);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)buff.size.x, (GLsizei) buff.size.y, 0, GL_RGBA, GL_FLOAT, buff.buff);
 }
 
 void texture::draw(const GLuint& out) {

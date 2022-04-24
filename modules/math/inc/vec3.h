@@ -9,24 +9,12 @@ using vec3i = vec3<halni>;
 template <typename Type>
 class vec3 {
 	public:
-	union {
-		Type x;
-		Type r;
-	};
 
-	union {
-		Type y;
-		Type g;
-	};
+	Type x;
+	Type y;
+	Type z;
 
-	union {
-		Type z;
-		Type b;
-	};
-
-	public:
-
-		// Initialization
+	// Initialization
 
 	vec3(Type x, Type y, Type z) {
 		this->x = x;
@@ -101,16 +89,16 @@ class vec3 {
 
 // compare
 	bool operator>(const vec3<Type>& vec) const {
-		return lenpow2() > vec.lenpow2();
+		return length2() > vec.length2();
 	}
 	bool operator<(const vec3<Type>& vec) const {
-		return lenpow2() < vec.lenpow2();
+		return length2() < vec.length2();
 	}
 	bool operator>=(const vec3<Type>& vec) const {
-		return lenpow2() >= vec.lenpow2();
+		return length2() >= vec.length2();
 	}
 	bool operator<=(const vec3<Type>& vec) const {
-		return lenpow2() <= vec.lenpow2();
+		return length2() <= vec.length2();
 	}
 	bool operator==(const vec3<Type>& vec) const {
 		return (x == vec.x && y == vec.y && z == vec.z);
@@ -153,22 +141,22 @@ class vec3 {
 
 	// Vector Properties
 
-	Type Dot(const vec3& vec) const {
+	Type dot(const vec3& vec) const {
 		return (x * vec.x + y * vec.y + z * vec.z);
 	}
-	alnf Length() const {
+	alnf length() const {
 		return trigs::sqrt((halnf) (x * x + y * y + z * z));
 	}
-	Type lenpow2() const {
+	Type length2() const {
 		return (x * x + y * y + z * z);
 	}
-	vec3 Dir() const {
-		return *this / (Type) this->Length();
+	vec3 unitv() const {
+		return *this / (Type) this->length();
 	}
-	void Normalize() {
-		*this /= (Type) this->Length();
+	void normalize() {
+		*this /= (Type) this->length();
 	}
-	vec3 Cross(const vec3& vec) const {
+	vec3 cross(const vec3& vec) const {
 		Type x = this->y * vec.z - this->z * vec.y;
 		Type y = this->z * vec.x - this->x * vec.z;
 		Type z = this->x * vec.y - this->y * vec.x;
@@ -198,7 +186,7 @@ class vec3 {
 
 		halnf angl_x = axis.anglex();
 
-		halnf sin_angl_x = (halnf)trigs::sin(angl_x);
+		halnf sin_angl_x = (halnf) trigs::sin(angl_x);
 		halnf cos_angl_x = (halnf) trigs::cos(angl_x);
 
 		halnf angl_y = axis.angley();

@@ -26,8 +26,8 @@ Trig::~Trig() {
 
 void Trig::Normal(vec3f& dir)
 {
-	dir = (V1 - V0).Cross(V2 - V0);
-	dir.Normalize();
+	dir = (V1 - V0).cross(V2 - V0);
+	dir.normalize();
 }
 
 vec3f edge1, edge2, h, s, q;
@@ -39,8 +39,8 @@ bool Trig::RayHit(class Ray& ray, vec3f& HitPos) {
 	edge1 = V1 - V0;
 	edge2 = V2 - V0;
 
-	h = ray.Dir.Cross(edge2);
-	a = edge1.Dot(h);
+	h = ray.Dir.cross(edge2);
+	a = edge1.dot(h);
 
 	if (a > -MATH_EPSILON && a < MATH_EPSILON) {
 		return false;
@@ -48,20 +48,20 @@ bool Trig::RayHit(class Ray& ray, vec3f& HitPos) {
 
 	f = 1.f / a;
 	s = ray.Pos - V0;
-	u = f * s.Dot(h);
+	u = f * s.dot(h);
 
 	if (u < 0.0 || u > 1.0) {
 		return false;
 	}
 
-	q = s.Cross(edge1);
-	v = f * ray.Dir.Dot(q);
+	q = s.cross(edge1);
+	v = f * ray.Dir.dot(q);
 
 	if (v < 0.f || u + v > 1.f) {
 		return false;
 	}
 
-	t = f * edge2.Dot(q);
+	t = f * edge2.dot(q);
   if (t > MATH_EPSILON) {
 		HitPos = ray.Pos + ray.Dir * t;
 		return true;

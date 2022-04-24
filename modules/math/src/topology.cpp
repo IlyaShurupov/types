@@ -11,14 +11,14 @@ void camera::lookat(vec3f target, vec3f pos, vec3f up) {
 	if (target == pos) {
 		return;
 	}
-	up.Normalize();
+	up.normalize();
 
 	camera prev_cfg(*this);
 	this->pos = pos;
-	targetlnegth = (halnf) (target - pos).Length();
+	targetlnegth = (halnf) (target - pos).length();
 	mat.K = (target - pos) / targetlnegth;
-	mat.J = mat.K.Cross(up);
-	mat.I = mat.J.Cross(mat.K);
+	mat.J = mat.K.cross(up);
+	mat.I = mat.J.cross(mat.K);
 
 	if (!memequal(&prev_cfg, this, sizeof(camera))) {
 		updated = true;
@@ -41,8 +41,8 @@ void camera::set_fov(halnf fov) {
 
 vec3f camera::project(vec2f normalized) {
 	vec3f target = get_target();
-	halnf scale = (halnf) (trigs::tan(fov / 2) * (target - pos).Length());
-	vec3 out = target + (mat.J * normalized.x * scale * ratio) + (mat.I * normalized.y * scale);
+	halnf scale = (halnf) (trigs::tan(fov / 2) * (target - pos).length());
+	vec3f out = target + (mat.J * normalized.x * scale * ratio) + (mat.I * normalized.y * scale);
 	return out;
 }
 
@@ -69,9 +69,9 @@ void camera::zoom(halnf ratio) {
 
 void camera::move(vec2f mpos, vec2f mprevpos) {
 	vec3f target = get_target();
-	vec3 p1 = project(mprevpos);
-	vec3 p2 = project(mpos);
-	vec3 move = p1 - p2;
+	vec3f p1 = project(mprevpos);
+	vec3f p2 = project(mpos);
+	vec3f move = p1 - p2;
 	pos += move * 2.f;
 	target += move * 2.f;
 
@@ -86,14 +86,14 @@ void camera::rotate(halnf anglex, halnf angley) {
 
 	pos = pos.RotateAround(up, anglex);
 
-	mat.K = (-pos).Dir();
-	mat.J = mat.K.Cross(up).Dir();
-	mat.I = mat.J.Cross(mat.K);
+	mat.K = (-pos).unitv();
+	mat.J = mat.K.cross(up).unitv();
+	mat.I = mat.J.cross(mat.K);
 
 	pos = pos.RotateAround(mat.J, -angley);
 
-	mat.K = (-pos).Dir();
-	mat.I = mat.J.Cross(mat.K);
+	mat.K = (-pos).unitv();
+	mat.I = mat.J.cross(mat.K);
 
 	pos += target;
 	updated = true;
@@ -110,7 +110,7 @@ void indexed_trig::update_cache(Array<vec3f>& points) {
 	v1_val = points[v1];
 	edge1 = points[v2] - points[v1];
 	edge2 = points[v3] - points[v1];
-	normal = (points[v2] - points[v1]).Cross(points[v3] - points[v1]).Dir();
+	normal = (points[v2] - points[v1]).cross(points[v3] - points[v1]).unitv();
 }
 
 bool indexed_trig::RayHit(const Ray& ray) {
@@ -118,8 +118,8 @@ bool indexed_trig::RayHit(const Ray& ray) {
 	static halnf a, f, u, v;
 	static halnf t;
 
-	h = ray.Dir.Cross(edge2);
-	a = edge1.Dot(h);
+	h = ray.Dir.cross(edge2);
+	a = edge1.dot(h);
 
 	if (a > -MATH_EPSILON && a < MATH_EPSILON) {
 		return false;
@@ -127,20 +127,20 @@ bool indexed_trig::RayHit(const Ray& ray) {
 
 	f = 1.f / a;
 	s = ray.Pos - v1_val;
-	u = f * s.Dot(h);
+	u = f * s.dot(h);
 
 	if (u < 0.0 || u > 1.0) {
 		return false;
 	}
 
-	q = s.Cross(edge1);
-	v = f * ray.Dir.Dot(q);
+	q = s.cross(edge1);
+	v = f * ray.Dir.dot(q);
 
 	if (v < 0.f || u + v > 1.f) {
 		return false;
 	}
 
-	t = f * edge2.Dot(q);
+	t = f * edge2.dot(q);
 	if (t > MATH_EPSILON) {
 		HitPos = ray.Pos + ray.Dir * t;
 		return true;

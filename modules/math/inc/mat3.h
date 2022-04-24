@@ -6,17 +6,16 @@ template <typename Type> class mat3;
 using mat3f = mat3<halnf>;
 
 template <typename Type>
-class mat3
-{
-public:
-
+class mat3 {
 	typedef vec3<Type> vec;
+
+	public:
 
 	vec I;
 	vec J;
 	vec K;
 
-public:
+	public:
 
 	mat3() {
 		I.assign(1.f, 0.f, 0.f);
@@ -100,16 +99,16 @@ public:
 		return Matx;
 	}
 
-	mat3 operator*(const mat3& in) { 
+	mat3 operator*(const mat3& in) {
 		mat3 out;
 		Transform(out);
-		return out; 
+		return out;
 	}
 
 	void Rotate(vec Dir, alnf angle) {
 
-		alnf cosa = (alnf)trigs::cos(angle);
-		alnf sina = (alnf)trigs::sin(angle);
+		alnf cosa = (alnf) trigs::cos(angle);
+		alnf sina = (alnf) trigs::sin(angle);
 		alnf tmp = 1 - cosa;
 
 		I.x = cosa + Dir.x * Dir.x * tmp;

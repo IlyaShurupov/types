@@ -155,9 +155,9 @@ void CamProjectMat(float out[4][4], float fovy, float aspect, float zNear, float
 }
 
 void CamViewMat(float out[4][4], vec3f const& eye, vec3f const& center, vec3f const& up) {
-  vec3f const f((center - eye).Dir());
-  vec3f const s((f.Cross(up)).Dir());
-  vec3f const u(s.Cross(f));
+  vec3f const f((center - eye).unitv());
+  vec3f const s((f.cross(up)).unitv());
+  vec3f const u(s.cross(f));
 
   out[0][0] = s.x;
   out[1][0] = s.y;
@@ -168,8 +168,8 @@ void CamViewMat(float out[4][4], vec3f const& eye, vec3f const& center, vec3f co
   out[0][2] = -f.x;
   out[1][2] = -f.y;
   out[2][2] = -f.z;
-  out[3][0] = -s.Dot(eye);
-  out[3][1] = -u.Dot(eye);
-  out[3][2] = f.Dot(eye);
+  out[3][0] = -s.dot(eye);
+  out[3][1] = -u.dot(eye);
+  out[3][2] = f.dot(eye);
   out[3][3] = 1;
 }

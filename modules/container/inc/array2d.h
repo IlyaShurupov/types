@@ -19,11 +19,11 @@ struct array2d {
     delete buff;
   }
 
-  inline Type& Get(int x, int y) { 
+  inline Type& Get(alni x, alni y) {
     assert(x < size.x&& y < size.y&& x >= 0 && y >= 0);
     return buff + size.x * y + x;
   }
-  inline void Set(int x, int y, const Type& value) { 
+  inline void Set(alni x, alni y, const Type& value) {
     assert(x < size.x && y < size.y && x >= 0 && y >= 0);
     *(buff + size.x * y + x) = value;
   }
