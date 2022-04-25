@@ -41,15 +41,12 @@
   <ItemGroup>
     <ClInclude Include="..\inc\color.h" />
     <ClInclude Include="..\inc\mat.h" />
-    <ClInclude Include="..\inc\matrix.h" />
     <ClInclude Include="..\inc\topology.h" />
     <ClInclude Include="..\inc\ray.h" />
     <ClInclude Include="..\inc\rect.h" />
     <ClInclude Include="..\inc\trig.h" />
     <ClInclude Include="..\inc\trigonometry.h" />
     <ClInclude Include="..\inc\vec.h" />
-    <ClInclude Include="..\inc\vec2.h" />
-    <ClInclude Include="..\inc\vec3.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

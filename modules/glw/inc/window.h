@@ -37,7 +37,9 @@ namespace ogl {
 		bool rmb();
 
 		void size_update();
+
 		void set_viewport(vec4f rect);
+		void reset_viewport();
 
 		~window();
 	};

@@ -2,7 +2,7 @@
 #pragma once
 
 #include "allocators.h"
-#include "vec2.h"
+#include "vec.h"
 #include "rect.h"
 
 template <typename Type>

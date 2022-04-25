@@ -144,32 +144,3 @@ void fpscount::update(bool log) {
     time.reset();
   }
 }
-
-void CamProjectMat(float out[4][4], float fovy, float aspect, float zNear, float zFar) {
-  float const tanHalfFovy = (halnf) trigs::tan(fovy / 2.f);
-  out[0][0] = 1 / (aspect * tanHalfFovy);
-  out[1][1] = 1 / (tanHalfFovy);
-  out[2][2] = -(zFar + zNear) / (zFar - zNear);
-  out[2][3] = -1;
-  out[3][2] = -(2 * zFar * zNear) / (zFar - zNear);
-}
-
-void CamViewMat(float out[4][4], vec3f const& eye, vec3f const& center, vec3f const& up) {
-  vec3f const f((center - eye).unitv());
-  vec3f const s((f.cross(up)).unitv());
-  vec3f const u(s.cross(f));
-
-  out[0][0] = s.x;
-  out[1][0] = s.y;
-  out[2][0] = s.z;
-  out[0][1] = u.x;
-  out[1][1] = u.y;
-  out[2][1] = u.z;
-  out[0][2] = -f.x;
-  out[1][2] = -f.y;
-  out[2][2] = -f.z;
-  out[3][0] = -s.dot(eye);
-  out[3][1] = -u.dot(eye);
-  out[3][2] = f.dot(eye);
-  out[3][3] = 1;
-}

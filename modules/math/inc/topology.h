@@ -2,31 +2,37 @@
 
 #include "array.h"
 #include "npple.h"
-#include "mat3.h"
-#include "vec2.h"
-#include "vec3.h"
+#include "mat.h"
+#include "vec.h"
 #include "Ray.h"
 
 struct camera {
 
-  mat3f mat;
-  vec3f pos;
-  halnf fov = (halnf) (PI) / 4;
-  halnf ratio = 1.f;
-  halnf near = 1.f;
-  halnf far = 100.f;
+	mat3f tmat;
+	vec3f pos;
+	halnf fov = (halnf) (PI) / 4;
+	halnf ratio = 1.f;
+	halnf near = 1.f;
+	halnf far = 100.f;
 
-  halnf targetlnegth = 1.f;
-  bool updated = false;
+	halnf targetlnegth = 1.f;
+	bool updated = false;
 
-  void set_ratio(halnf ratio);
-  void set_fov(halnf fov);
+	camera() {
+		lookat(vec3f(0, 0, 0), vec3f(1, 0, 0), vec3f(0, 0, 1));
+	}
 
-  vec3f get_target();
-  void lookat(vec3f target, vec3f pos, vec3f up);
-  
+	void set_ratio(halnf ratio);
+	void set_fov(halnf fov);
+
+	vec3f get_target();
+	void lookat(vec3f target, vec3f pos, vec3f up);
+
 	vec3f project(vec2f normalized);
-  vec2f project(vec3f world);
+	vec2f project(vec3f world);
+
+	mat<halnf, 4, 4> projmat();
+	mat<halnf, 4, 4> viewmat();
 
 	void rotate(halnf anglex, halnf angley);
 	void move(vec2f pos, vec2f prevpos);
@@ -64,7 +70,7 @@ class topology {
 
 	typedef indexed_trig trig;
 	Array<trig> trigs;
-	
+
 	void transform_point(vec3f& vert);
 
 	topology() {}

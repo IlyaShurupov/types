@@ -4,7 +4,7 @@
 #define MATH_EPSILON 0.00001
 
 vec3f camera::get_target() {
-	return pos + mat.K * targetlnegth;
+	return pos + tmat.K * targetlnegth;
 }
 
 void camera::lookat(vec3f target, vec3f pos, vec3f up) {
@@ -16,9 +16,9 @@ void camera::lookat(vec3f target, vec3f pos, vec3f up) {
 	camera prev_cfg(*this);
 	this->pos = pos;
 	targetlnegth = (halnf) (target - pos).length();
-	mat.K = (target - pos) / targetlnegth;
-	mat.J = mat.K.cross(up);
-	mat.I = mat.J.cross(mat.K);
+	tmat.K = (target - pos) / targetlnegth;
+	tmat.J = tmat.K.cross(up);
+	tmat.I = tmat.J.cross(tmat.K);
 
 	if (!memequal(&prev_cfg, this, sizeof(camera))) {
 		updated = true;
@@ -40,17 +40,22 @@ void camera::set_fov(halnf fov) {
 }
 
 vec3f camera::project(vec2f normalized) {
-	vec3f target = get_target();
-	halnf scale = (halnf) (trigs::tan(fov / 2) * (target - pos).length());
-	vec3f out = target + (mat.J * normalized.x * scale * ratio) + (mat.I * normalized.y * scale);
-	return out;
+	normalized *= 2;
+	halnf scale = (halnf) (trigs::tan(fov / 2) * targetlnegth);
+	vec3f offset = (tmat.J * normalized.x * scale * ratio) + (tmat.I * normalized.y * scale);
+	return get_target() + offset;
 }
 
 vec2f camera::project(vec3f world) {
-	//vec4 transformed = (projmat() * viewmat()) * vec4(world, 1);
-	//vec2 screen_pos = vec2(transformed.x / transformed.w, transformed.y / transformed.w);
-	vec2f screen_pos;
-	return screen_pos;
+	typedef vec<halnf, 4> vec4;
+	vec4 world_pos4;
+	world_pos4[0] = world.x;
+	world_pos4[1] = world.y;
+	world_pos4[2] = world.z;
+	world_pos4[3] = 1;
+
+	vec4 transformed = (projmat() * viewmat()) * world_pos4;
+	return vec2f(transformed[0] / transformed[3], transformed[1] / transformed[3]);
 }
 
 void camera::zoom(halnf ratio) {
@@ -63,7 +68,7 @@ void camera::zoom(halnf ratio) {
 
 	vec3f target = get_target();
 	pos = target + (pos - target) * ratio;
-	lookat(target, pos, mat.I);
+	lookat(target, pos, tmat.I);
 	updated = true;
 }
 
@@ -72,10 +77,10 @@ void camera::move(vec2f mpos, vec2f mprevpos) {
 	vec3f p1 = project(mprevpos);
 	vec3f p2 = project(mpos);
 	vec3f move = p1 - p2;
-	pos += move * 2.f;
-	target += move * 2.f;
+	pos += move;
+	target += move;
 
-	lookat(target, pos, mat.I);
+	lookat(target, pos, tmat.I);
 	updated = true;
 }
 
@@ -84,19 +89,57 @@ void camera::rotate(halnf anglex, halnf angley) {
 	vec3f target = get_target();
 	pos -= target;
 
-	pos = pos.RotateAround(up, anglex);
-
-	mat.K = (-pos).unitv();
-	mat.J = mat.K.cross(up).unitv();
-	mat.I = mat.J.cross(mat.K);
-
-	pos = pos.RotateAround(mat.J, -angley);
-
-	mat.K = (-pos).unitv();
-	mat.I = mat.J.cross(mat.K);
+	pos = mat3f::rotmat(up, anglex) * pos;
+	tmat.J = (-pos).unitv().cross(up).unitv();
+	pos = mat3f::rotmat(tmat.J, -angley) * pos;
+	
+	tmat.K = (-pos).unitv();
+	tmat.I = tmat.J.cross(tmat.K);
 
 	pos += target;
 	updated = true;
+}
+
+mat<halnf, 4, 4> camera::projmat() {
+	mat<halnf, 4, 4> out(0);
+	halnf const tanHalfFovy = (halnf) trigs::tan(fov / 2.f);
+	out[0][0] = ratio / tanHalfFovy;
+	out[1][1] = 1 / (tanHalfFovy);
+	out[2][2] = -(far + near) / (far - near);
+	out[2][3] = -1;
+	out[3][2] = -(2 * far * near) / (far - near);
+	return out;
+}
+
+mat<halnf, 4, 4> camera::viewmat() {
+	mat<halnf, 4, 4> out;
+
+	vec3f const f((get_target() - pos).unitv());
+	vec3f const s((f.cross(tmat.I)).unitv());
+	vec3f const u(s.cross(f));
+
+	out[0][0] = s.x;
+	out[1][0] = s.y;
+	out[2][0] = s.z;
+
+	out[0][1] = u.x;
+	out[1][1] = u.y;
+	out[2][1] = u.z;
+	
+	out[0][2] = -f.x;
+	out[1][2] = -f.y;
+	out[2][2] = -f.z;
+	
+	out[0][3] = 0;
+	out[1][3] = 0;
+	out[2][3] = 0;
+	out[3][3] = 1;
+
+	out[3][0] = -s.dot(pos);
+	out[3][1] = -u.dot(pos);
+	out[3][2] = f.dot(pos);
+
+	return out;
 }
 
 vec3f indexed_trig::HitPos;
@@ -179,7 +222,7 @@ void topology::add_trig(vec3f v1, vec3f v2, vec3f v3) {
 }
 
 void topology::transform_point(vec3f& vert) {
-	basis.Transform(vert);
+	basis.transform(vert);
 	vert += origin;
 }
 

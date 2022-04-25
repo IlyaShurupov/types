@@ -38,19 +38,10 @@
     <ClInclude Include="..\inc\trig.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\vec2.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inc\vec3.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\inc\color.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\trigonometry.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inc\matrix.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\mat.h">

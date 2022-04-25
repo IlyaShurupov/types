@@ -172,7 +172,14 @@ void window::size_update() {
 }
 
 void window::set_viewport(vec4f rect) {
+	rect.pos.clamp(0, 3000);
+	rect.size.clamp(5, 3000);
+
 	glViewport((GLsizei) rect.pos.x, (GLsizei) rect.pos.y, (GLsizei) rect.size.x, (GLsizei) rect.size.y);
+}
+
+void window::reset_viewport() {
+	glViewport((GLsizei)0, (GLsizei)0, (GLsizei) size.x, (GLsizei) size.y);
 }
 
 window::~window() {

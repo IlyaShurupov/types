@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "vec2.h"
+#include "vec.h"
 
 template <typename Type>
 class rect;
@@ -27,12 +27,17 @@ class rect {
 		vec2<Type> v2;
 		vec2<Type> size;
 		struct {
-			Type w;
 			Type z;
+			Type w;
 		};
 	};
 
 	rect() {
+	}
+
+	rect(Type val) {
+		this->pos = val;
+		this->size = val;
 	}
 
 	template <typename ConversionType>

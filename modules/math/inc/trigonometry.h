@@ -9,6 +9,7 @@ namespace trigs {
 	alnf atan2(alnf X, alnf Y);
 	alnf atan(alnf val);
 	alnf cos(alnf radians);
+	alnf acos(alnf val);
 	alnf sqrt(alnf val);
 	alnf rad(alnf val);
 	alnf deg(alnf val);
