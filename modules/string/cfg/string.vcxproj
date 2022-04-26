@@ -176,6 +176,8 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\allocator\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -230,6 +232,8 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\allocator\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

@@ -41,6 +41,8 @@ namespace ogl {
 		void set_viewport(vec4f rect);
 		void reset_viewport();
 
+		halnf aspect_ratio() { return size.y / size.x; }
+
 		~window();
 	};
 

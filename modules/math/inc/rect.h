@@ -3,12 +3,14 @@
 
 #include "vec.h"
 
-template <typename Type>
-class rect;
+template <typename Type> class rect;
 using rectf = rect<halnf>;
 using recti = rect<halni>;
-using vec4f = rectf;
-using vec4i = recti;
+
+template <typename Type>
+using vec4 = rect<Type>;
+using vec4f = rect<halnf>;
+using vec4i = rect<halni>;
 
 template <typename Type>
 class rect {
