@@ -4,8 +4,7 @@
 #define MATH_EPSILON 0.00001
 
 camera::camera() {
-	lookat(vec3f(0, 0, 0), vec3f(1, 0, 0), vec3f(0, 0, 1));
-	//lookat(vec3f(0, 0, -1), vec3f(0, 0, 0), vec3f(0, 1, 0));
+	lookat(vec3f(0, 0, 0), vec3f(2, 0, 0), vec3f(0, 0, 1));
 }
 
 mat4f camera::transform_mat() {
@@ -32,8 +31,8 @@ mat4f camera::projmat() {
 	halnf s = 1.f / trigs::tan(fov / 2.f);
 
 	mat4f out;
-	out[0] = vec4f(s, 0, 0, 0);
-	out[1] = vec4f(0, s, 0, 0);
+	out[0] = vec4f(s * r, 0, 0, 0);
+	out[1] = vec4f(0, s * c, 0, 0);
 	out[2] = vec4f(0, 0, -2.f / (far - near), -(far + near) / (far - near));
 	out[3] = vec4f(0, 0, -1, 0);
 	return out;
@@ -71,7 +70,7 @@ void camera::lookat(vec3f p_target, vec3f p_pos, vec3f p_up) {
 
 void camera::zoom(halnf ratio) {
 	ratio = ABS(ratio);
-	if (ratio < 0.01 || abs((pos - target).length2()) < 0.1) {
+	if (ratio < 0.1 || abs((pos - target).length2()) < 0.1) {
 		return;
 	}
 	pos = target + (pos - target) * ratio;
@@ -107,6 +106,10 @@ void camera::rotate(halnf anglex, halnf angley) {
 
 vec3f camera::get_target() {
 	return target;
+}
+
+void camera::offset_target(halnf val) {
+	target += (pos - target).normalize() * val;
 }
 
 vec3f camera::get_fw() {

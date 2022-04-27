@@ -23,7 +23,7 @@ void window::resize(vec2f psize) {
 window::window() {
 	col_clear = rgba(0.f, 0.f, 0.f, 0.5f);
 	size = vec2f(1024.f, 768.f);
-	init();
+	init(0);
 }
 
 namespace WIN {
@@ -33,12 +33,14 @@ namespace WIN {
 };
 
 
-void window::init() {
+void window::init(alni params) {
 	resize(size);
 
 	GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 
-	//glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+	if (params & FULL_SCREEN) {
+		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+	}
 
 	winp = glfwCreateWindow((int) size.x, (int) size.y, "NULL", NULL, NULL);
 
@@ -46,7 +48,9 @@ void window::init() {
 		fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
 	}
 
-	glfwSetWindowPos(winp, 50, 50);
+	if (!(params & FULL_SCREEN)) {
+		glfwSetWindowPos(winp, 50, 50);
+	}
 
 	glfwSetInputMode(winp, GLFW_STICKY_KEYS, GL_TRUE);
 
@@ -68,11 +72,16 @@ void window::init() {
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-	//glEnable(GL_CULL_FACE);
+
+	if (params & FACE_CULL) {
+		glEnable(GL_CULL_FACE);
+	}
 
 	glEnable(GL_DEBUG_OUTPUT);
 
-	glfwSetWindowAttrib(winp, GLFW_DECORATED, GLFW_TRUE);
+	if (params & UNDECORATED) {
+		glfwSetWindowAttrib(winp, GLFW_DECORATED, GLFW_FALSE);
+	}
 
 	glDebugMessageCallback(MessageCallback, 0);
 
@@ -94,9 +103,9 @@ void window::init() {
 	//glfwSwapInterval(1); // Enable vsync
 }
 
-window::window(vec2f psize) {
+window::window(vec2f psize, alni params) {
 	size = psize;
-	init();
+	init(params);
 }
 
 void window::begin_draw() {
@@ -184,7 +193,7 @@ void window::set_viewport(rectf rect) {
 }
 
 void window::reset_viewport() {
-	glViewport((GLsizei)0, (GLsizei)0, (GLsizei) size.x, (GLsizei) size.y);
+	glViewport((GLsizei) 0, (GLsizei) 0, (GLsizei) size.x, (GLsizei) size.y);
 }
 
 window::~window() {

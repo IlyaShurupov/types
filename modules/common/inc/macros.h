@@ -15,7 +15,7 @@
 #define ABS(val) (val) > 0 ? (val) : (-val)
 #define CLAMP(val, lower_lim, upper_lim) if (val > upper_lim) { val = upper_lim; } else if (val < lower_lim) {val = lower_lim;}
 #define INRANGE(val, bd1, bd2) ((val) >= (bd1) && (val) <= (bd2))
-#define SWAP(val1, val2, type) type tmp = val1; val1 = val2; val2 = tmp
+#define SWAP(val1, val2, type) type tmp = (val1); (val1) = (val2); (val2) = tmp
 #define MAX(x, y) (x > y ? x : y)
 #define MIN(x, y) (x < y ? x : y)
 
@@ -24,3 +24,11 @@
 
 
 #define assert_static(x, message) static_assert(x, message)
+
+
+template <typename T>
+inline void swap(T& t1, T& t2) {
+	T tmp = t1; 
+	t1 = t2; 
+	t2 = tmp;
+}

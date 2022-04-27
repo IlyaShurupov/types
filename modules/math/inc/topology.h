@@ -12,7 +12,7 @@ class camera {
 	vec3f target;
 	vec3f up;
 
-	halnf fov = (halnf) (PI) / 2;
+	halnf fov = (halnf) (PI) / 4;
 	halnf near = 0.0005f;
 	halnf far = 150.f;
 
@@ -37,6 +37,7 @@ public:
 
 
 	vec3f get_target();
+	void offset_target(halnf val);
 	vec3f get_fw();
 
 	void set_ratio(halnf ratio);

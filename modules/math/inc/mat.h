@@ -213,10 +213,8 @@ class mat {
 	mat& transpose() {
 		assert(nrow == ncol);
 		for (halni i = 0; i < ncol; i++) {
-			for (halni j = 0; j < ncol; j++) {
-				if (i != j) {
-					SWAP((*this)[i][j], (*this)[j][i], const Type&);
-				}
+			for (halni j = i + 1; j < ncol; j++) {
+				swap((*this)[i][j], (*this)[j][i]);
 			}
 		}
 		return *this;

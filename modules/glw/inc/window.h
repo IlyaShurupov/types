@@ -3,27 +3,34 @@
 
 #include "glcommon.h"
 
+
 namespace ogl {
 
 	class window {
-	public:
+		public:
+
+		enum {
+			FULL_SCREEN = 0x00000001,
+			UNDECORATED = 0x00000100,
+			FACE_CULL = 0x00000010,
+		};
 
 		GLFWwindow* winp = NULL;
 		rgba col_clear;
 		vec2f size;
 
 		void resize(vec2f psize);
-		void init();
+		void init(alni params);
 
 		window();
-		window(vec2f size);
-		
+		window(vec2f size, alni params = 0);
+
 		void set_current();
-		
+
 		void begin_draw();
-		
+
 		void clear();
-		
+
 		void end_draw(bool whait_for_event = false);
 
 		bool CloseSignal();
