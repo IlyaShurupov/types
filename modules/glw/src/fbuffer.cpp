@@ -3,7 +3,7 @@
 
 using namespace ogl;
 
-fbuffer::fbuffer(vec2i p_size, vec4f pcol_clear) {
+fbuffer::fbuffer(vec2i p_size, rgba pcol_clear) {
 
 	size = p_size;
 	col_clear = pcol_clear;
@@ -53,7 +53,7 @@ void fbuffer::begin_draw() {
 }
 
 void fbuffer::clear() {
-	glClearColor(col_clear.x, col_clear.y, col_clear.w, col_clear.z);
+	glClearColor(col_clear.r, col_clear.g, col_clear.b, col_clear.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

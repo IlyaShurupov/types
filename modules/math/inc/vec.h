@@ -8,15 +8,41 @@ class vec {
 
 	Type comp[dim];
 	constexpr const Type& get(alni i) const { return comp[i]; }
+	constexpr Type& get(alni i) { return comp[i]; }
 
 	public:
 
 	vec() {}
 
-	vec(const Type* src) {
-		for (halni i = 0; i < dim; i++) {
-			comp[i] = src[i];
-		}
+	vec(Type val) {
+		assign(val);
+	}
+
+	vec(Type val1, Type val2, Type val3, Type val4) {
+		static_assert(dim == 4);
+		comp[0] = val1;
+		comp[1] = val2;
+		comp[2] = val3;
+		comp[3] = val4;
+	}
+
+	vec(Type val1, Type val2, Type val3, Type val4, Type val5) {
+		static_assert(dim == 5);
+		comp[0] = val1;
+		comp[1] = val2;
+		comp[2] = val3;
+		comp[3] = val4;
+		comp[4] = val5;
+	}
+
+	vec(Type val1, Type val2, Type val3, Type val4, Type val5, Type val6) {
+		static_assert(dim == 6);
+		comp[0] = val1;
+		comp[1] = val2;
+		comp[2] = val3;
+		comp[3] = val4;
+		comp[4] = val5;
+		comp[5] = val6;
 	}
 
 	vec(const vec& in) {
@@ -345,6 +371,13 @@ class vec<Type, 3> {
 	Type z;
 
 	// Initialization
+	vec() {}
+
+	vec(const vec<Type, 4>& in) {
+		x = in[0];
+		y = in[1];
+		z = in[2];
+	}
 
 	vec(Type x, Type y, Type z) {
 		this->x = x;
@@ -355,9 +388,6 @@ class vec<Type, 3> {
 		x = vec[0];
 		y = vec[1];
 		z = vec[2];
-	}
-	vec() {
-		x = y = z = 0;
 	}
 	vec(Type x) {
 		assign(x);
@@ -381,6 +411,12 @@ class vec<Type, 3> {
 		x = val;
 		y = val;
 		z = val;
+	}
+	vec& randf() {
+		x = (Type)::randf();
+		y = (Type)::randf();
+		z = (Type)::randf();
+		return *this;
 	}
 	vec& operator=(const vec& vec) {
 		x = vec.x;
@@ -506,8 +542,9 @@ class vec<Type, 3> {
 	vec unitv() const {
 		return *this / (Type) this->length();
 	}
-	void normalize() {
+	vec& normalize() {
 		*this /= (Type) this->length();
+		return *this;
 	}
 	vec cross(const vec& in) const {
 		return vec(
@@ -546,3 +583,9 @@ class vec<Type, 3> {
 		return (halnf) trigs::atan2(x, z);
 	}
 };
+
+template <typename Type>
+using vec4 = vec<Type, 4>;
+
+using vec4f = vec4<halnf>;
+using vec4i = vec4<halni>;

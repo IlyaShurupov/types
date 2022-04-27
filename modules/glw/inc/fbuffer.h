@@ -13,11 +13,11 @@ namespace ogl {
 		GLuint depthrenderbuffer;
 
 		vec2f size;
-		vec4f col_clear;
+		rgba col_clear;
 
 	public:
 
-		fbuffer(vec2i p_size, vec4f pcol_clear);
+		fbuffer(vec2i p_size, rgba pcol_clear);
 		void begin_draw();
 		void clear();
 		void end_draw();

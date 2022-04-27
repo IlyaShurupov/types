@@ -116,10 +116,10 @@ GLuint get_tex(const char* TexId) {
   return out;
 }
 
-void drawCurcle(vec2f pos, double radius, vec4f col) {
+void drawCurcle(vec2f pos, double radius, rgba col) {
   static alni precision = 40;
 
-  glColor4f(col.x, col.y, col.z, col.w);
+  glColor4f(col.r, col.g, col.b, col.a);
 
   double twicePi = 2.0 * 3.142;
 

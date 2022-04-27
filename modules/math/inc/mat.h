@@ -55,6 +55,15 @@ class mat {
 		}
 	}
 
+	mat& randf() {
+		for (halni i = 0; i < ncol; i++) {
+			for (halni j = 0; j < nrow; j++) {
+				(*this)[i][j] = (Type)::randf();
+			}
+		}
+		return *this;
+	}
+
 	mat operator-() {
 		mat out;
 		for (halni i = 0; i < ncol; i++) {
@@ -190,13 +199,18 @@ class mat {
 
 	mat transform(const mat& in) const {
 		mat out;
-		for (halni i = 0; i < ncol; i++) {
-			out[i] = transform(in[i]);
+		out.clear(0);
+		for (halni i = 0; i < nrow; i++) {
+			for (halni j = 0; j < nrow; j++) {
+				for (halni u = 0; u < nrow; u++) {
+					out[i][j] += (*this)[i][u] * in[u][j];
+				}
+			}
 		}
 		return out;
 	}
 
-	void transpose() {
+	mat& transpose() {
 		assert(nrow == ncol);
 		for (halni i = 0; i < ncol; i++) {
 			for (halni j = 0; j < ncol; j++) {
@@ -205,6 +219,7 @@ class mat {
 				}
 			}
 		}
+		return *this;
 	}
 
 	mat operator*(const mat& in) const {
@@ -266,11 +281,8 @@ class mat {
 
 	mat inv() {
 		Type detv = det();
-		if (detv == 0) {
-			return mat();
-		}
-		mat cof = cofactors();
-		return cof /= detv;
+		assert(detv);
+		return cofactors() /= detv;
 	}
 };
 
@@ -341,6 +353,14 @@ class mat<Type, 2, 2> {
 	void set_diagnal(const Type& val) {
 		i.x = val;
 		j.y = val;
+	}
+
+	mat& randf() {
+		i.x = (Type)::randf();
+		i.y = (Type)::randf();
+		j.x = (Type)::randf();
+		j.y = (Type)::randf();
+		return *this;
 	}
 
 	mat operator-() {
@@ -450,8 +470,12 @@ class mat<Type, 2, 2> {
 	}
 
 	mat transform(const mat& in) const {
-		return mat(i.x * in.i.x + i.y * in.i.y, j.x * in.i.y + j.y * in.i.x,
-			i.x * in.j.x + i.y * in.j.y, j.x * in.j.y + j.y * in.j.x);
+		mat out;
+		out.i.x = i.x * in.i.x + j.x * in.i.y;
+		out.i.y = i.y * in.i.x + j.y * in.i.y;
+		out.j.x = i.x * in.j.x + j.x * in.j.y;
+		out.j.y = i.y * in.j.x + j.y * in.j.y;
+		return out;
 	}
 
 	mat operator*(const mat& in) {
@@ -468,16 +492,13 @@ class mat<Type, 2, 2> {
 	}
 
 	mat cofactors() {
-		return mat(j.y, -j.x, -i.y, i.x);
+		return mat(j.y, -i.y, -j.x, i.x);
 	}
 
 	mat inv() {
 		Type detv = det();
-		if (detv == 0) {
-			return mat();
-		}
-		mat cof = cofactors();
-		return cof /= detv;
+		assert(detv != 0);
+		return (cofactors() /= detv);
 	}
 };
 
@@ -497,10 +518,12 @@ class mat<Type, 3, 3> {
 
 	public:
 
-	mat() {
-		I.assign(1.f, 0.f, 0.f);
-		J.assign(0.f, 1.f, 0.f);
-		K.assign(0.f, 0.f, 1.f);
+	mat() {}
+
+	mat(Type val) {
+		I.assign(val, 0.f, 0.f);
+		J.assign(0.f, val, 0.f);
+		K.assign(0.f, 0.f, val);
 	}
 
 	mat(const vec& i, const vec& j, const vec& k) {
@@ -517,6 +540,13 @@ class mat<Type, 3, 3> {
 		I = i;
 		J = j;
 		K = k;
+	}
+
+	mat& randf() {
+		I.randf();
+		J.randf();
+		K.randf();
+		return *this;
 	}
 
 	vec& operator[](alni i) {
@@ -586,11 +616,16 @@ class mat<Type, 3, 3> {
 		return vec(
 			I.x * in.x + I.y * in.y + I.z * in.z,
 			J.x * in.x + J.y * in.y + J.z * in.z,
-			K.x * in.x + K.y * in.y + K.z * in.z);
+			K.x * in.x + K.y * in.y + K.z * in.z
+		);
 	}
 
 	mat transform(const mat& in) {
-		return mat(transform(in.I), transform(in.J), transform(in.K));
+		return mat(
+			{(in.I.x * I.x + in.I.y * J.x + in.I.z * K.x), (in.I.x * I.y + in.I.y * J.y + in.I.z * K.y), (in.I.x * I.z + in.I.y * J.z + in.I.z * K.z)},
+			{(in.J.x * I.x + in.J.y * J.x + in.J.z * K.x), (in.J.x * I.y + in.J.y * J.y + in.J.z * K.y), (in.J.x * I.z + in.J.y * J.z + in.J.z * K.z)},
+			{(in.K.x * I.x + in.K.y * J.x + in.K.z * K.x), (in.K.x * I.y + in.K.y * J.y + in.K.z * K.y), (in.K.x * I.z + in.K.y * J.z + in.K.z * K.z)}
+		);
 	}
 
 	vec operator*(const vec& in) {
@@ -603,10 +638,6 @@ class mat<Type, 3, 3> {
 
 	mat<Type, 2, 2> minor(halni p, halni q) {
 		mat<Type, 2, 2> out;
-		switch (vec2i(p, q)) {
-			case vec2i(0, 0):
-				break;
-		}
 		return out;
 	}
 
@@ -618,10 +649,11 @@ class mat<Type, 3, 3> {
 	}
 
 	Type det() {
-		return 0
+		return (
 			+ I.x * (J.y * K.z - J.z * K.y)
 			- I.y * (J.x * K.z - J.z * K.x)
-			+ I.z * (J.x * K.y - J.y * K.x);
+			+ I.z * (J.x * K.y - J.y * K.x)
+		);
 	}
 
 	mat cofactors() {
@@ -689,7 +721,7 @@ class mat<Type, 3, 3> {
 };
 
 template <typename Type >
-using mat4 =  mat<Type, 4, 4>;
+using mat4 = mat<Type, 4, 4>;
 
 using mat4f = mat4<halnf>;
 using mat4i = mat4<halni>;

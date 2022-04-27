@@ -8,19 +8,21 @@
 
 #include <stdio.h>
 
-void mattest() {
-	mat<halnf, 4, 4> tmat(0);
+void mat_test() {
+	mat2<halnf> tmat2;
+	tmat2.randf();
+	auto tmp2 = tmat2.inv();
+	auto idenity_mat2 = tmp2 * tmat2;
 
-	tmat.set_diagnal(2);
+	mat3<halnf> tmat3;
+	tmat3.randf();
+	auto tmp3 = tmat3.inv();
+	auto idenity_mat3 = tmp3 * tmat3;
 
-	auto tmat_inv = tmat.inv();
-	auto idenity_mat = tmat_inv * tmat;
-
-	typedef compiler::TypeTraits<const mat<halnf, 4, 4>> mat4f_traits;
-
-	printf("%i \n", mat4f_traits::isPointer);
-	printf("%i \n", mat4f_traits::isConst);
-	printf("%i \n", mat4f_traits::isVolatile);
+	mat4<halnf> tmat4;
+	tmat4.randf();
+	auto tmp4 = tmat4.inv();
+	auto idenity_mat4 = tmp4 * tmat4;
 }
 
 
@@ -47,5 +49,5 @@ void vec_test() {
 }
 
 int main() {
-	vec_test();
+	mat_test();
 }

@@ -8,11 +8,6 @@ using rectf = rect<halnf>;
 using recti = rect<halni>;
 
 template <typename Type>
-using vec4 = rect<Type>;
-using vec4f = rect<halnf>;
-using vec4i = rect<halni>;
-
-template <typename Type>
 class rect {
 	public:
 

@@ -9,7 +9,7 @@ namespace ogl {
 	public:
 
 		GLFWwindow* winp = NULL;
-		vec4f col_clear;
+		rgba col_clear;
 		vec2f size;
 
 		void resize(vec2f psize);
@@ -38,7 +38,7 @@ namespace ogl {
 
 		void size_update();
 
-		void set_viewport(vec4f rect);
+		void set_viewport(rectf rect);
 		void reset_viewport();
 
 		halnf aspect_ratio() { return size.y / size.x; }

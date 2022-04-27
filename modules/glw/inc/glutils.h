@@ -10,7 +10,7 @@ void finalize_utils();
 
 void draw_texture(GLuint out, GLuint in);
 GLuint get_tex(const char* TexId);
-void drawCurcle(vec2f pos, double radius, vec4f col);
+void drawCurcle(vec2f pos, double radius, rgba col);
 
 struct fpscount {
   halni frames = 0;

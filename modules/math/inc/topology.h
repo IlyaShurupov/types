@@ -6,37 +6,41 @@
 #include "vec.h"
 #include "Ray.h"
 
-struct camera {
+class camera {
 
-	mat3f tmat;
 	vec3f pos;
-	halnf fov = (halnf) (PI) / 4;
+	vec3f target;
+	vec3f up;
+
+	halnf fov = (halnf) (PI) / 2;
+	halnf near = 0.0005f;
+	halnf far = 150.f;
+
 	halnf ratio = 1.f;
-	halnf near = 1.f;
-	halnf far = 100.f;
 
-	halnf targetlnegth = 1.f;
-	bool updated = false;
+public:
 
-	camera() {
-		lookat(vec3f(0, 0, 0), vec3f(1, 0, 0), vec3f(0, 0, 1));
-	}
+	camera();
 
-	void set_ratio(halnf ratio);
-	void set_fov(halnf fov);
-
-	vec3f get_target();
-	void lookat(vec3f target, vec3f pos, vec3f up);
+	mat4f transform_mat();
+	mat<halnf, 4, 4> projmat();
+	mat<halnf, 4, 4> viewmat();
 
 	vec3f project(vec2f normalized);
 	vec2f project(vec3f world);
 
-	mat<halnf, 4, 4> projmat();
-	mat<halnf, 4, 4> viewmat();
+	void lookat(vec3f target, vec3f pos, vec3f up);
 
 	void rotate(halnf anglex, halnf angley);
 	void move(vec2f pos, vec2f prevpos);
 	void zoom(halnf ratio);
+
+
+	vec3f get_target();
+	vec3f get_fw();
+
+	void set_ratio(halnf ratio);
+	void set_fov(halnf fov);
 };
 
 class indexed_trig {

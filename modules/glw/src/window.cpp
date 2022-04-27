@@ -21,7 +21,7 @@ void window::resize(vec2f psize) {
 }
 
 window::window() {
-	col_clear = vec4f(0.f, 0.f, 0.f, 0.5f);
+	col_clear = rgba(0.f, 0.f, 0.f, 0.5f);
 	size = vec2f(1024.f, 768.f);
 	init();
 }
@@ -86,6 +86,11 @@ void window::init() {
 
 	tablet_init((int*) WIN::glfwGetWin32Window(winp));
 
+	//glMatrixMode(GL_MODELVIEW);
+	//glLoadIdentity(); 
+	//glRotatef(90, 1, 0, 0);
+	//gluLookAt(0, 0, -1, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+
 	//glfwSwapInterval(1); // Enable vsync
 }
 
@@ -102,7 +107,7 @@ void window::begin_draw() {
 }
 
 void window::clear() {
-	glClearColor(col_clear.x, col_clear.y, col_clear.w, col_clear.z);
+	glClearColor(col_clear.r, col_clear.g, col_clear.b, col_clear.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -171,7 +176,7 @@ void window::size_update() {
 	size.y = (halnf) y;
 }
 
-void window::set_viewport(vec4f rect) {
+void window::set_viewport(rectf rect) {
 	rect.pos.clamp(0, 3000);
 	rect.size.clamp(5, 3000);
 
