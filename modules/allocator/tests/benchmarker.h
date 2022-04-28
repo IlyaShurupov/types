@@ -6,6 +6,12 @@
 #include "allocators.h"
 #include "array.h"
 
+#include "DebugGui.h"
+
+#include "gl.h"
+#include "glcommon.h"
+#include "window.h"
+
 enum class load_type {
 	LINEAR,
 	SINE,
@@ -52,6 +58,10 @@ struct config {
 
 struct benchmarker {
 
+	ogl::opengl gl;
+	ogl::window window;
+	DebugGui gui = DebugGui(window.geth());
+
 	config cfg;
 	bool is_output = false;
 
@@ -82,7 +92,7 @@ struct benchmarker {
 	void analize(config cfg);
 	void select_pattern();
 	void output_draw();
-	void draw();
+	void run();
 	void pattern_generator();
 
 	void init_allocators(config& cfg);

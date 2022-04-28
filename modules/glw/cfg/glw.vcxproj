@@ -42,41 +42,20 @@
     <ProjectReference Include="..\..\allocator\cfg\allocator.vcxproj">
       <Project>{98d6ae72-22f4-4498-ace5-21ad0b4abf0a}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\allocator\cfg\allocator_banchmarking.vcxproj">
-      <Project>{fee95cb2-cbdb-4114-8c94-80941a8db61b}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\allocator\cfg\allocator_tests.vcxproj">
-      <Project>{57a857c1-606d-4e65-8c36-982e841c63b0}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\common\cfg\common.vcxproj">
       <Project>{1500663a-e20c-4ab8-b3aa-78a2cae43d86}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\common\cfg\common_tests.vcxproj">
-      <Project>{49c64bf1-3d0b-49d7-8125-a6c9a70a91ae}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\container\cfg\container.vcxproj">
       <Project>{ffdd1c2c-9699-44b5-825c-e56eb6274546}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\container\cfg\container_tests.vcxproj">
-      <Project>{f9b4e8cd-780d-4d4e-a7a9-28006348499b}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\filesystem\cfg\filesystem.vcxproj">
       <Project>{7ea2e75d-25ec-482f-b57d-ba08e085e1cf}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\filesystem\cfg\filesystem_tests.vcxproj">
-      <Project>{46d23f9c-5305-45f2-b6a9-eeea1d136f37}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\math\cfg\math.vcxproj">
       <Project>{0ca3a8a9-d599-4c36-845f-65591a7be69f}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\math\cfg\math_tests.vcxproj">
-      <Project>{e020a26d-c589-4fb2-a1fc-c46b15b36ad6}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\string\cfg\string.vcxproj">
       <Project>{3dec959d-9484-4bb6-819c-2a8074ea3600}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\string\cfg\string_tests.vcxproj">
-      <Project>{d9c69523-caf0-40a1-bfe4-c3f9a01e2792}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

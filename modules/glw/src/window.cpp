@@ -45,7 +45,7 @@ void window::init(alni params) {
 	winp = glfwCreateWindow((int) size.x, (int) size.y, "NULL", NULL, NULL);
 
 	if (winp == NULL) {
-		fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
+		fprintf(stderr, "Failed to open GLFW window.\n");
 	}
 
 	if (!(params & FULL_SCREEN)) {
@@ -135,8 +135,12 @@ inline void window::set_current() {
 	glfwMakeContextCurrent(winp);
 }
 
+void window::post_quit_event() {
+	quit_event = true;
+}
+
 bool window::CloseSignal() {
-	return (glfwGetKey(winp, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwWindowShouldClose(winp) != 0);
+	return (glfwGetKey(winp, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwWindowShouldClose(winp) != 0) || quit_event;
 }
 
 GLFWwindow* window::geth() {

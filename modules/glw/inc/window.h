@@ -7,6 +7,9 @@
 namespace ogl {
 
 	class window {
+
+		bool quit_event = false;
+
 		public:
 
 		enum {
@@ -33,6 +36,7 @@ namespace ogl {
 
 		void end_draw(bool whait_for_event = false);
 
+		void post_quit_event();
 		bool CloseSignal();
 
 		GLFWwindow* geth();

@@ -15,7 +15,7 @@
     <ClCompile Include="..\tests\patterns.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\tests\ImGuiMain.cpp">
+    <ClCompile Include="..\tests\entry.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

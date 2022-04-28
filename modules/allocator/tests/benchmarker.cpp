@@ -1,7 +1,6 @@
 
 #include "implot.h"
 #include "imgui.h"
-#include "imgui_utils.h"
 
 #include "benchmarker.h"
 
@@ -38,7 +37,7 @@ const_pattern bipattern_const;
 linear_pattern bipattern_line;
 random_pattern bipattern_rand;
 
-benchmarker::benchmarker() {
+benchmarker::benchmarker() : gl(), window(vec2f(1000, 800)) {
 	i_count = 0;
 	pattern_out = NULL;
 	out.Reserve(3);
@@ -49,7 +48,7 @@ benchmarker::benchmarker() {
 }
 
 void benchmarker::output_draw() {
-	if (EditorWindow("Overview")) {
+	if (gui.WindowEditor("Overview")) {
 
 		if (is_output) {
 			if (ImGui::TreeNode("total time")) {
@@ -57,14 +56,11 @@ void benchmarker::output_draw() {
 					if (out[i]) {
 						if (out[i]->total_time < 1000) {
 							ImGui::Text("%s : %f 10e-9", out[i]->alloc_type, out[i]->total_time);
-						}
-						else if (out[i]->total_time < 1000000) {
+						} else if (out[i]->total_time < 1000000) {
 							ImGui::Text("%s : %f 10e-6", out[i]->alloc_type, out[i]->total_time / 1000.f);
-						}
-						else if (out[i]->total_time < 1000000000) {
+						} else if (out[i]->total_time < 1000000000) {
 							ImGui::Text("%s : %f 10e-3", out[i]->alloc_type, out[i]->total_time / 1000000.f);
-						}
-						else {
+						} else {
 							ImGui::Text("%s : %f ", out[i]->alloc_type, out[i]->total_time / 1000000000.f);
 						}
 					}
@@ -78,8 +74,7 @@ void benchmarker::output_draw() {
 						if (out[i] && out[i]->failed)
 							ImGui::Text("%s failed", out[i]->alloc_type);
 					}
-				}
-				else {
+				} else {
 					ImGui::Text("all succeeded");
 				}
 				ImGui::TreePop();
@@ -90,12 +85,12 @@ void benchmarker::output_draw() {
 
 
 	if (cfg.time_per_instruction) {
-		if (EditorWindow("Graphs")) {
+		if (gui.WindowEditor("Graphs")) {
 			if (is_output) {
 				if (ImPlot::BeginPlot("Time(ns) vs Alloc / Free inst")) {
-					if (cfg.heap) ImPlot::PlotLine("halloc", x_axis, out[0]->time.GetBuff(), (int)i_count);
-					if (cfg.pool) ImPlot::PlotLine("pool", x_axis, out[1]->time.GetBuff(), (int)i_count);
-					if (cfg.chunk) ImPlot::PlotLine("chunk", x_axis, out[2]->time.GetBuff(), (int)i_count);
+					if (cfg.heap) ImPlot::PlotLine("halloc", x_axis, out[0]->time.GetBuff(), (int) i_count);
+					if (cfg.pool) ImPlot::PlotLine("pool", x_axis, out[1]->time.GetBuff(), (int) i_count);
+					if (cfg.chunk) ImPlot::PlotLine("chunk", x_axis, out[2]->time.GetBuff(), (int) i_count);
 					ImPlot::EndPlot();
 				}
 			}
@@ -104,12 +99,12 @@ void benchmarker::output_draw() {
 	}
 
 	if (cfg.mem_per_instruction) {
-		if (EditorWindow("Graphs")) {
+		if (gui.WindowEditor("Graphs")) {
 			if (is_output) {
 				if (ImPlot::BeginPlot("Memory (bytes) at Instruction state")) {
-					if (cfg.heap) ImPlot::PlotLine("halloc", x_axis, out[0]->mem.GetBuff(), (int)i_count);
-					if (cfg.pool) ImPlot::PlotLine("pool", x_axis, out[1]->mem.GetBuff(), (int)i_count);
-					if (cfg.chunk) ImPlot::PlotLine("chunk", x_axis, out[2]->mem.GetBuff(), (int)i_count);
+					if (cfg.heap) ImPlot::PlotLine("halloc", x_axis, out[0]->mem.GetBuff(), (int) i_count);
+					if (cfg.pool) ImPlot::PlotLine("pool", x_axis, out[1]->mem.GetBuff(), (int) i_count);
+					if (cfg.chunk) ImPlot::PlotLine("chunk", x_axis, out[2]->mem.GetBuff(), (int) i_count);
 					ImPlot::EndPlot();
 				}
 			}
@@ -117,12 +112,12 @@ void benchmarker::output_draw() {
 		ImGui::End();
 	}
 
-	if (EditorWindow("Pattern")) {
+	if (gui.WindowEditor("Pattern")) {
 		if (is_output) {
 			if (ImPlot::BeginPlot("Alloc/Free instruction info vs instruction idx")) {
-				if (cfg.current_sizing_pattern) ImPlot::PlotLine("allocated item size", x_axis, pattern_out->alloc_size.GetBuff(), (int)i_count);
-				if (cfg.current_ordering_pattern) ImPlot::PlotLine("used data item idx", x_axis, pattern_out->data_idx.GetBuff(), (int)i_count);
-				if (cfg.current_loading_pattern) ImPlot::PlotLine("total items allocated", x_axis, pattern_out->items_loaded.GetBuff(), (int)i_count);
+				if (cfg.current_sizing_pattern) ImPlot::PlotLine("allocated item size", x_axis, pattern_out->alloc_size.GetBuff(), (int) i_count);
+				if (cfg.current_ordering_pattern) ImPlot::PlotLine("used data item idx", x_axis, pattern_out->data_idx.GetBuff(), (int) i_count);
+				if (cfg.current_loading_pattern) ImPlot::PlotLine("total items allocated", x_axis, pattern_out->items_loaded.GetBuff(), (int) i_count);
 				ImPlot::EndPlot();
 			}
 		}
@@ -141,7 +136,7 @@ benchmarker::~benchmarker() {
 
 void benchmarker::select_pattern() {
 	if (patterns.nentries) {
-		const char** pattern_names = new const char*[patterns.nentries];
+		const char** pattern_names = new const char* [patterns.nentries];
 
 		const char* current_opattern_name = NULL;
 		const char* current_lpattern_name = NULL;
@@ -195,7 +190,7 @@ void benchmarker::select_pattern() {
 
 void benchmarker::pattern_combo(const char*& current) {
 	if (patterns.nentries) {
-    const char** pattern_names = new const char*[patterns.nentries];
+		const char** pattern_names = new const char* [patterns.nentries];
 
 		for (auto pattern_name : patterns) {
 			pattern_names[pattern_name.entry_idx] = pattern_name->key.c_str();
@@ -219,9 +214,9 @@ void benchmarker::pattern_generator() {
 	ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.1f);
 
 	pattern* pattern_edit = NULL;
-	if (EditorWindow("Pattern Generator")) {
+	if (gui.WindowEditor("Pattern Generator")) {
 
-		if (SubMenuBegin("Selector", 1)) {
+		if (gui.SubMenuBegin("Selector", 1)) {
 
 			pattern_combo(pattern_generator_active);
 
@@ -230,15 +225,14 @@ void benchmarker::pattern_generator() {
 				if (!MAP_VALID_IDX(idx)) {
 					pattern_edit = 0;
 					pattern_generator_active = 0;
-				}
-				else {
+				} else {
 					pattern_edit = patterns.table[idx]->val;
 				}
 			}
 
 			//ImGui::Separator();
 
-			static char create_name[100] = { "new pattern name" };
+			static char create_name[100] = {"new pattern name"};
 			ImGui::InputText("pattern name", create_name, 100);
 
 			if (ImGui::Button("Create")) {
@@ -247,9 +241,8 @@ void benchmarker::pattern_generator() {
 					new_pt->build_in = false;
 					new_pt->pattern_name = create_name;
 					patterns.Put(create_name, new_pt);
-				}
-				else {
-					Notify("Such Pattern Already Exists", 3);
+				} else {
+					gui.Notify("Such Pattern Already Exists", 3);
 				}
 			}
 
@@ -257,9 +250,8 @@ void benchmarker::pattern_generator() {
 				ImGui::SameLine();
 				if (ImGui::Button("Delete")) {
 					if (pattern_edit->build_in) {
-						Notify("Cant Remove Built-in Patterns", 3);
-					}
-					else {
+						gui.Notify("Cant Remove Built-in Patterns", 3);
+					} else {
 						patterns.Remove(pattern_generator_active);
 						delete pattern_edit;
 						pattern_edit = NULL;
@@ -270,15 +262,14 @@ void benchmarker::pattern_generator() {
 				ImGui::SameLine();
 				if (ImGui::Button("Rename")) {
 					if (pattern_edit->build_in) {
-						Notify("Cant Rename Built-in Patterns", 3);
-					}
-					else {
+						gui.Notify("Cant Rename Built-in Patterns", 3);
+					} else {
 						patterns.Remove(pattern_generator_active);
 						patterns.Put(create_name, pattern_edit);
 					}
 				}
 			}
-			SubMenuEnd(1);
+			gui.SubMenuEnd(1);
 		}
 
 		if (pattern_generator_active) {
@@ -286,8 +277,7 @@ void benchmarker::pattern_generator() {
 			if (!MAP_VALID_IDX(idx)) {
 				pattern_edit = 0;
 				pattern_generator_active = 0;
-			}
-			else {
+			} else {
 				pattern_edit = patterns.table[idx]->val;
 			}
 		}
@@ -298,17 +288,18 @@ void benchmarker::pattern_generator() {
 			return;
 		}
 
-		if (SubMenuBegin("Preview", 1)) {
+		if (gui.SubMenuBegin("Preview", 1)) {
 			static float preview_res_scale = 0.05f;
-			int resolution = (int)(1000 * preview_res_scale);
-      float* x_axis = new float[resolution];
+			int resolution = (int) (1000 * preview_res_scale);
+			CLAMP(resolution, 3, 10000);
+			float* x_axis = new float[resolution];
 			float* y_axis = new float[resolution];
 
 			float x = 0;
 			float step = 1.f / (resolution - 1);
 			for (alni idx = 0; idx < resolution; idx++) {
 				x_axis[idx] = x;
-				y_axis[idx] = (flt4)pattern_edit->get_y(&patterns, x);
+				y_axis[idx] = (flt4) pattern_edit->get_y(&patterns, x);
 				x += step;
 			}
 
@@ -321,20 +312,20 @@ void benchmarker::pattern_generator() {
 			delete x_axis;
 			delete y_axis;
 			ImGui::SliderFloat("graph resolution", &preview_res_scale, 0.f, 1.f);
-			SubMenuEnd(1);
+			gui.SubMenuEnd(1);
 		}
 
-		if (SubMenuBegin("Compositor", 1)) {
+		if (gui.SubMenuBegin("Compositor", 1)) {
 
 			if (!pattern_edit->build_in) {
 
 				static alni selected_idx = -1;
 				static pattern* child_pattern_active = NULL;
 
-				if (SubMenuBegin("Child Patterns", 2)) {
+				if (gui.SubMenuBegin("Child Patterns", 2)) {
 					ImGui::BeginListBox("");
 					for (alni idx = 0; idx < pattern_edit->regions.length; idx++) {
-						ImGui::PushID((int)idx);
+						ImGui::PushID((int) idx);
 						if (ImGui::Button(pattern_edit->regions[idx].name.c_str())) {
 							child_pattern_active = patterns.Get(pattern_edit->regions[idx].name);
 							selected_idx = idx;
@@ -357,9 +348,8 @@ void benchmarker::pattern_generator() {
 					if (add) {
 						if (append_pattern) {
 							pattern_edit->regions.PushBack(child_pattern(append_pattern));
-						}
-						else {
-							Notify("Select a Pattern to Append");
+						} else {
+							gui.Notify("Select a Pattern to Append");
 						}
 					}
 
@@ -387,28 +377,26 @@ void benchmarker::pattern_generator() {
 							pattern_edit->regions.Remove(selected_idx);
 							selected_idx = pattern_edit->regions.length - 1;
 						}
-					}
-					else {
+					} else {
 						ImGui::Text("Select Child Pattern");
 					}
-					SubMenuEnd(2);
-				} 
+					gui.SubMenuEnd(2);
+				}
 
 				if (child_pattern_active && selected_idx != -1) {
-					if (SubMenuBegin("child Pattern Properties", 2)) {
+					if (gui.SubMenuBegin("child Pattern Properties", 2)) {
 						ImGui::SliderFloat("Point", &pattern_edit->regions[selected_idx].point, 0.f, 1.f);
 						ImGui::SliderFloat("Lower lim", &pattern_edit->regions[selected_idx].lowerlim, 0.f, 1.f);
 						ImGui::SliderFloat("Upper lim", &pattern_edit->regions[selected_idx].uppernlim, 0.f, 1.f);
 						if (child_pattern_active->build_in) {
 						}
-						SubMenuEnd(2);
+						gui.SubMenuEnd(2);
 					}
 				}
-			}
-			else {
+			} else {
 				ImGui::Text("Can't Edit Built-In Patterns");
 			}
-			SubMenuEnd(1);
+			gui.SubMenuEnd(1);
 		}
 
 		ImGui::Separator();
@@ -417,72 +405,88 @@ void benchmarker::pattern_generator() {
 	ImGui::End();
 }
 
-void benchmarker::draw() {
-	analize(glb_cfg);
+void benchmarker::run() {
 
-	ImGui::BeginGroup();
+	while (!window.CloseSignal()) {
 
-	if (EditorWindow("Properties")) {
+		analize(glb_cfg);
 
-		ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.5f);
+		window.begin_draw();
+		window.reset_viewport();
+		window.clear();
 
-		{
-			if (ImGui::Button("Run")) {
-				glb_cfg.update = true;
+		gui.frame_start();
+
+		gui.WindowMain("benchmarker");
+
+		ImGui::BeginGroup();
+
+		if (gui.WindowEditor("Properties")) {
+
+			ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.5f);
+
+			{
+				if (ImGui::Button("Run")) {
+					glb_cfg.update = true;
+				}
+
+				bool prev_val = glb_cfg.live_update;
+				ImGui::SameLine(); ImGui::Checkbox("Live Update", &glb_cfg.live_update);
+				if (prev_val != glb_cfg.live_update) {
+					glb_cfg.update = true;
+				}
 			}
 
-			bool prev_val = glb_cfg.live_update;
-			ImGui::SameLine(); ImGui::Checkbox("Live Update", &glb_cfg.live_update);
-			if (prev_val != glb_cfg.live_update) {
-				glb_cfg.update = true;
+			if (gui.SubMenuBegin("General", 1)) {
+				ImGui::InputInt("Averaging", &glb_cfg.avreging, 1, 100); gui.ToolTip("Number of tests to be averaged");
+				ImGui::Checkbox("Collect time per instruction", &glb_cfg.time_per_instruction);
+				ImGui::Checkbox("Collect mem per instruction", &glb_cfg.mem_per_instruction);
+
+				gui.SubMenuEnd(1);
 			}
-		}
 
-		if (SubMenuBegin("General", 1)) {
-			ImGui::InputInt("Averaging", &glb_cfg.avreging, 1, 100); ToolTip("Number of tests to be averaged");
-			ImGui::Checkbox("Collect time per instruction", &glb_cfg.time_per_instruction);
-			ImGui::Checkbox("Collect mem per instruction", &glb_cfg.mem_per_instruction);
+			if (gui.SubMenuBegin("Testing Pattern", 1)) {
 
-			SubMenuEnd(1);
-		}
+				select_pattern();
 
-		if (SubMenuBegin("Testing Pattern", 1)) {
+				ImGui::InputInt("size", &glb_cfg.pt_scale.size, 1, 100); gui.ToolTip("Y Scale of sizing pattern");
+				ImGui::InputInt("items", &glb_cfg.pt_scale.items, 1, 100); gui.ToolTip("Y Scale of ordering and loading patterns");
+				ImGui::InputInt("iterations", &glb_cfg.pt_scale.iterations, 1, 100); gui.ToolTip("X Scale of all patterns");
 
-			select_pattern();
-
-			ImGui::InputInt("size", &glb_cfg.pt_scale.size, 1, 100); ToolTip("Y Scale of sizing pattern");
-			ImGui::InputInt("items", &glb_cfg.pt_scale.items, 1, 100); ToolTip("Y Scale of ordering and loading patterns");
-			ImGui::InputInt("iterations", &glb_cfg.pt_scale.iterations, 1, 100); ToolTip("X Scale of all patterns");
-
-			SubMenuEnd(1);
-		}
-
-		if (SubMenuBegin("Allocators", 1)) {
-			ImGui::Checkbox("heap", &glb_cfg.heap); ImGui::SameLine(); ImGui::Checkbox("pool", &glb_cfg.pool); ImGui::SameLine(); ImGui::Checkbox("chunk", &glb_cfg.chunk);
-
-			if (glb_cfg.chunk && SubMenuBegin("Chunk", 2)) {
-				ImGui::InputInt("size", &glb_cfg.chunk_bsize, 1, 100); ToolTip("Size of a slot in the chunk buffer");
-				ImGui::InputInt("length", &glb_cfg.chunk_blen, 1, 100); ToolTip("Number of slots in the chunk buffer");
-				SubMenuEnd(2);
+				gui.SubMenuEnd(1);
 			}
-			if (glb_cfg.pool && SubMenuBegin("Pool", 2)) {
-				ToolTip("Generalized use of chunk allocator");
-				ImGui::InputInt("size", &glb_cfg.pool_bsize, 1, 100);
-				ImGui::InputInt("length", &glb_cfg.pool_blen, 1, 100);
-				SubMenuEnd(2);
-			}
-			SubMenuEnd(1);
-		}
 
-		//ImGui::PopItemWidth();
+			if (gui.SubMenuBegin("Allocators", 1)) {
+				ImGui::Checkbox("heap", &glb_cfg.heap); ImGui::SameLine(); ImGui::Checkbox("pool", &glb_cfg.pool); ImGui::SameLine(); ImGui::Checkbox("chunk", &glb_cfg.chunk);
+
+				if (glb_cfg.chunk && gui.SubMenuBegin("Chunk", 2)) {
+					ImGui::InputInt("size", &glb_cfg.chunk_bsize, 1, 100); gui.ToolTip("Size of a slot in the chunk buffer");
+					ImGui::InputInt("length", &glb_cfg.chunk_blen, 1, 100); gui.ToolTip("Number of slots in the chunk buffer");
+					gui.SubMenuEnd(2);
+				}
+				if (glb_cfg.pool && gui.SubMenuBegin("Pool", 2)) {
+					gui.ToolTip("Generalized use of chunk allocator");
+					ImGui::InputInt("size", &glb_cfg.pool_bsize, 1, 100);
+					ImGui::InputInt("length", &glb_cfg.pool_blen, 1, 100);
+					gui.SubMenuEnd(2);
+				}
+				gui.SubMenuEnd(1);
+			}
+
+			//ImGui::PopItemWidth();
+		}
+		ImGui::End();
+
+		output_draw();
+
+		pattern_generator();
+
+		ImGui::EndGroup();
+
+		gui.frame_end();
+
+		window.end_draw();
 	}
-	ImGui::End();
-
-	output_draw();
-
-	pattern_generator();
-
-	ImGui::EndGroup();
 }
 
 
@@ -497,7 +501,7 @@ void benchmarker::analize(config pcfg) {
 	clear_out();
 
 	if (!pattern_analizer.init(&patterns, cfg.current_loading_pattern, cfg.current_ordering_pattern, cfg.current_sizing_pattern, &cfg.pt_scale)) {
-		if (pcfg.update) Notify("invalid pattern configuration", 3);
+		if (pcfg.update) gui.Notify("invalid pattern configuration", 3);
 		glb_cfg.update = false;
 		cfg.update = false;
 		is_output = false;
@@ -525,7 +529,7 @@ void benchmarker::analize(config pcfg) {
 	}
 	x_axis = new alnf[i_count];
 	for (alni iter = 0; iter < i_count; iter++) {
-		x_axis[iter] = (alnf)iter;
+		x_axis[iter] = (alnf) iter;
 	}
 
 	glb_cfg.update = false;
