@@ -13,7 +13,7 @@ class camera {
 	vec3f up;
 
 	halnf fov = (halnf) (PI) / 4;
-	halnf near = 0.0005f;
+	halnf near = 0.000f;
 	halnf far = 150.f;
 
 	halnf ratio = 1.f;
@@ -42,6 +42,7 @@ public:
 
 	void set_ratio(halnf ratio);
 	void set_fov(halnf fov);
+	halnf get_fov();
 };
 
 class indexed_trig {

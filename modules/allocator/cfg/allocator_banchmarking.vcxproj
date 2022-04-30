@@ -163,14 +163,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\glw\inc;$(ProjectDir)..\..\math\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\glw\inc;$(ProjectDir)..\..\math\inc;$(ProjectDir)..\..\..\..\imgw\ext\imgui\;$(ProjectDir)..\..\..\..\imgw\ext\imgu-notify\;$(ProjectDir)..\..\..\..\imgw\ext\implot\;$(ProjectDir)..\..\..\..\imgw\backends;$(ProjectDir)..\..\..\..\imgw\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>math.lib;glw.lib;container.lib;imgui.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\imgui-vs\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\glw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\math\lib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>math.lib;glw.lib;container.lib;imgw.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\imgw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\glw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\math\lib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -181,7 +181,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\glw\inc;$(ProjectDir)..\..\math\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\glw\inc;$(ProjectDir)..\..\math\inc;$(ProjectDir)..\..\..\..\imgw\ext\imgui\;$(ProjectDir)..\..\..\..\imgw\ext\imgu-notify\;$(ProjectDir)..\..\..\..\imgw\ext\implot\;$(ProjectDir)..\..\..\..\imgw\backends;$(ProjectDir)..\..\..\..\imgw\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -189,8 +189,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>math.lib;glw.lib;container.lib;imgui.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\imgui-vs\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\glw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\math\lib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>math.lib;glw.lib;container.lib;imgw.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\imgw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\glw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\math\lib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-expl|Win32'">
@@ -201,7 +201,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\glw\inc;$(ProjectDir)..\..\math\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\glw\inc;$(ProjectDir)..\..\math\inc;$(ProjectDir)..\..\..\..\imgw\ext\imgui\;$(ProjectDir)..\..\..\..\imgw\ext\imgu-notify\;$(ProjectDir)..\..\..\..\imgw\ext\implot\;$(ProjectDir)..\..\..\..\imgw\backends;$(ProjectDir)..\..\..\..\imgw\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -209,8 +209,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>math.lib;glw.lib;container.lib;imgui.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\imgui-vs\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\glw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\math\lib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>math.lib;glw.lib;container.lib;imgw.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\imgw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\glw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\math\lib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -219,15 +219,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\glw\inc;$(ProjectDir)..\..\math\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\glw\inc;$(ProjectDir)..\..\math\inc;$(ProjectDir)..\..\..\..\imgw\ext\imgui\;$(ProjectDir)..\..\..\..\imgw\ext\imgu-notify\;$(ProjectDir)..\..\..\..\imgw\ext\implot\;$(ProjectDir)..\..\..\..\imgw\backends;$(ProjectDir)..\..\..\..\imgw\inc</AdditionalIncludeDirectories>
       <BrowseInformation>false</BrowseInformation>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>math.lib;glw.lib;container.lib;imgui.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\imgui-vs\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\glw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\math\lib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>math.lib;glw.lib;container.lib;imgw.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\imgw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\glw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\math\lib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -241,7 +241,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\glw\inc;$(ProjectDir)..\..\math\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\glw\inc;$(ProjectDir)..\..\math\inc;$(ProjectDir)..\..\..\..\imgw\ext\imgui\;$(ProjectDir)..\..\..\..\imgw\ext\imgu-notify\;$(ProjectDir)..\..\..\..\imgw\ext\implot\;$(ProjectDir)..\..\..\..\imgw\backends;$(ProjectDir)..\..\..\..\imgw\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -249,8 +249,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>math.lib;glw.lib;container.lib;imgui.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\imgui-vs\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\glw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\math\lib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>math.lib;glw.lib;container.lib;imgw.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\imgw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\glw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\math\lib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-expl|x64'">
@@ -261,7 +261,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\glw\inc;$(ProjectDir)..\..\math\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\..\common\inc;$(ProjectDir)..\..\..\..\imgui\;$(ProjectDir)..\..\..\..\imgui\backends;$(ProjectDir)..\..\..\..\glew\include;$(ProjectDir)..\..\..\..\glfw\include;$(ProjectDir)..\..\container\inc;$(ProjectDir)..\..\..\..\implot\;$(ProjectDir)..\..\..\..\imgui-vs\amgui;$(ProjectDir)..\..\glw\inc;$(ProjectDir)..\..\math\inc;$(ProjectDir)..\..\..\..\imgw\ext\imgui\;$(ProjectDir)..\..\..\..\imgw\ext\imgu-notify\;$(ProjectDir)..\..\..\..\imgw\ext\implot\;$(ProjectDir)..\..\..\..\imgw\backends;$(ProjectDir)..\..\..\..\imgw\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -269,8 +269,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>math.lib;glw.lib;container.lib;imgui.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\imgui-vs\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\glw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\math\lib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>math.lib;glw.lib;container.lib;imgw.lib;opengl32.lib;glfw3.lib;allocator.lib;common.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\common\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\imgw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glew\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\..\..\glfw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\container\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\glw\lib\$(Platform)\$(Configuration)\;$(ProjectDir)..\..\math\lib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

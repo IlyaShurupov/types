@@ -26,9 +26,9 @@ mat4f camera::viewmat() {
 }
 
 mat4f camera::projmat() {
-	halnf r = trigs::sqrt(ratio);
+	halnf r = (halnf) trigs::sqrt(ratio);
 	halnf c = 1 / r;
-	halnf s = 1.f / trigs::tan(fov / 2.f);
+	halnf s = halnf (1.f / trigs::tan(fov / 2.f));
 
 	mat4f out;
 	out[0] = vec4f(s * r, 0, 0, 0);
@@ -42,8 +42,8 @@ vec3f camera::project(vec2f normalized) {
 	auto cammat = transform_mat();
 	auto inv = cammat.inv();
 
-	halnf z = (((target - pos).length() - near) / (far - near) - 1.f / 2) * 2.f;
-	halnf w = (target - pos).length();
+	halnf z = halnf((((target - pos).length() - near) / (far - near) - 1.f / 2) * 2.f);
+	halnf w = halnf((target - pos).length());
 	vec4<halnf> world_pos4(normalized.x * w, normalized.y * w, z, w);
 
 	auto out = inv * world_pos4;
@@ -122,6 +122,10 @@ void camera::set_ratio(halnf ratio) {
 
 void camera::set_fov(halnf fov) {
 	this->fov = fov;
+}
+
+halnf camera::get_fov() {
+	return this->fov;
 }
 
 vec3f indexed_trig::HitPos;

@@ -3,5 +3,5 @@
 
 int main() {
   benchmarker app;
-  app.run();
+  app.Run();
 }

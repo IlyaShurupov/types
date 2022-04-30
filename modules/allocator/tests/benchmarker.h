@@ -6,7 +6,7 @@
 #include "allocators.h"
 #include "array.h"
 
-#include "DebugGui.h"
+#include "ImGuiClass.h"
 
 #include "gl.h"
 #include "glcommon.h"
@@ -56,11 +56,7 @@ struct config {
 	}
 };
 
-struct benchmarker {
-
-	ogl::opengl gl;
-	ogl::window window;
-	DebugGui gui = DebugGui(window.geth());
+struct benchmarker : public ImGui::CompleteApp {
 
 	config cfg;
 	bool is_output = false;
@@ -92,7 +88,9 @@ struct benchmarker {
 	void analize(config cfg);
 	void select_pattern();
 	void output_draw();
-	void run();
+	
+	void MainDrawTick();
+
 	void pattern_generator();
 
 	void init_allocators(config& cfg);

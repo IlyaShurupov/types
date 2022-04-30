@@ -10,6 +10,9 @@ namespace ogl {
 
 		bool quit_event = false;
 
+		vec2f m_prev_cursor;
+		vec2f m_cursor;
+
 		public:
 
 		enum {
@@ -21,6 +24,12 @@ namespace ogl {
 		GLFWwindow* winp = NULL;
 		rgba col_clear;
 		vec2f size;
+		vec2f minsize; 
+
+
+		bool draw_event = false;
+		bool new_frame = true;
+		timer device_frame_time = timer(time_ms(1000.f / 70));
 
 		void resize(vec2f psize);
 		void init(alni params);
@@ -30,7 +39,7 @@ namespace ogl {
 
 		void set_current();
 
-		void begin_draw();
+		void begin_draw(bool need_update = false);
 
 		void clear();
 
@@ -42,6 +51,7 @@ namespace ogl {
 		GLFWwindow* geth();
 
 		vec2f cursor(bool normalized = false);
+		vec2f prevcursor(bool normalized = false);
 
 		float pen_pressure();
 
@@ -54,6 +64,7 @@ namespace ogl {
 
 		halnf aspect_ratio() { return size.y / size.x; }
 
+		bool SpecialKey();
 		~window();
 	};
 

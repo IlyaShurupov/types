@@ -12,7 +12,7 @@
 
 using namespace ogl;
 
-string shader_path = "../rsc/shaders/";
+//string shader_path = "../rsc/shaders/";
 
 shader::shader() {
 	programm = 0;
@@ -98,9 +98,9 @@ void shader::load(const char* pvert, const char* pgeom, const char* pfrag) {
 	GLint Result = GL_FALSE;
 	int InfoLogLength = 0;
 
-	string vert = sfmt("%s%c.vert", shader_path, pvert);
-  string geom = pgeom ? sfmt("%s%c.geom", shader_path, pgeom) : " ";
-  string frag = sfmt("%s%c.frag", shader_path, pfrag);
+	string vert = sfmt("%c.vert", pvert);
+  string geom = pgeom ? sfmt("%c.geom", pgeom) : " ";
+  string frag = sfmt("%c.frag", pfrag);
 
 	printf("Compiling shader : %s\n", vert.cstr());
 	string tmp = read_file(vert.cstr());

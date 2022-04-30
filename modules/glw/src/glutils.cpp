@@ -21,7 +21,7 @@ struct texture_drawer_data {
       -1.0f, 1.0f,  0.0f, 1.0f, -1.0f, 0.0f, 1.0f,  1.0f, 0.0f,
   };
 
-  texture_drawer_data() : shader("Texture", NULL, "Texture") {
+  texture_drawer_data() : shader("rsc/shaders/Texture", NULL, "rsc/shaders/Texture") {
     // The fullscreen quad's FBO
     glGenVertexArrays(1, &quad_VertexArrayID);
     glBindVertexArray(quad_VertexArrayID);
@@ -53,6 +53,7 @@ void init_utils() {
 void finalize_utils() {
   if (texdd) delete texdd;
 }
+
 
 void draw_texture(GLuint out, GLuint in) {
   assert(in);

@@ -6,6 +6,8 @@
 
 #include <stdio.h>
 
+#include "SOIL/SOIL.h"
+
 void GLAPIENTRY
 MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
 	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n", (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity, message);
@@ -16,7 +18,7 @@ using namespace ogl;
 void window::resize(vec2f psize) {
 	size = psize;
 	if (winp) {
-		// apply
+		glfwSetWindowSize(winp, (int) size.x, (int) size.y);
 	}
 }
 
@@ -42,7 +44,7 @@ void window::init(alni params) {
 		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 	}
 
-	winp = glfwCreateWindow((int) size.x, (int) size.y, "NULL", NULL, NULL);
+	winp = glfwCreateWindow((int) size.x, (int) size.y, " ", NULL, NULL);
 
 	if (winp == NULL) {
 		fprintf(stderr, "Failed to open GLFW window.\n");
@@ -101,6 +103,12 @@ void window::init(alni params) {
 	//gluLookAt(0, 0, -1, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
 	//glfwSwapInterval(1); // Enable vsync
+
+	//max_device_fps = glfwGetPrimaryMonitor();
+
+	GLFWimage images[2];
+	images[0].pixels = SOIL_load_image("rsc/icons/icon.png", &images[0].width, &images[0].height, 0, 0);
+	glfwSetWindowIcon(winp, 1, images);
 }
 
 window::window(vec2f psize, alni params) {
@@ -108,11 +116,21 @@ window::window(vec2f psize, alni params) {
 	init(params);
 }
 
-void window::begin_draw() {
-	// Render on the whole framebuffer, complete from the lower left corner to the upper right
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, (GLsizei) size.x, (GLsizei) size.y);
-	size_update();
+void window::begin_draw(bool need_update) {
+
+	if (new_frame) {
+		// Render on the whole framebuffer, complete from the lower left corner to the upper right
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glViewport(0, 0, (GLsizei) size.x, (GLsizei) size.y);
+		size_update();
+	}
+
+	if (device_frame_time.timeout() || need_update) {
+		device_frame_time.reset();
+		draw_event = true;
+	} else {
+		draw_event = false;
+	}
 }
 
 void window::clear() {
@@ -121,7 +139,6 @@ void window::clear() {
 }
 
 void window::end_draw(bool whait_for_event) {
-	glfwSwapBuffers(winp);
 	tablet_update((int*) WIN::glfwGetWin32Window(winp));
 
 	if (whait_for_event) {
@@ -129,6 +146,18 @@ void window::end_draw(bool whait_for_event) {
 	} else {
 		glfwPollEvents();
 	}
+
+	new_frame = false;
+
+	if (draw_event) {
+		glfwSwapBuffers(winp);
+		new_frame = true;
+	}
+
+	vec2<alnf> cur;
+	glfwGetCursorPos(winp, &cur.x, &cur.y);
+	m_prev_cursor = m_cursor;
+	m_cursor = cur;
 }
 
 inline void window::set_current() {
@@ -156,12 +185,24 @@ float window::pen_pressure() {
 }
 
 vec2f ogl::window::cursor(bool normalized) {
-	vec2<alnf> out;
-	glfwGetCursorPos(winp, &out.x, &out.y);
+	vec2f out = m_cursor;
 
 	if (normalized) {
-		out.x = (out.x / size.x - 0.5) * 2;
-		out.y = -(out.y / size.y - 0.5) * 2;
+		out.x = (out.x / size.x - 0.5f) * 2.f;
+		out.y = -(out.y / size.y - 0.5f) * 2.f;
+	} else {
+		out.y = size.y - out.y;
+	}
+
+	return vec2f(out.x, out.y);
+}
+
+vec2f ogl::window::prevcursor(bool normalized) {
+	vec2f& out = m_prev_cursor;
+
+	if (normalized) {
+		out.x = (out.x / size.x - 0.5f) * 2.f;
+		out.y = -(out.y / size.y - 0.5f) * 2.f;
 	} else {
 		out.y = size.y - out.y;
 	}
@@ -187,6 +228,13 @@ void window::size_update() {
 	glfwGetWindowSize(winp, &x, &y);
 	size.x = (halnf) x;
 	size.y = (halnf) y;
+
+	if (size.x < minsize.x) {
+		resize({minsize.x, size.y});
+	}
+	if (size.y < minsize.y) {
+		resize({size.x, minsize.y});
+	}
 }
 
 void window::set_viewport(rectf rect) {
@@ -198,6 +246,20 @@ void window::set_viewport(rectf rect) {
 
 void window::reset_viewport() {
 	glViewport((GLsizei) 0, (GLsizei) 0, (GLsizei) size.x, (GLsizei) size.y);
+}
+
+
+bool window::SpecialKey() {
+	static bool prev_state = 0;
+
+	bool state = glfwGetKey(winp, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS;
+
+	if (state == prev_state) {
+		return 0;
+	} else {
+		prev_state = state;
+		return state;
+	}
 }
 
 window::~window() {
