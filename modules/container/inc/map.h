@@ -59,18 +59,19 @@ public:
 		alni mask = nslots - 1;
 		alni idx = hashed_key & mask;
 		alni shift = (hashed_key >> HASHMAP_PERTURB_SHIFT) & ~1;
+		alni checked_num = 0;
 
 	NEXT:
 
 		if (HASHMAP_DELETED_SLOT(table, idx)) {
 			if (existing) {
-				return -1;
+				goto SKIP;
 			}
 			return idx;
 		}
 		else if (!table[idx]) {
 			if (existing) {
-				return -1;
+				goto SKIP;
 			}
 			return idx;
 		}
@@ -78,9 +79,13 @@ public:
 			return idx;
 		}
 
+		SKIP:
+		checked_num++;
+		if (checked_num == nslots) {
+			return -1;
+		}
 		idx = ((5 * idx) + 1 + shift) & mask;
 		goto NEXT;
-
 	}
 
 	HashMap() {

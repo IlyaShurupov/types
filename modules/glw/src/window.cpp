@@ -248,6 +248,18 @@ void window::reset_viewport() {
 	glViewport((GLsizei) 0, (GLsizei) 0, (GLsizei) size.x, (GLsizei) size.y);
 }
 
+bool window::SpecialKey2() {
+	static bool prev_state = 0;
+
+	bool state = glfwGetKey(winp, GLFW_KEY_TAB) == GLFW_PRESS;
+
+	if (state == prev_state) {
+		return 0;
+	} else {
+		prev_state = state;
+		return state;
+	}
+}
 
 bool window::SpecialKey() {
 	static bool prev_state = 0;

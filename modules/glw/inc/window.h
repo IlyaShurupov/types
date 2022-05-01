@@ -65,6 +65,7 @@ namespace ogl {
 		halnf aspect_ratio() { return size.y / size.x; }
 
 		bool SpecialKey();
+		bool SpecialKey2();
 		~window();
 	};
 

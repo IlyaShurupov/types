@@ -5,6 +5,7 @@
 
 #include "list_policies.h"
 
+#include "file.h"
 //#include <cstdarg>
 
 template <class Type> class ListIterator;
@@ -12,7 +13,7 @@ template <class Type, typename list_pol> class list;
 
 template <typename Type>
 class list_node {
-public:
+	public:
 	Type data;
 	list_node<Type>* next = nullptr;
 	list_node<Type>* prev = nullptr;
@@ -36,10 +37,10 @@ class list {
 
 	list_pol listh;
 
-public:
+	public:
 	bool shared_nodes = false;
 
-public:
+	public:
 	list() {}
 
 	inline list_node<Type>* First() const { return first; }
@@ -57,14 +58,12 @@ public:
 			if (node_to == last) {
 				last = node;
 			}
-		}
-		else {
+		} else {
 			if (first) {
 				first->prev = node;
 				node->next = first;
 				first = node;
-			}
-			else {
+			} else {
 				first = last = node;
 			}
 		}
@@ -176,11 +175,9 @@ public:
 	void Insert(list_node<Type>* node, alni idx) {
 		if (idx >= Len()) {
 			Attach(node, Last());
-		}
-		else if (idx < 0 || !Len()) {
+		} else if (idx < 0 || !Len()) {
 			Attach(node, nullptr);
-		}
-		else {
+		} else {
 			Attach(node, Find(idx)->prev);
 		}
 	}
@@ -252,6 +249,27 @@ public:
 		return Len();
 	}
 
+	alni save_size() {
+		alni out = sizeof(alni) + length * sizeof(Type);
+	}
+
+	void save(File& file) {
+		file.write<alni>(&length);
+		for (auto item : *this) {
+			file.write<Type>(&item.Data());
+		}
+	}
+
+	void load(File& file) {
+		Clear();
+		file.read<alni>(&length);
+		for (auto idx : range(length)) {
+			Type block = Type();
+			PushBack(block);
+			file.read<Type>(&last->data);
+		}
+	}
+
 	~list() {
 		Clear();
 	}
@@ -263,7 +281,7 @@ class ListIterator {
 	list_node<Type>* iter;
 	alni idx;
 
-public:
+	public:
 	alni Idx() { return idx; }
 	Type& operator->() { return iter->data; }
 	Type& Data() { return iter->data; }
