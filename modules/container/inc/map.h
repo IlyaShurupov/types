@@ -26,7 +26,7 @@ class MapIterator;
 template < typename V, typename K, typename hmpolicy = map_policy_default< V, K >, int table_size = HASHMAP_MIN_SIZE >
 class HashMap {
 
-public:
+	public:
 
 	HashNode<V, K>** table;
 	alni nslots;
@@ -37,7 +37,7 @@ public:
 		alni nslots_old = nslots;
 		HashNode<V, K>** table_old = table;
 
-		nslots = next_pow_of_2((uint8)((1.f / (HASHMAP_LOAD_FACTOR)) * nentries + 1));
+		nslots = next_pow_of_2((uint8) ((1.f / (HASHMAP_LOAD_FACTOR)) * nentries + 1));
 		table = mp.alloc_table(nslots);
 		nentries = 0;
 
@@ -61,21 +61,19 @@ public:
 		alni shift = (hashed_key >> HASHMAP_PERTURB_SHIFT) & ~1;
 		alni checked_num = 0;
 
-	NEXT:
+		NEXT:
 
 		if (HASHMAP_DELETED_SLOT(table, idx)) {
 			if (existing) {
 				goto SKIP;
 			}
 			return idx;
-		}
-		else if (!table[idx]) {
+		} else if (!table[idx]) {
 			if (existing) {
 				goto SKIP;
 			}
 			return idx;
-		}
-		else if (table[idx]->key == key) {
+		} else if (table[idx]->key == key) {
 			return idx;
 		}
 
@@ -100,21 +98,37 @@ public:
 			table[idx] = mp.alloc_node();
 			table[idx]->key = key;
 			nentries++;
-		}
-		else if (table[idx]) {
+		} else if (table[idx]) {
 			mp.ValDestruct(table[idx]);
 		}
 
 		table[idx]->val = val;
 
-		if ((float)nentries / nslots > HASHMAP_LOAD_FACTOR) {
+		if ((float) nentries / nslots > HASHMAP_LOAD_FACTOR) {
 			rehash();
 		}
 	}
 
-	alni Presents(const K& key) {
-		alni idx = find_slot(key, true);
-		return idx == -1 ? -1 : idx;
+	struct map_idx {
+		alni idx;
+
+		map_idx(alni i) { idx = i; }
+		map_idx(halni i) { idx = i; }
+		operator alni() { return idx; }
+		operator bool() { return idx != -1; }
+		bool operator == (const map_idx& in) { return idx == in.idx; }
+		bool operator != (const map_idx& in) { return idx != in.idx; }
+		bool operator >= (const map_idx& in) { return idx >= in.idx; }
+		bool operator <= (const map_idx& in) { return idx <= in.idx; }
+		bool operator > (const map_idx& in)  { return idx > in.idx; }
+		bool operator < (const map_idx& in)  { return idx < in.idx; }
+		void operator++() { idx++; }
+		void operator--() { idx--; }
+		alni operator-() { return -idx; }
+	};
+
+	map_idx Presents(const K& key) {
+		return find_slot(key, true);
 	}
 
 	bool Presents(const K& key, alni& idx_out) {
@@ -132,7 +146,7 @@ public:
 		if (idx == -1) {
 			throw typesExeption("hmap key not found", false);
 		}
-		
+
 		return table[idx]->val;
 	}
 
@@ -142,7 +156,7 @@ public:
 
 	HashNode<V, K>* GetEntry(const K& key) {
 		alni idx = find_slot(key, true);
-		
+
 		if (idx == -1) {
 			throw typesExeption("hmap key not found", false);
 		}
@@ -165,7 +179,7 @@ public:
 		table[idx] = (HashNode<V, K>*) - 1;
 
 		nentries--;
-		if ((float)nentries / nslots < 1 - HASHMAP_LOAD_FACTOR) {
+		if ((float) nentries / nslots < 1 - HASHMAP_LOAD_FACTOR) {
 			rehash();
 		}
 	}
@@ -230,7 +244,7 @@ public:
 template <typename K, typename V, typename hmpolicy, int SZ>
 class MapIterator {
 
-public:
+	public:
 
 	HashMap<V, K, hmpolicy, SZ>* map;
 	HashNode<V, K>* iter;
@@ -246,7 +260,7 @@ public:
 		this->operator++();
 	}
 
-	operator K&() {
+	operator K& () {
 		return iter->key;
 	}
 

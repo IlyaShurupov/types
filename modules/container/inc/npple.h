@@ -18,10 +18,12 @@ struct tuple {
 	}
 
 	union {
+		T1 t1;
 		T1 head;
 		T1 x;
 	};
 	union {
+		T2 t2;
 		T2 tail;
 		T2 y;
 	};
@@ -30,14 +32,17 @@ struct tuple {
 template <typename T1, typename T2, typename T3>
 struct tripple {
 	union {
+		T1 t1;
 		T1 x;
 		T1 v1;
 	};
 	union {
+		T2 t2;
 		T2 y;
 		T2 v2;
 	};
 	union {
+		T3 t3;
 		T3 z;
 		T3 v3;
 	};
