@@ -115,6 +115,7 @@ class Array {
   }
 
   inline Type& operator[](alni idx) {
+    assert(idx >= 0 && idx < length);
     return buff[idx];
   }
 
