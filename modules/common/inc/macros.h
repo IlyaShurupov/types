@@ -32,3 +32,9 @@ inline void swap(T& t1, T& t2) {
 	t1 = t2; 
 	t2 = tmp;
 }
+
+template <typename T>
+inline T clamp(T t1, const T t2, const T t3) {
+	CLAMP(t1, t2, t3)
+	return t1;
+}

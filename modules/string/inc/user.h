@@ -65,6 +65,10 @@ public: // editing interface
 
 	void trim(range range);
 	void clear();
+
+	alni save_size();
+	void save(class File* file);
+	void load(class File* file);
 };
 
 str_user sfmt(const char* fmt, ...);

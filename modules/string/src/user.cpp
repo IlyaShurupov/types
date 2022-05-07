@@ -4,6 +4,8 @@
 #include "strdata.h"
 #include "strings.h"
 
+#include "filesystem.h"
+
 str_user::str_user() {
   datap = new str_data(NULL, true);
   refinc(datap);
@@ -178,6 +180,23 @@ void str_user::trim(range rng) {
   assert_modifiable();
   datap->remove(0, rng.st);
   datap->remove(rng.nd, len);
+}
+
+alni str_user::save_size() {
+  return size() + sizeof(alni);
+}
+
+void str_user::save(File* file) {
+  alni len = save_size();
+  file->write(&len);
+  file->write_bytes(cstr(), len);
+}
+
+void str_user::load(File* file) {
+  alni len;
+  file->read(&len);
+  reserve(len);
+  file->read_bytes(get_writable(), len);
 }
 
 void str_user::clear() {
