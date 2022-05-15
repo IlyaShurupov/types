@@ -4,7 +4,7 @@
 #include "implot.h"
 
 alni hash(const string& val) {
-	return hash(val.c_str());
+	return hash(val.cstr());
 }
 
 config glb_cfg = {
@@ -142,13 +142,13 @@ void benchmarker::select_pattern() {
 		const char* current_spattern_name = NULL;
 
 		for (auto pattern_name : patterns) {
-			pattern_names[pattern_name.entry_idx] = pattern_name->key.c_str();
+			pattern_names[pattern_name.entry_idx] = pattern_name->key.cstr();
 			if (pattern_name->val == glb_cfg.current_ordering_pattern)
-				current_opattern_name = pattern_name->key.c_str();
+				current_opattern_name = pattern_name->key.cstr();
 			if (pattern_name->val == glb_cfg.current_sizing_pattern)
-				current_spattern_name = pattern_name->key.c_str();
+				current_spattern_name = pattern_name->key.cstr();
 			if (pattern_name->val == glb_cfg.current_loading_pattern)
-				current_lpattern_name = pattern_name->key.c_str();
+				current_lpattern_name = pattern_name->key.cstr();
 		}
 
 		if (ImGui::BeginCombo("Ordering", current_opattern_name)) {
@@ -192,7 +192,7 @@ void benchmarker::pattern_combo(const char*& current) {
 		const char** pattern_names = new const char* [patterns.nentries];
 
 		for (auto pattern_name : patterns) {
-			pattern_names[pattern_name.entry_idx] = pattern_name->key.c_str();
+			pattern_names[pattern_name.entry_idx] = pattern_name->key.cstr();
 		}
 
 		if (ImGui::BeginCombo("Patterns", current)) {
@@ -235,7 +235,7 @@ void benchmarker::pattern_generator() {
 			ImGui::InputText("pattern name", create_name, 100);
 
 			if (ImGui::Button("Create")) {
-				if (patterns.Presents(create_name) == -1) {
+				if (patterns.Presents(create_name)) {
 					pattern* new_pt = new pattern();
 					new_pt->build_in = false;
 					new_pt->pattern_name = create_name;
@@ -325,7 +325,7 @@ void benchmarker::pattern_generator() {
 					ImGui::BeginListBox("");
 					for (alni idx = 0; idx < pattern_edit->regions.length; idx++) {
 						ImGui::PushID((int) idx);
-						if (ImGui::Button(pattern_edit->regions[idx].name.c_str())) {
+						if (ImGui::Button(pattern_edit->regions[idx].name.cstr())) {
 							child_pattern_active = patterns.Get(pattern_edit->regions[idx].name);
 							selected_idx = idx;
 						}

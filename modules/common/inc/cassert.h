@@ -9,3 +9,5 @@ void assertf(const char* exp, const char* file, int line);
 #else
 #define assert(exp) ((void)0)
 #endif
+
+#define rterror(def) assertf(def, __FILE__, __LINE__)

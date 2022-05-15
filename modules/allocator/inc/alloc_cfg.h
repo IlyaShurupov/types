@@ -1,7 +1,7 @@
 #pragma once
 
 
-//#define MEM_TRACE
+#define MEM_TRACE
 
 #ifdef MEM_TRACE
 	

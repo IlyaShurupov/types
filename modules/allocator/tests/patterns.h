@@ -1,13 +1,12 @@
 
 #pragma once
 
-#include <string.h>
+#include "strings.h"
 
 #include <iostream>
 
 #include "collector.h"
 
-using string = std::string;
 alni hash(const string& val);
 
 #include "map.h"

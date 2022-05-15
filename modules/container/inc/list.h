@@ -157,6 +157,7 @@ class list {
 
 	inline Type& operator[](ListIterator<Type>& iter) { return iter.node()->data; }
 	inline Type& operator[](alni idx) { return Find(idx)->data; }
+	inline const Type& operator[](alni idx) const { return Find(idx)->data; }
 
 	void PushBack(list_node<Type>* new_node) { Attach(new_node, Last()); }
 	void PushFront(list_node<Type>* new_node) { Attach(new_node, nullptr); }
