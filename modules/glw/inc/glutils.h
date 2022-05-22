@@ -5,19 +5,23 @@
 #include "mat.h"
 #include "rect.h"
 
-void init_utils();
-void finalize_utils();
+namespace tp {
 
-void draw_texture(GLuint out, GLuint in);
-GLuint get_tex(const char* TexId);
-void drawCurcle(vec2f pos, double radius, rgba col);
+	void init_utils();
+	void finalize_utils();
 
-struct fpscount {
-  halni frames = 0;
-  timer time;
-  halni fps = 0;
+	void draw_texture(GLuint out, GLuint in);
+	GLuint get_tex(const char* TexId);
+	void drawCurcle(vec2f pos, double radius, rgba col);
 
-  fpscount() : time(1000) {}
+	struct fpscount {
+		halni frames = 0;
+		Timer time;
+		halni fps = 0;
 
-  void update(bool log = true);
+		fpscount() : time(1000) {}
+
+		void update(bool log = true);
+	};
+
 };

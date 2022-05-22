@@ -39,7 +39,7 @@ struct config {
 	pattern* current_ordering_pattern = 0;
 	pattern_scale pt_scale;
 
-	alni update = 0;
+	tp::alni update = 0;
 	bool time_per_instruction = 0;
 	bool mem_per_instruction = 0;
 	int avreging;
@@ -52,7 +52,7 @@ struct config {
 	int pool_blen = 0;
 
 	bool operator==(const config& in) {
-		return memequal(this, (config*)(&in), sizeof(config));
+		return tp::memequal(this, (config*)(&in), sizeof(config));
 	}
 };
 
@@ -62,18 +62,18 @@ struct benchmarker : public ImGui::CompleteApp {
 	bool is_output = false;
 
 	// allocators
-	heapalloc* halloc = NULL;
-	poolalloc* palloc = NULL;
-	chunkalloc* calloc = NULL;
+	tp::HeapAlloc* halloc = NULL;
+	tp::PoolAlloc* palloc = NULL;
+	tp::ChunkAlloc* calloc = NULL;
 
 
-	Array<allocator_histogram*> out;
+	tp::Array<allocator_histogram*> out;
 	pattern_histogram* pattern_out;
 
-	alni i_count;
-	alnf* x_axis = NULL;
+	tp::alni i_count;
+	tp::alnf* x_axis = NULL;
 
-	HashMap<pattern*, string> patterns;
+	tp::HashMap<pattern*, tp::string> patterns;
 
 	pattern_reader pattern_analizer;
 

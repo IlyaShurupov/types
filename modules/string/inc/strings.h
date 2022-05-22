@@ -2,4 +2,8 @@
 #include "user.h"
 #include "algorithms.h"
 
-using string = str_user;
+namespace tp {
+
+	using string = str_user;
+
+};

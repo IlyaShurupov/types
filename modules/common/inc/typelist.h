@@ -31,7 +31,7 @@
 #include "typeselect.h"
 #include "typeconversion.h"
 
-namespace compiler {
+namespace tp {
 
 	struct NullType {};
 
@@ -444,7 +444,7 @@ namespace compiler {
 		typedef NullType list;
 	};
 
-}   // namespace compiler
+}   // namespace tp
 
 #if 0
 #define TYPELIST1(T1)                                       ::compiler::Typelist<T1, ::compiler::NullType>

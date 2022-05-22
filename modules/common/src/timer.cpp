@@ -15,69 +15,75 @@
 
 #define THREAD_SLEEP(time_ms) std::this_thread::sleep_for(std::chrono::milliseconds(time_ms))
 
+namespace tp {
 
-time_ms get_time() {
-  return GETTIMEMSC();
-}
+	time_ms get_time() {
+		return GETTIMEMSC();
+	}
 
-void sleep(time_ms duration) {
-  THREAD_SLEEP(duration);
-}
+	void sleep(time_ms mDuration) {
+		THREAD_SLEEP(mDuration);
+	}
 
 
-timer::timer() {
-  duration = 0;
-  start = GETTIMEMSC();
-}
+	Timer::Timer() {
+		mDuration = 0;
+		mStart = GETTIMEMSC();
+	}
 
-timer::timer(time_ms duration) {
-  start = GETTIMEMSC();
-  this->duration = duration;
-}
+	Timer::Timer(time_ms mDuration) {
+		mStart = GETTIMEMSC();
+		this->mDuration = mDuration;
+	}
 
-bool timer::timeout() {
-  return duration < GETTIMEMSC() - start;
-}
+	bool Timer::isTimeout() {
+		return mDuration < GETTIMEMSC() - mStart;
+	}
 
-void timer::reset() {
-  start = GETTIMEMSC();
-}
+	void Timer::reset() {
+		mStart = GETTIMEMSC();
+	}
 
-time_ms timer::past() {
-  return GETTIMEMSC() - start;
-}
+	time_ms Timer::timePased() {
+		return GETTIMEMSC() - mStart;
+	}
 
-time_ms timer::remain() {
-  return duration - (GETTIMEMSC() - start);
-}
+	time_ms Timer::remainder() {
+		return mDuration - (GETTIMEMSC() - mStart);
+	}
 
-void timer::wait_out() {
-  if (!timeout()) {
-    sleep(remain());
-  }
-}
+	time_ms Timer::start() { return mStart; }
+	time_ms Timer::duration() { return mDuration; }
 
-float timer::ease_in(time_ms duration) {
+	void Timer::wait() {
+		if (!isTimeout()) {
+			sleep(remainder());
+		}
+	}
 
-  if (!duration) {
-    duration = this->duration;
-  }
+	float Timer::easeIn(time_ms pDuration) {
 
-  float x = (1.f / duration) * past();
+		if (!pDuration) {
+			pDuration = mDuration;
+		}
 
-  float out = (1.1f * x) / (x + 0.1f);
-  CLAMP(out, 0, 1);
-  return out;
-}
+		float x = (1.f / mDuration) * timePased();
 
-float timer::ease_out(time_ms duration) {
-  if (!duration) {
-    duration = this->duration;
-  }
+		float out = (1.1f * x) / (x + 0.1f);
+		CLAMP(out, 0, 1);
+		return out;
+	}
 
-  float x = (1.f / duration) * past();
+	float Timer::easeOut(time_ms pDuration) {
+		if (!pDuration) {
+			mDuration = this->mDuration;
+		}
 
-  float out = (0.1f *(1 - x)) / (x + 0.1f);
-  CLAMP(out, 0, 1);
-  return out;
-}
+		float x = (1.f / mDuration) * timePased();
+
+		float out = (0.1f * (1 - x)) / (x + 0.1f);
+		CLAMP(out, 0, 1);
+		return out;
+	}
+
+};

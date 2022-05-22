@@ -5,38 +5,42 @@
 #include "new.h"
 #include "poolalloc.h"
 
-template <typename V, typename K>
-struct HashNode;
+namespace tp {
 
-template <typename V, typename K>
-struct map_policy_default {
-  poolalloc palloc;
+	template <typename V, typename K>
+	struct HashNode;
 
-  map_policy_default() : palloc(sizeof(HashNode<V, K>), 16) {}
+	template <typename V, typename K>
+	struct map_policy_default {
+		PoolAlloc palloc;
 
-  HashNode<V, K>** alloc_table(alni nslots) {
-    HashNode<V, K>** out = new HashNode<V, K>*[nslots];
-#ifndef MEM_ZEROING
-    for (auto& i : range(0, nslots)) {
-      out[i] = NULL;
-    }
-#endif  // !MEM_ZEROING
-    return out;
-  }
+		map_policy_default() : palloc(sizeof(HashNode<V, K>), 16) {}
 
-  HashNode<V, K>* alloc_node() { return new (&palloc) HashNode<V, K>(); }
+		HashNode<V, K>** alloc_table(alni nslots) {
+			HashNode<V, K>** out = new HashNode<V, K>*[nslots];
+			#ifndef MEM_ZEROING
+			for (auto& i : Range(0, nslots)) {
+				out[i] = NULL;
+			}
+			#endif  // !MEM_ZEROING
+			return out;
+		}
 
-  void free_node(HashNode<V, K>* node) { delete node; }
+		HashNode<V, K>* alloc_node() { return new (&palloc) HashNode<V, K>(); }
 
-  void free_table(HashNode<V, K>** table) { if (table) delete[] table; }
+		void free_node(HashNode<V, K>* node) { delete node; }
 
-  alni KeyHash(const K& key) { return hash(key); }
+		void free_table(HashNode<V, K>** table) { if (table) delete[] table; }
 
-  void ValCopy(HashNode<V, K>* left, HashNode<V, K>* right) {
-    left->val = right->val;
-  }
+		alni KeyHash(const K& key) { return hash(key); }
 
-  void ValDestruct(HashNode<V, K>* node) {
-    // release
-  }
+		void ValCopy(HashNode<V, K>* left, HashNode<V, K>* right) {
+			left->val = right->val;
+		}
+
+		void ValDestruct(HashNode<V, K>* node) {
+			// release
+		}
+	};
+
 };

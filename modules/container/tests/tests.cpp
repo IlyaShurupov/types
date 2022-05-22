@@ -1,6 +1,8 @@
 
 #include "containers.h"
 
+using namespace tp;
+
 struct avl_ts {
 	alni val;
 
@@ -15,28 +17,28 @@ struct avl_ts {
 
 int main() {
 
-	avltree<avl_ts> avl;
+	AvlTree<avl_ts> avl;
 	avl.insert(avl_ts({0}));
 
 
 	HashMap<alni, alni> mp;
 	
-	mp.Put(1, 1);
-	mp.Put(2, 2);
-	mp.Put(3, 3);
-	mp.Put(4, 4);
-	mp.Put(5, 5);
-	mp.Put(6, 6);
+	mp.put(1, 1);
+	mp.put(2, 2);
+	mp.put(3, 3);
+	mp.put(4, 4);
+	mp.put(5, 5);
+	mp.put(6, 6);
 
-	mp.Remove(1);
-	mp.Remove(2);
-	mp.Remove(3);
+	mp.remove(1);
+	mp.remove(2);
+	mp.remove(3);
 
-	mp.Put(1, 1);
-	mp.Put(2, 2);
-	mp.Put(3, 3);
+	mp.put(1, 1);
+	mp.put(2, 2);
+	mp.put(3, 3);
 
-	alni val = mp.Get(4);
+	alni val = mp.get(4);
 	val = sizeof(HashMap<int, const char*>);
 
 }

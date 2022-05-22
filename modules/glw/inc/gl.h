@@ -1,9 +1,13 @@
 
 #pragma once
 
-namespace ogl {
-	struct opengl {
-		opengl();
-		~opengl();
+namespace tp {
+
+	namespace ogl {
+		struct opengl {
+			opengl();
+			~opengl();
+		};
 	};
+
 };

@@ -3,184 +3,185 @@
 #include "heapalloc.h"
 
 #include "filesystem.h"
+namespace tp {
 
-template <typename Type>
-struct array_iterator;
+	template <typename Type>
+	class ArrayIterator;
 
-template <typename Type>
-class Array {
+	template <typename Type>
+	class Array {
 
-	void allocate(alni p_bufflen) {
-		length = p_bufflen;
-		buff = new Type[length]();
-	}
-
-	public:
-
-	Type* buff;
-	alni length;
-
-	Array() {
-		length = 0;
-		buff = nullptr;
-	}
-
-	Array(alni p_length) {
-		length = p_length;
-		Reserve(length);
-	}
-
-	alni Len() {
-		return length;
-	}
-
-	void Reserve(alni p_bufflen) {
-		Free();
-		length = p_bufflen;
-		buff = new Type[length]();
-	}
-
-	void Free() {
-		length = 0;
-		if (buff) {
-			delete[] buff;
-		}
-		buff = NULL;
-	}
-
-	void Insert(Type& p_block, alni idx) {
-		Type* current = buff;
-		allocate(length + 1);
-
-		for (alni befor = 0; befor < idx; befor++) {
-			buff[befor] = current[befor];
-		}
-		for (alni after = idx; after < length - 1; after++) {
-			buff[after + 1] = current[after];
+		void allocate(alni p_bufflen) {
+			mLength = p_bufflen;
+			mBuff = new Type[mLength]();
 		}
 
-		buff[idx] = p_block;
+		Type* mBuff;
+		alni mLength;
 
-		if (current) {
-			delete[] current;
-		}
-	}
+		public:
 
-	void Remove(alni p_idx) {
-		Type* current = buff;
-		alni current_len = length;
-		allocate(length - 1);
-
-		for (alni befor = 0; befor < p_idx; befor++) {
-			buff[befor] = current[befor];
-		}
-		for (alni after = p_idx + 1; after < length + 1; after++) {
-			buff[after - 1] = current[after];
+		Array() {
+			mLength = 0;
+			mBuff = nullptr;
 		}
 
-		delete[] current;
-	}
+		Array(alni p_length) {
+			mLength = p_length;
+			reserve(mLength);
+		}
 
-	void RemoveVal(Type val) {
-		for (int i = 0; i < Len(); i++) {
-			if (buff[i] == val) {
-				Remove(i);
+		alni length() const {
+			return mLength;
+		}
+
+		Type* buff() const {
+			return mBuff;
+		}
+
+		void reserve(alni p_bufflen) {
+			free();
+			mLength = p_bufflen;
+			mBuff = new Type[mLength]();
+		}
+
+		void free() {
+			mLength = 0;
+			if (mBuff) {
+				delete[] mBuff;
+			}
+			mBuff = NULL;
+		}
+
+		void insert(Type& p_block, alni idx) {
+			Type* current = mBuff;
+			allocate(mLength + 1);
+
+			for (alni befor = 0; befor < idx; befor++) {
+				mBuff[befor] = current[befor];
+			}
+			for (alni after = idx; after < mLength - 1; after++) {
+				mBuff[after + 1] = current[after];
+			}
+
+			mBuff[idx] = p_block;
+
+			if (current) {
+				delete[] current;
 			}
 		}
-	}
 
-	void operator=(const Array& array) {
-		Reserve(array.length);
-		for (int i = 0; i < array.length; i++) {
-			buff[i] = array.buff[i];
-		}
-	}
+		void remove(alni p_idx) {
+			Type* current = mBuff;
+			alni current_len = mLength;
+			allocate(mLength - 1);
 
-	void operator+=(const Array& array) {
-		if (!buff) {
-			return operator=(array);
-		}
+			for (alni befor = 0; befor < p_idx; befor++) {
+				mBuff[befor] = current[befor];
+			}
+			for (alni after = p_idx + 1; after < mLength + 1; after++) {
+				mBuff[after - 1] = current[after];
+			}
 
-		alni new_len = array.length + length;
-		Type* newbuff = new Type[new_len]();
-
-		for (halni i = 0; i < length; i++) {
-			newbuff[i] = buff[i];
-		}
-		for (halni i = 0; i < array.length; i++) {
-			newbuff[length + i] = array.buff[i];
+			delete[] current;
 		}
 
-		delete[] buff;
-		buff = newbuff;
-		length = new_len;
-	}
-
-	inline Type& operator[](alni idx) {
-		assert(idx >= 0 && idx < length);
-		return buff[idx];
-	}
-
-	void PushBack(Type block) {
-		Insert(block, length);
-	}
-
-	Type* GetBuff() {
-		return buff;
-	}
-
-	Array(const Array& array) {
-		allocate(array.length);
-		for (int i = 0; i < array.length; i++) {
-			buff[i] = array.buff[i];
+		void removeVal(Type val) {
+			for (int i = 0; i < mLength; i++) {
+				if (mBuff[i] == val) {
+					remove(i);
+				}
+			}
 		}
-	}
 
-	array_iterator<Type> begin() { return array_iterator<Type>(this); }
-	alni end() { return Len(); }
+		void operator=(const Array& array) {
+			reserve(array.mLength);
+			for (int i = 0; i < array.mLength; i++) {
+				mBuff[i] = array.mBuff[i];
+			}
+		}
 
-	~Array() {
-		Free();
-	}
+		void operator+=(const Array& array) {
+			if (!mBuff) {
+				return operator=(array);
+			}
 
+			alni new_len = array.mLength + mLength;
+			Type* newbuff = new Type[new_len]();
 
-	void save_size() {
-		return length * sizeof(Type) + sizeof(length);
-	}
+			for (halni i = 0; i < mLength; i++) {
+				newbuff[i] = mBuff[i];
+			}
+			for (halni i = 0; i < array.mLength; i++) {
+				newbuff[mLength + i] = array.mBuff[i];
+			}
 
-	void save(File& file) {
-		file.write(length);
-		file.write_bytes((int1*) buff, length * sizeof(Type));
-	}
+			delete[] mBuff;
+			mBuff = newbuff;
+			mLength = new_len;
+		}
 
-	void load(File& file) {
-		file.read(&length);
-		Reserve(length);
-		file.read_bytes((int1*) buff, length * sizeof(Type));
-	}
-};
+		inline Type& operator[](alni idx) {
+			assert(idx >= 0 && idx < mLength);
+			return mBuff[idx];
+		}
 
-template <typename Type>
-struct array_iterator {
-	alni idx = 0;
-	Array<Type>* array_p;
+		void pushBack(Type block) {
+			insert(block, mLength);
+		}
 
-	array_iterator(Array<Type>* array) : array_p(array) {}
+		Array(const Array& array) {
+			allocate(array.mLength);
+			for (int i = 0; i < array.mLength; i++) {
+				mBuff[i] = array.mBuff[i];
+			}
+		}
 
-	Type* operator->() { return &(*array_p)[idx]; }
+		ArrayIterator<Type> begin() { return ArrayIterator<Type>(this); }
+		alni end() { return mLength; }
 
-	Type& data() const { return (*array_p)[idx]; }
+		alni saveSize() {
+			return mLength * sizeof(Type) + sizeof(mLength);
+		}
 
-	inline void operator++() {
-		idx++;
-	}
+		void save(File& file) {
+			file.write(mLength);
+			file.write_bytes((int1*) mBuff, mLength * sizeof(Type));
+		}
 
-	bool operator==(alni p_idx) { return idx == p_idx; }
-	bool operator!=(alni p_idx) { return idx != p_idx; }
-	bool operator>(alni p_idx) { return idx > p_idx; }
-	bool operator<(alni p_idx) { return idx < p_idx; }
-	bool operator>=(alni p_idx) { return idx >= p_idx; }
-	bool operator<=(alni p_idx) { return idx <= p_idx; }
+		void load(File& file) {
+			file.read(&mLength);
+			reserve(mLength);
+			file.read_bytes((int1*) mBuff, mLength * sizeof(Type));
+		}
 
-	const array_iterator& operator*() { return *this; }
+		~Array() {
+			free();
+		}
+	};
+
+	template <typename Type>
+	class ArrayIterator {
+		alni mIdx = 0;
+		Array<Type>* mArrayPtr;
+		public:
+
+		ArrayIterator(Array<Type>* array) : mArrayPtr(array) {}
+		
+		Type& data() const { return (*mArrayPtr)[mIdx]; }
+		Type& idx() const { return mIdx; }
+		operator alni() { return mIdx; }
+
+		Type* operator->() { return &(*mArrayPtr)[mIdx]; }
+		const ArrayIterator& operator*() { return *this; }
+
+		inline void operator++() { mIdx++; }
+		bool operator==(alni p_idx) { return mIdx == p_idx; }
+		bool operator!=(alni p_idx) { return mIdx != p_idx; }
+		bool operator>(alni p_idx) { return mIdx > p_idx; }
+		bool operator<(alni p_idx) { return mIdx < p_idx; }
+		bool operator>=(alni p_idx) { return mIdx >= p_idx; }
+		bool operator<=(alni p_idx) { return mIdx <= p_idx; }
+	};
+
 };

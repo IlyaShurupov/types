@@ -1,7 +1,9 @@
 
 #include "exeptions.h"
 
-typesExeption::typesExeption(const char* p_description, bool p_fatal) {
-	description = p_description;
-	fatal = p_fatal;
-}
+namespace tp {
+	Exeption::Exeption(const char* pDescription, bool pFatal) {
+		mDescription = pDescription;
+		mFatal = pFatal;
+	}
+};

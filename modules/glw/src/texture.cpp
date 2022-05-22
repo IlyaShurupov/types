@@ -3,28 +3,32 @@
 
 #include "glutils.h"
 
-using namespace ogl;
+namespace tp {
 
-GLuint ogl::texture::getid() { return id; }
+	using namespace ogl;
 
-texture::texture() {
-  glGenTextures(1, &id);
-  glBindTexture(GL_TEXTURE_2D, id);
+	GLuint ogl::texture::getid() { return id; }
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glBindTexture(GL_TEXTURE_2D, 0);
-}
+	texture::texture() {
+		glGenTextures(1, &id);
+		glBindTexture(GL_TEXTURE_2D, id);
 
-texture::~texture() { glDeleteTextures(1, &id); }
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	texture::~texture() { glDeleteTextures(1, &id); }
 
 
-void texture::update(const array2d<rgba>& buff) {
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)buff.size.x, (GLsizei) buff.size.y, 0, GL_RGBA, GL_FLOAT, buff.buff);
-}
+	void texture::update(const Array2D<rgba>& buff) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei) buff.size().x, (GLsizei) buff.size().y, 0, GL_RGBA, GL_FLOAT, buff.buff());
+	}
 
-void texture::draw(const GLuint& out) {
-  draw_texture(out, id);
-}
+	void texture::draw(const GLuint& out) {
+		draw_texture(out, id);
+	}
+
+};

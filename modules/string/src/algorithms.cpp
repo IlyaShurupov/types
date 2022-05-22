@@ -1,260 +1,264 @@
 
 #include "algorithms.h"
 
-alni slen(const char* in) {
-  alni out = 0;
-  for (const char* iter = in; *iter != '\0'; iter++) {
-    out++;
-  }
-  return out;
-}
+namespace tp {
 
-char* sinsert(const char* cur, const char* tar, alni atidx, alni len) {
-  alni cur_len = slen(cur);
-  alni all_len = cur_len + len;
-  char* out = new char[all_len + 1];
+	alni slen(const char* in) {
+		alni out = 0;
+		for (const char* iter = in; *iter != '\0'; iter++) {
+			out++;
+		}
+		return out;
+	}
 
-  assert(cur_len > 0);
-  assert(len > 0);
-  assert(atidx < cur_len + 1 && atidx >= 0);
+	char* sinsert(const char* cur, const char* tar, alni atidx, alni len) {
+		alni cur_len = slen(cur);
+		alni all_len = cur_len + len;
+		char* out = new char[all_len + 1];
 
-  for (alni idx = 0; idx < atidx; idx++) {
-    out[idx] = cur[idx];
-  }
+		assert(cur_len > 0);
+		assert(len > 0);
+		assert(atidx < cur_len + 1 && atidx >= 0);
 
-  for (alni idx = 0; idx < len; idx++) {
-    out[idx + atidx] = tar[idx];
-  }
+		for (alni idx = 0; idx < atidx; idx++) {
+			out[idx] = cur[idx];
+		}
 
-  for (alni idx = atidx + len; idx < all_len; idx++) {
-    out[idx] = cur[idx - len];
-  }
+		for (alni idx = 0; idx < len; idx++) {
+			out[idx + atidx] = tar[idx];
+		}
 
-  out[all_len] = '\0';
+		for (alni idx = atidx + len; idx < all_len; idx++) {
+			out[idx] = cur[idx - len];
+		}
 
-  return out;
-}
+		out[all_len] = '\0';
 
-void soverride(char* cur, const char* tar, alni atidx, alni len) {
-  for (alni idx = 0; idx < len; idx++) {
-    cur[idx + atidx] = tar[idx];
-  }
-}
+		return out;
+	}
 
-char* sremove(const char* cur, alni start, alni end) {
-  alni cur_len = slen(cur);
-  alni range_len = end - start;
-  alni new_len = cur_len - range_len;
-  char* out = new char[new_len + 1];
-  out[new_len] = '\0';
+	void soverride(char* cur, const char* tar, alni atidx, alni len) {
+		for (alni idx = 0; idx < len; idx++) {
+			cur[idx + atidx] = tar[idx];
+		}
+	}
 
-  for (alni idx = 0; idx < start; idx++) {
-    out[idx] = cur[idx];
-  }
+	char* sremove(const char* cur, alni start, alni end) {
+		alni cur_len = slen(cur);
+		alni range_len = end - start;
+		alni new_len = cur_len - range_len;
+		char* out = new char[new_len + 1];
+		out[new_len] = '\0';
 
-  for (alni idx = end; idx < cur_len; idx++) {
-    out[idx - range_len] = cur[idx];
-  }
+		for (alni idx = 0; idx < start; idx++) {
+			out[idx] = cur[idx];
+		}
 
-  return out;
-}
+		for (alni idx = end; idx < cur_len; idx++) {
+			out[idx - range_len] = cur[idx];
+		}
 
-alni sequal(const char* left, const char* right) {
-  alni idx = 0;
+		return out;
+	}
 
-LOOP:
-  if (left[idx] == '\0' || right[idx] == '\0') {
-    if (left[idx] == '\0' && right[idx] == '\0') {
-      return true;
-    }
-    return false;
-  }
-  if (left[idx] != right[idx]) {
-    return false;
-  }
-  idx++;
-  goto LOOP;
+	alni sequal(const char* left, const char* right) {
+		alni idx = 0;
 
-  return false;
-}
+		LOOP:
+		if (left[idx] == '\0' || right[idx] == '\0') {
+			if (left[idx] == '\0' && right[idx] == '\0') {
+				return true;
+			}
+			return false;
+		}
+		if (left[idx] != right[idx]) {
+			return false;
+		}
+		idx++;
+		goto LOOP;
 
-alni val2str_len(alni val, alni base) {
-  alni iter = val;
-  alni len = 0;
-  while (iter /= base) {
-    len++;
-  }
-  bool neg = val < 0;
-  len += 1 + alni(neg);
-  return len;
-}
+		return false;
+	}
 
-char* val2str(alni val, char* ownbuff, alni base) {
-  char* out = NULL;
-  bool neg = val < 0;
-  alni len = val2str_len(val, base);
+	alni val2str_len(alni val, alni base) {
+		alni iter = val;
+		alni len = 0;
+		while (iter /= base) {
+			len++;
+		}
+		bool neg = val < 0;
+		len += 1 + alni(neg);
+		return len;
+	}
 
-  out = ownbuff ? ownbuff : new char[len + 1];
-  out[len] = '\0';
+	char* val2str(alni val, char* ownbuff, alni base) {
+		char* out = NULL;
+		bool neg = val < 0;
+		alni len = val2str_len(val, base);
 
-  val = ABS(val);
+		out = ownbuff ? ownbuff : new char[len + 1];
+		out[len] = '\0';
 
-  for (alni i = len - 1; i >= int(neg); i--) {
-    out[i] = (char)(val % base + 48);
-    val /= base;
-  }
+		val = ABS(val);
 
-  if (neg) {
-    out[0] = '-';
-  }
+		for (alni i = len - 1; i >= int(neg); i--) {
+			out[i] = (char) (val % base + 48);
+			val /= base;
+		}
 
-  return out;
-}
+		if (neg) {
+			out[0] = '-';
+		}
 
-alni val2str_len(alnf val, alni base) {
-  alni rounded = (alni)val;
-  alni mantissa = (alni)(val - rounded) * 100000;
+		return out;
+	}
 
-  alni rounded_len = 0;
-  alni mantissa_len = 0;
+	alni val2str_len(alnf val, alni base) {
+		alni rounded = (alni) val;
+		alni mantissa = (alni) (val - rounded) * 100000;
 
-  while (rounded /= base) {
-    rounded_len++;
-  }
-  if (!rounded_len) {
-    rounded_len++;
-  }
+		alni rounded_len = 0;
+		alni mantissa_len = 0;
 
-  while (mantissa /= base) {
-    mantissa_len++;
-  }
+		while (rounded /= base) {
+			rounded_len++;
+		}
+		if (!rounded_len) {
+			rounded_len++;
+		}
 
-  bool neg = val < 0;
-  bool dot = mantissa_len & 1;
-  alni tot_len = mantissa_len + rounded_len + dot + neg;
-  return tot_len;
-}
+		while (mantissa /= base) {
+			mantissa_len++;
+		}
 
-char* val2str(alnf val, alni base, char* ownbuff) {
-  char* out = NULL;
+		bool neg = val < 0;
+		bool dot = mantissa_len & 1;
+		alni tot_len = mantissa_len + rounded_len + dot + neg;
+		return tot_len;
+	}
 
-  alni rounded = (alni)val;
-  alni mantissa = (alni)(val - rounded) * 100000;
+	char* val2str(alnf val, alni base, char* ownbuff) {
+		char* out = NULL;
 
-  alni rounded_len = 0;
-  alni mantissa_len = 0;
+		alni rounded = (alni) val;
+		alni mantissa = (alni) (val - rounded) * 100000;
 
-  while (rounded /= base) {
-    rounded_len++;
-  }
-  if (!rounded_len) {
-    rounded_len++;
-  }
+		alni rounded_len = 0;
+		alni mantissa_len = 0;
 
-  while (mantissa /= base) {
-    mantissa_len++;
-  }
+		while (rounded /= base) {
+			rounded_len++;
+		}
+		if (!rounded_len) {
+			rounded_len++;
+		}
 
-  bool neg = val < 0;
-  bool dot = mantissa_len & 1;
-  alni tot_len = mantissa_len + rounded_len + dot + neg;
+		while (mantissa /= base) {
+			mantissa_len++;
+		}
 
-  out = ownbuff ? ownbuff : new char[tot_len + 1];
-  out[tot_len] = '\0';
+		bool neg = val < 0;
+		bool dot = mantissa_len & 1;
+		alni tot_len = mantissa_len + rounded_len + dot + neg;
 
-  if (neg) {
-    out[0] = '-';
-  }
+		out = ownbuff ? ownbuff : new char[tot_len + 1];
+		out[tot_len] = '\0';
 
-  if (dot) {
-    out[rounded_len + neg] = '.';
-  }
+		if (neg) {
+			out[0] = '-';
+		}
 
-  val2str(rounded, out + neg);
-  if (mantissa_len) {
-    val2str(mantissa, out + rounded_len + neg + dot);
-  }
+		if (dot) {
+			out[rounded_len + neg] = '.';
+		}
 
-  return out;
-}
+		val2str(rounded, out + neg);
+		if (mantissa_len) {
+			val2str(mantissa, out + rounded_len + neg + dot);
+		}
 
-alni val2str_len(bool val) { return val ? 4 : 5; }
+		return out;
+	}
 
-char* val2str(bool val, char* ownbuff) {
-  alni len = val ? 4 : 5;
-  char* out = ownbuff ? ownbuff : new char[len + 1];
-  out[len] = '\0';
+	alni val2str_len(bool val) { return val ? 4 : 5; }
 
-  memcp(out, val ? "True" : "False", len);
+	char* val2str(bool val, char* ownbuff) {
+		alni len = val ? 4 : 5;
+		char* out = ownbuff ? ownbuff : new char[len + 1];
+		out[len] = '\0';
 
-  return out;
-}
+		memcp(out, val ? "True" : "False", len);
 
-char* val2str(int val, alni base) { return val2str((alni)val, NULL, base); }
+		return out;
+	}
 
-char* val2str(char val) {
-  char* out = new char[2];
-  out[1] = '\0';
-  out[0] = val;
-  return out;
-}
+	char* val2str(int val, alni base) { return val2str((alni) val, NULL, base); }
 
-bool str2val(const char* in, alni& val, alni base, alni ownlen) {
-  val = 0;
-  alni len = ownlen ? ownlen : slen(in);
-  bool neg = in[0] == '-';
+	char* val2str(char val) {
+		char* out = new char[2];
+		out[1] = '\0';
+		out[0] = val;
+		return out;
+	}
 
-  for (alni idx = len - 1; idx >= (alni)neg; idx--) {
-    if ((int1)in[idx] < 48 || (int1)in[idx] > 48 + base - 1) {
-      return false;
-    }
+	bool str2val(const char* in, alni& val, alni base, alni ownlen) {
+		val = 0;
+		alni len = ownlen ? ownlen : slen(in);
+		bool neg = in[0] == '-';
 
-    val *= base;
-    val += (alni)in[idx] - 48;
-  }
+		for (alni idx = len - 1; idx >= (alni) neg; idx--) {
+			if ((int1) in[idx] < 48 || (int1) in[idx] > 48 + base - 1) {
+				return false;
+			}
 
-  if (neg) val *= -1;
-  return true;
-}
+			val *= base;
+			val += (alni) in[idx] - 48;
+		}
 
-bool str2val(const char* in, alnf& val, alni base) {
-  alni len = slen(in);
-  alni dot_idx = -1;
+		if (neg) val *= -1;
+		return true;
+	}
 
-  for (alni idx = 0; idx < len; idx++) {
-    if (in[idx] == '.') {
-      dot_idx = idx;
-      break;
-    }
-  }
+	bool str2val(const char* in, alnf& val, alni base) {
+		alni len = slen(in);
+		alni dot_idx = -1;
 
-  bool ok = true;
-  alni rounded = 0;
-  alni manissia = 0;
+		for (alni idx = 0; idx < len; idx++) {
+			if (in[idx] == '.') {
+				dot_idx = idx;
+				break;
+			}
+		}
 
-  if (dot_idx > 0) {
-    ok &= str2val(in + dot_idx, manissia, base, 0);
-    ok &= str2val(in, rounded, base, dot_idx);
-  } else {
-    ok &= str2val(in, rounded, base, 0);
-  }
+		bool ok = true;
+		alni rounded = 0;
+		alni manissia = 0;
 
-  val = rounded + manissia / alnf(len - dot_idx);
-  return ok;
-}
+		if (dot_idx > 0) {
+			ok &= str2val(in + dot_idx, manissia, base, 0);
+			ok &= str2val(in, rounded, base, dot_idx);
+		} else {
+			ok &= str2val(in, rounded, base, 0);
+		}
 
-bool str2val(const char* in, bool& val) {
-  alni length = slen(in);
+		val = rounded + manissia / alnf(len - dot_idx);
+		return ok;
+	}
 
-  if (length == 0) {
-    return false;
-  }
+	bool str2val(const char* in, bool& val) {
+		alni length = slen(in);
 
-  if (sequal(in, "False") || sequal(in, "false") || sequal(in, "0")) {
-    val = 0;
-  } else {
-    val = 1;
-  }
+		if (length == 0) {
+			return false;
+		}
 
-  return true;
-}
+		if (sequal(in, "False") || sequal(in, "false") || sequal(in, "0")) {
+			val = 0;
+		} else {
+			val = 1;
+		}
+
+		return true;
+	}
+
+};

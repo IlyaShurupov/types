@@ -3,14 +3,16 @@
 
 // add own fast/precise implementations
 
-namespace trigs {
-	alnf sin(alnf radians);
-	alnf tan(alnf radians);
-	alnf atan2(alnf X, alnf Y);
-	alnf atan(alnf val);
-	alnf cos(alnf radians);
-	alnf acos(alnf val);
-	alnf sqrt(alnf val);
-	alnf rad(alnf val);
-	alnf deg(alnf val);
-}  // namespace trigs
+namespace tp {
+
+	alnf sin(const alnf radians);
+	alnf tan(const alnf radians);
+	alnf atan2(const alnf X, const alnf Y);
+	alnf atan(const alnf val);
+	alnf cos(const alnf radians);
+	alnf acos(const alnf val);
+	alnf sqrt(const alnf val);
+	alnf rad(const alnf val);
+	alnf deg(const alnf val);
+
+};

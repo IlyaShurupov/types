@@ -5,18 +5,18 @@
 
 class test_pattern {
 public:
-	virtual alni pick_size(alni iter) { return 0; };
-	virtual alni max_size() { return 0; };
-	virtual alni pick_alloc_count(alni iter) { return 0; };
-	virtual alni max_iterations() { return 0; };
-	virtual alni pick_idx(alni iter) { return 0; };
-	virtual alni data_count() { return 0; };
+	virtual tp::alni pick_size(tp::alni iter) { return 0; };
+	virtual tp::alni max_size() { return 0; };
+	virtual tp::alni pick_alloc_count(tp::alni iter) { return 0; };
+	virtual tp::alni max_iterations() { return 0; };
+	virtual tp::alni pick_idx(tp::alni iter) { return 0; };
+	virtual tp::alni data_count() { return 0; };
 };
 
 struct pattern_histogram {
-	Array<alnf> alloc_size;
-	Array<alnf> data_idx;
-	Array<alnf> items_loaded;
+	tp::Array<tp::alnf> alloc_size;
+	tp::Array<tp::alnf> data_idx;
+	tp::Array<tp::alnf> items_loaded;
 
 	pattern_histogram(test_pattern* pt);
 };
@@ -24,20 +24,20 @@ struct pattern_histogram {
 struct allocator_histogram {
 	const char* alloc_type;
 	
-	alnf total_time;
-	Array<alnf> time;
-	Array<alnf> mem;
+	tp::alnf total_time;
+	tp::Array<tp::alnf> time;
+	tp::Array<tp::alnf> mem;
 	bool failed;
 
-	Array<uint1*> data;
+	tp::Array<tp::uint1*> data;
 	bool time_per_inst;
 	bool mem_per_inst;
 	
 	allocator_histogram(test_pattern* pt, const char* alloc_type, bool time_per_inst, bool mem_per_inst);
 	~allocator_histogram();
 
-	void mark_resourses_usage(alni idx, alnf time, alni mem, bool add);
-	void scale_all(alnf fac);
+	void mark_resourses_usage(tp::alni idx, tp::alnf time, tp::alni mem, bool add);
+	void scale_all(tp::alnf fac);
 };
 
-void collect(test_pattern* pattern, allocator* alloc, allocator_histogram* histogram);
+void collect(test_pattern* pattern, tp::AbstractAllocator* alloc, allocator_histogram* histogram);

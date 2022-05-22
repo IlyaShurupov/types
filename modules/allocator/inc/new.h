@@ -12,22 +12,21 @@
 #endif
 #endif  // WRAP_
 
-
-extern heapalloc* global_heap;
+extern tp::HeapAlloc* global_heap;
 
 void* operator new(size_t _Size);
-void* operator new(size_t _Size, allocator* alloc);
-void* operator new(size_t _Size, allocator& alloc);
+void* operator new(size_t _Size, tp::AbstractAllocator* alloc);
+void* operator new(size_t _Size, tp::AbstractAllocator& alloc);
 void* operator new[](size_t _Size);
-void* operator new[](size_t _Size, heapalloc& alloc);
-void* operator new[](size_t _Size, heapalloc* alloc);
+void* operator new[](size_t _Size, tp::HeapAlloc& alloc);
+void* operator new[](size_t _Size, tp::HeapAlloc* alloc);
 
 void  operator delete(void* _Block) noexcept;
-void  operator delete(void* _Block, allocator* alloc) noexcept;
-void  operator delete(void* _Block, allocator& alloc) noexcept;
+void  operator delete(void* _Block, tp::AbstractAllocator* alloc) noexcept;
+void  operator delete(void* _Block, tp::AbstractAllocator& alloc) noexcept;
 void  operator delete[](void* _Block) noexcept;
-void  operator delete[](void* _Block, heapalloc* alloc) noexcept;
-void  operator delete[](void* _Block, heapalloc& alloc) noexcept;
+void  operator delete[](void* _Block, tp::HeapAlloc* alloc) noexcept;
+void  operator delete[](void* _Block, tp::HeapAlloc& alloc) noexcept;
 
 void  operator delete(void* _Block, size_t _Size) noexcept;
 void  operator delete[](void* _Block, size_t _Size) noexcept;

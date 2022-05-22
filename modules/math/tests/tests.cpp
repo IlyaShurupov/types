@@ -8,6 +8,8 @@
 
 #include <stdio.h>
 
+using namespace tp;
+
 void mat_test() {
 	mat2<halnf> tmat2;
 	tmat2.randf();

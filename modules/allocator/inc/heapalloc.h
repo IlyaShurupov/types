@@ -6,34 +6,49 @@
 #define WRAP_FILL_VAL_HEAPALLOC 2
 #endif
 
-struct MemHead {
-#ifdef MEM_TRACE
-  MemHead* next;
-  MemHead* prev;
-#endif
-  alni size;
-  alni reserved;
-  allocator* alloc;
-};
+namespace tp {
 
-class heapalloc : public allocator {
- public:
-  alni num = 0;
-#ifdef MEM_TRACE
-  struct MemHead* entry_ptr = nullptr;
-#endif
+	class HeapAlloc : public AbstractAllocator {
+		
+		public:
 
-  alni reserved_size() override { return inuse_size(); }
-  bool avaliable() override { return true; }
+		struct MemHead {
+			#ifdef MEM_TRACE
+			MemHead* next;
+			MemHead* prev;
+			#endif
+			alni size;
+			alni reserved;
+			AbstractAllocator* alloc;
+		};
 
-  bool wrap_support() override { return true; };
-  bool wrap_corrupted() override;
+		private:
 
-  void* alloc(alni size) override;
-  void free(void* p) override;
+		alni mNum = 0;
+		#ifdef MEM_TRACE
+		MemHead* mEntryPtr = nullptr;
+		#endif
+		
+		public:
 
-  bool is_empty() override;
-  alni inuse_size() override;
+		alni num() const { return mNum; }
+		MemHead* entry() const { return mEntryPtr; }
 
-  ~heapalloc() { check_err_onexit(); }
+		alni sizeReserved() override { return sizeInuse(); }
+		bool isAvaliable() override { return true; }
+
+		bool isWrapSupport() override { return true; };
+		bool isWrapCorrupted() override;
+
+		void* Alloc(alni size) override;
+		void Free(void* p) override;
+
+		bool isEmpty() override;
+		alni sizeInuse() override;
+
+		~HeapAlloc() { checkErrorOnExit(); }
+
+
+	};
+
 };

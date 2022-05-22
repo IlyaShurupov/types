@@ -7,7 +7,7 @@
 
 #include "collector.h"
 
-alni hash(const string& val);
+tp::alni hash(const tp::string& val);
 
 #include "map.h"
 
@@ -21,35 +21,35 @@ enum class leav_pattern_type {
 struct child_pattern {
   child_pattern() {}
 
-  child_pattern(string _name) { name = _name; }
+  child_pattern(tp::string _name) { name = _name; }
 
   float uppernlim = 1.f;
   float lowerlim = 0.f;
   float point = 1.f;
-  string name;
+  tp::string name;
 };
 
 struct pattern {
   leav_pattern_type type = leav_pattern_type::CONST;
-  string pattern_name;
+  tp::string pattern_name;
 
-  Array<child_pattern> regions;
+  tp::Array<child_pattern> regions;
   bool build_in = true;
 
-  alnf get_y(HashMap<pattern*, string>* patterns, alnf x) {
+  tp::alnf get_y(tp::HashMap<pattern*, tp::string>* patterns, tp::alnf x) {
     assert(x <= 1.0001f && x >= -0.00001f);
 
-    if (!regions.Len()) {
+    if (!regions.length()) {
       return pure_get_y(x);
     }
 
     float offset = 0.f;
-    for (alni i = 0; i < regions.Len(); i++) {
-      alni idx = patterns->Presents(regions[i].name);
+    for (tp::alni i = 0; i < regions.length(); i++) {
+      tp::alni idx = patterns->presents(regions[i].name);
       if (!MAP_VALID_IDX(idx)) {
         return 0.f;
       }
-      pattern* child = patterns->table[idx]->val;
+      pattern* child = (*patterns)[idx];
       assert(child);
 
       float range = regions[i].point * (1.f - offset);
@@ -63,7 +63,7 @@ struct pattern {
     return 0;
   }
 
-  virtual alnf pure_get_y(alnf x) { return 0; }
+  virtual tp::alnf pure_get_y(tp::alnf x) { return 0; }
 
   ~pattern() {}
 };
@@ -78,7 +78,7 @@ struct const_pattern : pattern {
     build_in = true;
   }
 
-  alnf pure_get_y(alnf x) override { return val; }
+  tp::alnf pure_get_y(tp::alnf x) override { return val; }
 };
 
 struct linear_pattern : pattern {
@@ -89,7 +89,7 @@ struct linear_pattern : pattern {
     build_in = true;
   }
 
-  alnf pure_get_y(alnf x) override { return reversed ? 1.f - x : x; }
+  tp::alnf pure_get_y(tp::alnf x) override { return reversed ? 1.f - x : x; }
 };
 
 struct random_pattern : pattern {
@@ -98,7 +98,7 @@ struct random_pattern : pattern {
     build_in = true;
   }
 
-  alnf pure_get_y(alnf x) override { return randf(); }
+  tp::alnf pure_get_y(tp::alnf x) override { return tp::randf(); }
 };
 
 // -------------------- build-in patterns end ---------------------------- //
@@ -111,7 +111,7 @@ struct pattern_scale {
 
 class pattern_reader : public test_pattern {
  public:
-  bool init(HashMap<pattern*, string>* p_patterns, pattern* p_lpattern,
+  bool init(tp::HashMap<pattern*, tp::string>* p_patterns, pattern* p_lpattern,
             pattern* p_opattern, pattern* p_spattern, pattern_scale* p_scale) {
     lpattern = p_lpattern;
     opattern = p_opattern;
@@ -135,7 +135,7 @@ class pattern_reader : public test_pattern {
     return out;
   }
 
-  HashMap<pattern*, string>* patterns;
+  tp::HashMap<pattern*, tp::string>* patterns;
 
   pattern* lpattern = NULL;
   pattern* opattern = NULL;
@@ -143,26 +143,26 @@ class pattern_reader : public test_pattern {
 
   pattern_scale* scale = 0;
 
-  alnf get_x_val(alni iter) {
-    alnf out = iter / (alnf)scale->iterations;
+  tp::alnf get_x_val(tp::alni iter) {
+    tp::alnf out = iter / (tp::alnf)scale->iterations;
     return out > 1 ? 1.f : out;
   }
 
-  alni pick_size(alni iter) override {
-    return (alni)(scale->size * spattern->get_y(patterns, get_x_val(iter)));
+  tp::alni pick_size(tp::alni iter) override {
+    return (tp::alni)(scale->size * spattern->get_y(patterns, get_x_val(iter)));
   }
 
-  alni pick_alloc_count(alni iter) override {
-    return (alni)(scale->items * lpattern->get_y(patterns, get_x_val(iter)));
+  tp::alni pick_alloc_count(tp::alni iter) override {
+    return (tp::alni)(scale->items * lpattern->get_y(patterns, get_x_val(iter)));
   }
 
-  alni pick_idx(alni iter) override {
-    return (alni)(scale->items * opattern->get_y(patterns, get_x_val(iter)));
+  tp::alni pick_idx(tp::alni iter) override {
+    return (tp::alni)(scale->items * opattern->get_y(patterns, get_x_val(iter)));
   }
 
-  alni max_size() override { return scale->size; }
+  tp::alni max_size() override { return scale->size; }
 
-  alni max_iterations() override { return scale->iterations; }
+  tp::alni max_iterations() override { return scale->iterations; }
 
-  alni data_count() override { return scale->iterations; }
+  tp::alni data_count() override { return scale->iterations; }
 };

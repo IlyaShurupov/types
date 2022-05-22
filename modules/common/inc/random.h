@@ -2,4 +2,6 @@
 
 #include "env.h"
 
-flt8 randf();
+namespace tp {
+	flt8 randf();
+};

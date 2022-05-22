@@ -1,49 +1,53 @@
 #pragma once
 
-template <typename T1, typename T2> struct tuple;
+namespace tp {
 
-template <typename T1, typename T2>
-using pair = tuple<T1, T2>;
+	template <typename T1, typename T2> struct Tuple;
 
-template <typename T1, typename T2>
-struct tuple {
+	template <typename T1, typename T2>
+	using pair = Tuple<T1, T2>;
 
-	tuple() {
+	template <typename T1, typename T2>
+	struct Tuple {
 
-	}
+		Tuple() {
 
-	tuple(T1 t1, T2 t2) {
-		this->head = t1;
-		this->tail = t2;
-	}
+		}
 
-	union {
-		T1 t1;
-		T1 head;
-		T1 x;
+		Tuple(T1 t1, T2 t2) {
+			this->head = t1;
+			this->tail = t2;
+		}
+
+		union {
+			T1 t1;
+			T1 head;
+			T1 x;
+		};
+		union {
+			T2 t2;
+			T2 tail;
+			T2 y;
+		};
 	};
-	union {
-		T2 t2;
-		T2 tail;
-		T2 y;
-	};
-};
 
-template <typename T1, typename T2, typename T3>
-struct tripple {
-	union {
-		T1 t1;
-		T1 x;
-		T1 v1;
+	template <typename T1, typename T2, typename T3>
+	struct Tripple {
+		union {
+			T1 t1;
+			T1 x;
+			T1 v1;
+		};
+		union {
+			T2 t2;
+			T2 y;
+			T2 v2;
+		};
+		union {
+			T3 t3;
+			T3 z;
+			T3 v3;
+		};
 	};
-	union {
-		T2 t2;
-		T2 y;
-		T2 v2;
-	};
-	union {
-		T3 t3;
-		T3 z;
-		T3 v3;
-	};
+
 };

@@ -4,71 +4,75 @@
 #include "algorithms.h"
 #include "strdata.h"
 
-class str_user {
+namespace tp {
 
-	class str_data* datap;
+	class str_user {
 
-public:
+		class str_data* datap;
 
-	str_user();
-	str_user(const char* in);
-	str_user(char* str);
-	str_user(const str_user& in);
+		public:
 
-	template <typename Type>
-	str_user(Type val) {
-		datap = new str_data(val2str(val), false);
-		refinc(datap);
-	}
+		str_user();
+		str_user(const char* in);
+		str_user(char* str);
+		str_user(const str_user& in);
 
-	operator alni() const;
-	operator alnf() const;
-	operator bool() const;
-	//operator const char*() const;
+		template <typename Type>
+		str_user(Type val) {
+			datap = new str_data(val2str(val), false);
+			refinc(datap);
+		}
 
-	~str_user();
+		operator alni() const;
+		operator alnf() const;
+		operator bool() const;
+		//operator const char*() const;
 
-private: // own utils
-	void refinc(str_data* dp);
-	void refdec(str_data* dp);
-	void assert_modifiable();
+		~str_user();
 
-public: // data info access 
-	const char* cstr() const;
-	char operator[](alni idx) const;
-	alni size() const;
+		private: // own utils
+		void refinc(str_data* dp);
+		void refdec(str_data* dp);
+		void assert_modifiable();
 
-	bool operator==(const char* cstring) const;
-	bool operator==(const str_user& string) const;
-	bool operator!=(const char* cstring) const;
-	bool operator!=(const str_user& string) const;
+		public: // data info access 
+		const char* cstr() const;
+		char operator[](alni idx) const;
+		alni size() const;
 
-public: // editing interface	
-	
-	str_user& capture();
+		bool operator==(const char* cstring) const;
+		bool operator==(const str_user& string) const;
+		bool operator!=(const char* cstring) const;
+		bool operator!=(const str_user& string) const;
 
-	char* get_writable();
-	void reserve(alni len);
+		public: // editing interface	
 
-	str_user& insert(const str_user& string, alni at, alni len = 0);
-	str_user& insert(const char* string, alni at, alni len = 0);
+		str_user& capture();
 
-	str_user& remove(range range);
+		char* get_writable();
+		void reserve(alni len);
 
-	void operator=(const str_user& string);
-	void operator=(const char* string);
+		str_user& insert(const str_user& string, alni at, alni len = 0);
+		str_user& insert(const char* string, alni at, alni len = 0);
 
-	str_user& operator+=(const str_user& string);
-	str_user& operator+=(const char* string);
-	str_user operator+(const str_user& string) const;
-	str_user operator+(const char* string) const;
+		str_user& remove(Range range);
 
-	void trim(range range);
-	void clear();
+		void operator=(const str_user& string);
+		void operator=(const char* string);
 
-	alni save_size();
-	void save(class File* file);
-	void load(class File* file);
+		str_user& operator+=(const str_user& string);
+		str_user& operator+=(const char* string);
+		str_user operator+(const str_user& string) const;
+		str_user operator+(const char* string) const;
+
+		void trim(Range range);
+		void clear();
+
+		alni save_size();
+		void save(class File* file);
+		void load(class File* file);
+	};
+
+	str_user sfmt(const char* fmt, ...);
+
 };
-
-str_user sfmt(const char* fmt, ...);

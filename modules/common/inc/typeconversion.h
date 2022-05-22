@@ -30,7 +30,7 @@
 
 #include "typeselect.h"
 
-namespace compiler {
+namespace tp {
 ////////////////////////////////////////////////////////////////////////////////
 // class template IsSameType
 // Return true iff two given types are the same
@@ -126,8 +126,8 @@ namespace compiler {
   template <class T, class U>
   struct SuperSubclass {
     enum {
-      value = (::compiler::Conversion<const volatile U*, const volatile T*>::exists &&
-      !::compiler::Conversion<const volatile T*, const volatile void*>::sameType)
+      value = (::tp::Conversion<const volatile U*, const volatile T*>::exists &&
+      !::tp::Conversion<const volatile T*, const volatile void*>::sameType)
     };
 
 // Dummy enum to make sure that both classes are fully defined.
@@ -142,8 +142,8 @@ namespace compiler {
   template <class U>
   struct SuperSubclass<void, U> {
     enum {
-      value = (::compiler::Conversion<const volatile U*, const volatile void*>::exists &&
-      !::compiler::Conversion<const volatile void*, const volatile void*>::sameType)
+      value = (::tp::Conversion<const volatile U*, const volatile void*>::exists &&
+      !::tp::Conversion<const volatile void*, const volatile void*>::sameType)
     };
 
 // Dummy enum to make sure that both classes are fully defined.
@@ -153,8 +153,8 @@ namespace compiler {
   template <class T>
   struct SuperSubclass<T, void> {
     enum {
-      value = (::compiler::Conversion<const volatile void*, const volatile T*>::exists &&
-      !::compiler::Conversion<const volatile T*, const volatile void*>::sameType)
+      value = (::tp::Conversion<const volatile void*, const volatile T*>::exists &&
+      !::tp::Conversion<const volatile T*, const volatile void*>::sameType)
     };
 
 // Dummy enum to make sure that both classes are fully defined.
@@ -172,9 +172,9 @@ namespace compiler {
   template<class T, class U>
   struct SuperSubclassStrict {
     enum {
-      value = (::compiler::Conversion<const volatile U*, const volatile T*>::exists &&
-      !::compiler::Conversion<const volatile T*, const volatile void*>::sameType &&
-      !::compiler::Conversion<const volatile T*, const volatile U*>::sameType)
+      value = (::tp::Conversion<const volatile U*, const volatile T*>::exists &&
+      !::tp::Conversion<const volatile T*, const volatile void*>::sameType &&
+      !::tp::Conversion<const volatile T*, const volatile U*>::sameType)
     };
 
 // Dummy enum to make sure that both classes are fully defined.
@@ -189,9 +189,9 @@ namespace compiler {
   template<class U>
   struct SuperSubclassStrict<void, U> {
     enum {
-      value = (::compiler::Conversion<const volatile U*, const volatile void*>::exists &&
-      !::compiler::Conversion<const volatile void*, const volatile void*>::sameType &&
-      !::compiler::Conversion<const volatile void*, const volatile U*>::sameType)
+      value = (::tp::Conversion<const volatile U*, const volatile void*>::exists &&
+      !::tp::Conversion<const volatile void*, const volatile void*>::sameType &&
+      !::tp::Conversion<const volatile void*, const volatile U*>::sameType)
     };
 
 // Dummy enum to make sure that both classes are fully defined.
@@ -201,9 +201,9 @@ namespace compiler {
   template<class T>
   struct SuperSubclassStrict<T, void> {
     enum {
-      value = (::compiler::Conversion<const volatile void*, const volatile T*>::exists &&
-      !::compiler::Conversion<const volatile T*, const volatile void*>::sameType &&
-      !::compiler::Conversion<const volatile T*, const volatile void*>::sameType)
+      value = (::tp::Conversion<const volatile void*, const volatile T*>::exists &&
+      !::tp::Conversion<const volatile T*, const volatile void*>::sameType &&
+      !::tp::Conversion<const volatile T*, const volatile void*>::sameType)
     };
 
 // Dummy enum to make sure that both classes are fully defined.
@@ -211,7 +211,7 @@ namespace compiler {
   };
 
 
-}   // namespace compiler
+}   // namespace tp
 
 ////////////////////////////////////////////////////////////////////////////////
 // macro SUPERSUBCLASS
@@ -223,7 +223,7 @@ namespace compiler {
 // Deprecated: Use SuperSubclass class template instead.
 ////////////////////////////////////////////////////////////////////////////////
 
-#define SUPERSUBCLASS(T, U) ::compiler::SuperSubclass<T,U>::value
+#define SUPERSUBCLASS(T, U) ::tp::SuperSubclass<T,U>::value
 
 ////////////////////////////////////////////////////////////////////////////////
 // macro SUPERSUBCLASS_STRICT
@@ -234,4 +234,4 @@ namespace compiler {
 // Deprecated: Use SuperSubclassStrict class template instead.
 ////////////////////////////////////////////////////////////////////////////////
 
-#define SUPERSUBCLASS_STRICT(T, U) ::compiler::SuperSubclassStrict<T,U>::value
+#define SUPERSUBCLASS_STRICT(T, U) ::tp::SuperSubclassStrict<T,U>::value

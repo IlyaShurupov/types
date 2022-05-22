@@ -3,26 +3,30 @@
 
 #include "glcommon.h"
 
-namespace ogl {
+namespace tp {
 
-	class fbuffer {
+	namespace ogl {
 
-		GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
-		GLuint FramebufferName;
-		GLuint renderedTexture;
-		GLuint depthrenderbuffer;
+		class fbuffer {
 
-		vec2f size;
-		rgba col_clear;
+			GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+			GLuint FramebufferName;
+			GLuint renderedTexture;
+			GLuint depthrenderbuffer;
 
-	public:
+			vec2f size;
+			rgba col_clear;
 
-		fbuffer(vec2i p_size, rgba pcol_clear);
-		void begin_draw();
-		void clear();
-		void end_draw();
-		GLuint texId();
-		~fbuffer();
+			public:
+
+			fbuffer(vec2i p_size, rgba pcol_clear);
+			void begin_draw();
+			void clear();
+			void end_draw();
+			GLuint texId();
+			~fbuffer();
+		};
+
 	};
 
 };

@@ -24,17 +24,3 @@
 
 
 #define assert_static(x, message) static_assert(x, message)
-
-
-template <typename T>
-inline void swap(T& t1, T& t2) {
-	T tmp = t1; 
-	t1 = t2; 
-	t2 = tmp;
-}
-
-template <typename T>
-inline T clamp(T t1, const T t2, const T t3) {
-	CLAMP(t1, t2, t3)
-	return t1;
-}

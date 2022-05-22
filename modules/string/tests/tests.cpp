@@ -8,6 +8,9 @@
 
 #include <iostream> 
 
+
+using namespace tp;
+
 void f(string g) {
 }
 

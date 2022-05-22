@@ -8,11 +8,13 @@
 
 #include "SOIL/SOIL.h"
 
+
 void GLAPIENTRY
 MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
 	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n", (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity, message);
 }
 
+using namespace tp;
 using namespace ogl;
 
 void window::resize(vec2f psize) {
@@ -33,7 +35,6 @@ namespace WIN {
 	#define GLFW_EXPOSE_NATIVE_WIN32
 	#include "GLFW/glfw3native.h"
 };
-
 
 void window::init(alni params) {
 	resize(size);
@@ -125,7 +126,7 @@ void window::begin_draw(bool need_update) {
 		size_update();
 	}
 
-	if (device_frame_time.timeout() || need_update) {
+	if (device_frame_time.isTimeout() || need_update) {
 		device_frame_time.reset();
 		draw_event = true;
 	} else {
@@ -277,4 +278,3 @@ bool window::SpecialKey() {
 window::~window() {
 	glfwDestroyWindow(winp);
 }
-

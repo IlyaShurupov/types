@@ -10,43 +10,40 @@
 #define CHUNK_WRAP_LEN WRAP_LEN
 #endif
 
+namespace tp {
+	class ChunkAlloc : public AbstractAllocator {
+		alni bsize = 0;
+		alni nblocks = 0;
 
-struct unused_slot_head {
-  alni* bnext;
-};
+		alni* buff = NULL;
+		alni* bnext = NULL;
+		alni bfreec = 0;
+		alni binitc = 0;
 
-struct used_slot_head {
-  class chunkalloc* chunk_p;
-};
+		public:
 
-alni calc_bsize(alni bsize);
+		ChunkAlloc(alni bsize, alni nblocks);
 
-class chunkalloc : public allocator {
-  alni bsize = 0;
-  alni nblocks = 0;
+		bool isAvaliable() override;
+		alni sizeInuse() override;
+		alni sizeReserved() override;
+		bool isEmpty() override;
+		void* Alloc(alni size) override;
+		virtual void Free(void* p) override;
+		bool isWrapSupport() override { return true; }
+		bool isWrapCorrupted() override;
 
-  alni* buff = NULL;
-  alni* bnext = NULL;
-  alni bfreec = 0;
-  alni binitc = 0;
+		alni blockSize();
 
-  inline void* get_addr(alni idx) const;
-  inline alni get_idx(const void* address) const;
+		~ChunkAlloc();
 
- public:
-  chunkalloc(alni bsize, alni nblocks);
-  ~chunkalloc();
+		public:
+		struct unused_slot_head { alni* bnext; };
+		struct used_slot_head { ChunkAlloc* chunk_p; };
+		static alni calc_bsize(alni bsize);
 
-  bool avaliable() override;
-  alni inuse_size() override;
-  alni reserved_size() override;
-  bool is_empty() override;
-
-  alni get_bsize();
-
-  void* alloc(alni size) override;
-  virtual void free(void* p) override;
-
-  bool wrap_support() override { return true; }
-  bool wrap_corrupted() override;
+		private:
+		inline void* get_addr(alni idx) const;
+		inline alni get_idx(const void* address) const;
+	};
 };

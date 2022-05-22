@@ -1,36 +1,52 @@
 #pragma once
 
-#include "heapalloc.h"
+#include "chunkalloc.h"
 
-struct chunk_list {
-  struct chunk_node* last = NULL;
+namespace tp {
+	class PoolAlloc : public AbstractAllocator {
 
-  chunk_node* addchunk(class poolalloc* self, alni bsize, alni nblocks);
-  void delchunk(chunk_node* node);
-  void initialize();
-  void finalize();
-};
+		struct chunk_list {
 
-class poolalloc : public allocator {
-  chunk_list chunks;
-  chunk_node* last_used;
+			struct chunk_node : public ChunkAlloc {
+				PoolAlloc* self;
+				chunk_node* next = NULL;
+				chunk_node* prev = NULL;
 
-  alni bsize;
-  alni nblocks;
+				chunk_node(PoolAlloc* self, alni bsize, alni nblocks)
+					: self(self), ChunkAlloc(bsize, nblocks) {}
 
- public:
-  poolalloc(alni pbsize, alni pnblocks);
-  ~poolalloc();
+				//void free(void* p) override { self->free(p); }
+				//alni inuse_size() override { return chunkalloc::inuse_size(); }
+			};
 
-  bool avaliable() override;
-  alni inuse_size() override;
-  alni reserved_size() override;
-  bool is_empty() override;
+			struct chunk_node* last = NULL;
 
-  void* alloc(alni size) override;
+			chunk_node* addchunk(PoolAlloc* self, alni bsize, alni nblocks);
+			void delchunk(chunk_node* node);
+			void initialize();
+			void finalize();
+		};
+		
+		chunk_list chunks;
+		chunk_list::chunk_node* last_used;
+		alni bsize;
+		alni nblocks;
 
-  void free(void* p) override;
+		public:
 
-  bool wrap_support() override { return true; }
-  bool wrap_corrupted() override;
+		PoolAlloc(alni pbsize, alni pnblocks);
+		
+		bool isAvaliable() override;
+		alni sizeInuse() override;
+		alni sizeReserved() override;
+		bool isEmpty() override;
+
+		void* Alloc(alni size) override;
+		void Free(void* p) override;
+
+		bool isWrapSupport() override { return true; }
+		bool isWrapCorrupted() override;
+
+		~PoolAlloc();
+	};
 };

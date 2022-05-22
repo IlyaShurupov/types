@@ -27,7 +27,7 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace compiler {
+namespace tp {
 ////////////////////////////////////////////////////////////////////////////////
 // class template Int2Type
 // Converts each integral constant into a unique type
@@ -70,4 +70,4 @@ namespace compiler {
   struct Select<false, T, U> {
     typedef U Result;
   };
-}   // namespace Loki
+}   // namespace tp

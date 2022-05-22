@@ -1,13 +1,17 @@
 
 #pragma once
 
-void assertf(const char* exp, const char* file, int line);
+namespace tp {
 
-#undef assert
-#ifdef _DEBUG
-#define assert(exp) if (!(exp)) { assertf(#exp, __FILE__, __LINE__); }
-#else
-#define assert(exp) ((void)0)
-#endif
+	void assertf(const char* exp, const char* file, int line);
 
-#define rterror(def) assertf(def, __FILE__, __LINE__)
+	#undef assert
+	#ifdef _DEBUG
+	#define assert(exp) if (!(exp)) { tp::assertf(#exp, __FILE__, __LINE__); }
+	#else
+	#define assert(exp) ((void)0)
+	#endif
+
+	#define rterror(def) assertf(def, __FILE__, __LINE__)
+
+};

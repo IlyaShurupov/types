@@ -1,4 +1,6 @@
 
 #pragma once
 
-void printStack();
+namespace tp {
+	void print_callstack();
+};

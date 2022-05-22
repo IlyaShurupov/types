@@ -2,13 +2,17 @@
 
 #include "vec.h"
 
-class Ray {
-	public:
-	vec3f Dir;
-	vec3f Pos;
+namespace tp {
 
-	public:
-	Ray(const vec3f& Dir, const  vec3f& Pos);
-	Ray();
-	~Ray();
+	class Ray {
+		public:
+		vec3f Dir;
+		vec3f Pos;
+
+		public:
+		Ray(const vec3f& Dir, const  vec3f& Pos);
+		Ray();
+		~Ray();
+	};
+
 };

@@ -4,29 +4,33 @@
 #include "poolalloc.h"
 #include "new.h"
 
-template <typename K, typename avl_policy>
-class AVLNode;
+namespace tp {
 
-template <typename Key>
-struct alv_policy_default {
+	template <typename K, typename avl_policy>
+	class AVLNode;
 
-	poolalloc palloc;
+	template <typename Key>
+	struct alv_policy_default {
 
-	alv_policy_default() : palloc(sizeof(AVLNode<Key, alv_policy_default>), 16) {}
+		PoolAlloc palloc;
 
-	AVLNode<Key, alv_policy_default>* alloc_node() {
-		return new (&palloc) AVLNode<Key, alv_policy_default>();
-	}
+		alv_policy_default() : palloc(sizeof(AVLNode<Key, alv_policy_default>), 16) {}
 
-	void free_node(AVLNode<Key, alv_policy_default>* node) {
-		delete node;
-	}
+		AVLNode<Key, alv_policy_default>* alloc_node() {
+			return new (&palloc) AVLNode<Key, alv_policy_default>();
+		}
 
-	void ValCopy(AVLNode<Key, alv_policy_default>* left, AVLNode<Key, alv_policy_default>* right) {
-		left->key = right->key;
-	}
+		void free_node(AVLNode<Key, alv_policy_default>* node) {
+			delete node;
+		}
 
-	void ValDestruct(AVLNode<Key, alv_policy_default>* node) {
-		// release
-	}
+		void ValCopy(AVLNode<Key, alv_policy_default>* left, AVLNode<Key, alv_policy_default>* right) {
+			left->key = right->key;
+		}
+
+		void ValDestruct(AVLNode<Key, alv_policy_default>* node) {
+			// release
+		}
+	};
+
 };

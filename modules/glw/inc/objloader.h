@@ -164,7 +164,7 @@ namespace objl
 		Vector3 Position;
 
 		// Normal Vector
-		Vector3 Normal;
+		Vector3 normal;
 
 		// Texture Coordinate Vector
 		Vector2 TextureCoordinate;
@@ -821,7 +821,7 @@ namespace objl
 				{
 					vVert.Position = algorithm::getElement(iPositions, svert[0]);
 					vVert.TextureCoordinate = Vector2(0, 0);
-					vVert.Normal = algorithm::getElement(iNormals, svert[2]);
+					vVert.normal = algorithm::getElement(iNormals, svert[2]);
 					oVerts.push_back(vVert);
 					break;
 				}
@@ -829,7 +829,7 @@ namespace objl
 				{
 					vVert.Position = algorithm::getElement(iPositions, svert[0]);
 					vVert.TextureCoordinate = algorithm::getElement(iTCoords, svert[1]);
-					vVert.Normal = algorithm::getElement(iNormals, svert[2]);
+					vVert.normal = algorithm::getElement(iNormals, svert[2]);
 					oVerts.push_back(vVert);
 					break;
 				}
@@ -852,7 +852,7 @@ namespace objl
 
 				for (int i = 0; i < int(oVerts.size()); i++)
 				{
-					oVerts[i].Normal = normal;
+					oVerts[i].normal = normal;
 				}
 			}
 		}

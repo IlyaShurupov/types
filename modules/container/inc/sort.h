@@ -3,98 +3,100 @@
 
 #include "allocators.h"
 
-template <typename Type>
-inline bool compare(const Type& val1, const Type& val2) {
-  return val1 > val2;
-}
+namespace tp {
 
-struct SortMerge {
+	template <typename Type>
+	inline bool compare(const Type& val1, const Type& val2) {
+		return val1 > val2;
+	}
 
-  template <typename Type>
-  static void Sort(Type* pxlbuff, int length, bool (*grater)(const Type& obj1, const Type& obj2) = &compare) {
-    mergeSort(pxlbuff, 0, length - 1, grater);
-  }
+	struct SortMerge {
 
-private:
+		template <typename Type>
+		static void Sort(Type* pxlbuff, int length, bool (*grater)(const Type& obj1, const Type& obj2) = &compare) {
+			mergeSort(pxlbuff, 0, length - 1, grater);
+		}
 
-  template <typename Type>
-  static void merge(Type* pxlbuff, int left, int middle, int right, bool (*grater)(const Type& obj1, const Type& obj2)) {
-    int n1 = middle - left + 1;
-    int n2 = right - middle;
+		private:
 
-    Type* Left = new Type[n1];
-    Type* Right = new Type[n2];
+		template <typename Type>
+		static void merge(Type* pxlbuff, int left, int middle, int right, bool (*grater)(const Type& obj1, const Type& obj2)) {
+			int n1 = middle - left + 1;
+			int n2 = right - middle;
 
-    for (int i = 0; i < n1; i++) {
-      Left[i] = pxlbuff[left + i];
-    }
+			Type* Left = new Type[n1];
+			Type* Right = new Type[n2];
 
-    for (int j = 0; j < n2; j++) {
-      Right[j] = pxlbuff[middle + 1 + j];
-    }
+			for (int i = 0; i < n1; i++) {
+				Left[i] = pxlbuff[left + i];
+			}
 
-    int i = 0;
-    int j = 0;
-    int k = left;
+			for (int j = 0; j < n2; j++) {
+				Right[j] = pxlbuff[middle + 1 + j];
+			}
 
-    while (i < n1 && j < n2) {
-      if (!(grater(Left[i], Right[j]))) {
-        pxlbuff[k] = Left[i];
-        i++;
-      }
-      else {
-        pxlbuff[k] = Right[j];
-        j++;
-      }
-      k++;
-    }
+			int i = 0;
+			int j = 0;
+			int k = left;
 
-    while (i < n1) {
-      pxlbuff[k] = Left[i];
-      i++;
-      k++;
-    }
+			while (i < n1 && j < n2) {
+				if (!(grater(Left[i], Right[j]))) {
+					pxlbuff[k] = Left[i];
+					i++;
+				} else {
+					pxlbuff[k] = Right[j];
+					j++;
+				}
+				k++;
+			}
 
-    while (j < n2) {
-      pxlbuff[k] = Right[j];
-      j++;
-      k++;
-    }
+			while (i < n1) {
+				pxlbuff[k] = Left[i];
+				i++;
+				k++;
+			}
 
-    delete Left;
-    delete Right;
-  }
+			while (j < n2) {
+				pxlbuff[k] = Right[j];
+				j++;
+				k++;
+			}
 
-  template <typename Type>
-  static void mergeSort(Type* pxlbuff, int left, int right, bool (*grater)(const Type& obj1, const Type& obj2)) {
+			delete Left;
+			delete Right;
+		}
 
-    if (left >= right) {
-      return;
-    }
+		template <typename Type>
+		static void mergeSort(Type* pxlbuff, int left, int right, bool (*grater)(const Type& obj1, const Type& obj2)) {
 
-    int middle = left + (right - left) / 2;
+			if (left >= right) {
+				return;
+			}
 
-    mergeSort(pxlbuff, left, middle, grater);
-    mergeSort(pxlbuff, middle + 1, right, grater);
-    merge(pxlbuff, left, middle, right, grater);
-  }
+			int middle = left + (right - left) / 2;
 
-};
+			mergeSort(pxlbuff, left, middle, grater);
+			mergeSort(pxlbuff, middle + 1, right, grater);
+			merge(pxlbuff, left, middle, right, grater);
+		}
 
-struct SortInsert {
-  template <typename Type>
-  static void Sort(Type* pxlbuff, int length, bool (*grater)(const Type& obj1, const Type& obj2) = &compare) {
-    for (int i = 0; i < length; i++) {
-      for (int j = i + 1; j < length; j++) {
-        if (grater(*pxlbuff[i], *pxlbuff[j])) {
-          SWAP(pxlbuff[i], pxlbuff[j], Type*);
-        }
-      }
-    }
-  }
-};
+	};
 
-struct SortRadix {
-  static void Sort(void* pxlbuff, char itemsize, char offset) {
-  }
+	struct SortInsert {
+		template <typename Type>
+		static void Sort(Type* pxlbuff, int length, bool (*grater)(const Type& obj1, const Type& obj2) = &compare) {
+			for (int i = 0; i < length; i++) {
+				for (int j = i + 1; j < length; j++) {
+					if (grater(*pxlbuff[i], *pxlbuff[j])) {
+						SWAP(pxlbuff[i], pxlbuff[j], Type*);
+					}
+				}
+			}
+		}
+	};
+
+	struct SortRadix {
+		static void Sort(void* pxlbuff, char itemsize, char offset) {}
+	};
+
 };

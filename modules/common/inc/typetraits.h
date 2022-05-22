@@ -35,7 +35,7 @@
 #pragma warning( disable : 4180 ) //qualifier applied to function type has no meaning; ignored
 #endif
 
-namespace compiler {
+namespace tp {
 ////////////////////////////////////////////////////////////////////////////////
 // class template IsCustomUnsignedInt
 // Offers a means to integrate nonstandard built-in unsigned integral types
@@ -92,10 +92,10 @@ namespace compiler {
 
 	namespace Private {
 
-		typedef compiler::Seq<unsigned char, unsigned short int, unsigned int, unsigned long int>::list StdUnsignedInts;
-		typedef compiler::Seq<signed char, short int, int, long int>::list StdSignedInts;
-		typedef compiler::Seq<bool, char, wchar_t>::list StdOtherInts;
-		typedef compiler::Seq<float, double, long double>::list StdFloats;
+		typedef Seq<unsigned char, unsigned short int, unsigned int, unsigned long int>::list StdUnsignedInts;
+		typedef Seq<signed char, short int, int, long int>::list StdSignedInts;
+		typedef Seq<bool, char, wchar_t>::list StdOtherInts;
+		typedef Seq<float, double, long double>::list StdFloats;
 
 		template <typename U> struct AddPointer { typedef U* Result; };
 		template <typename U> struct AddPointer<U&> { typedef U* Result; };

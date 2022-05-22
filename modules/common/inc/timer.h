@@ -2,26 +2,34 @@
 
 #include "env.h"
 
-typedef alni time_ms;
-typedef alni time_ns;
+namespace tp {
 
-struct timer {
+	typedef alni time_ms;
+	typedef alni time_ns;
 
-  time_ms start;
-  time_ms duration;
+	class Timer {
 
-  timer();
-  timer(time_ms time);
-  bool timeout();
-  void reset();
-  time_ms past();
-  time_ms remain();
-  void wait_out();
-  
-  float ease_in(time_ms duration = 0);
-  float ease_out(time_ms duration = 0);
+		time_ms mStart;
+		time_ms mDuration;
+
+		public:
+		
+		Timer();
+		Timer(time_ms time);
+
+		time_ms start();
+		time_ms duration();
+
+		bool isTimeout();
+		void reset();
+		time_ms timePased();
+		time_ms remainder();
+		void wait();
+
+		float easeIn(time_ms duration = 0);
+		float easeOut(time_ms duration = 0);
+	};
+
+	void sleep(time_ms duration);
+	time_ms get_time();
 };
-
-void sleep(time_ms duration);
-
-time_ms get_time();

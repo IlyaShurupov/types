@@ -7,9 +7,6 @@
     <Filter Include="src">
       <UniqueIdentifier>{2c2c05ff-ad26-4bcb-9258-8e58169b409e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="rsc">
-      <UniqueIdentifier>{05b5d851-e4ee-4d3e-b1a8-4fa0dadea43d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ext">
       <UniqueIdentifier>{1d2f71d9-fe87-4bb4-8735-2d464e79df4b}</UniqueIdentifier>
     </Filter>

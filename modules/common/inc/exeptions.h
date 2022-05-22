@@ -1,11 +1,15 @@
 
 #pragma once
 
-class typesExeption {
+namespace tp {
 
-	const char* description;
-	bool fatal;
+	class Exeption {
 
-public:
-	typesExeption(const char* p_description, bool p_fatal);
+		const char* mDescription;
+		bool mFatal;
+
+		public:
+		Exeption(const char* pDescription, bool pFatal);
+	};
+
 };

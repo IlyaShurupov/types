@@ -3,25 +3,29 @@
 
 #include <stdio.h>
 
-Logger Glog;
+namespace tp {
 
-void Logger::write(string& in, bool post) {
-	buff.PushBack(new string(in));
+	Logger Glog;
 
-	if (!cursor) {
-		cursor = buff.Last();
+	void Logger::write(string& in, bool post) {
+		buff.pushBack(new string(in));
+
+		if (!cursor) {
+			cursor = buff.last();
+		}
+
+		if (post) {
+			printf(in.cstr());
+		}
 	}
 
-	if (post) {
-		printf(in.cstr());
+	string Logger::read() {
+		if (cursor) {
+			const string out = cursor->data;
+			cursor = cursor->next;
+			return out;
+		}
+		return string();
 	}
-}
 
-string Logger::read() {
-	if (cursor) {
-		const string out = cursor->data;
-		cursor = cursor->next;
-		return out;
-	}
-	return string();
-}
+};
