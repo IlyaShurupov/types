@@ -1,7 +1,7 @@
-types is a general purpose library
+Types is a general purpose c++ library
 
 Main features:
-Memory allocators with profiler and memory guards : pool allocator, chunk allocator
-Containers : list, stack, map, avl tree, array e.c.
-Graphics library wraper.
-Compile-time programming tools from Loki library: typelists, typetraits e.c.
+1) Memory allocators with profiler and memory guards : pool allocator, chunk allocator.
+2) Containers : list, stack, map, avl tree, array e.c.
+3) Graphics library wraper.
+4) Compile-time programming tools from Loki library: typelists, typetraits e.c.
