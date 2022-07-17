@@ -18,13 +18,7 @@
     <ClInclude Include="..\inc\map.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\map_policies.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\inc\avltree.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inc\avl_policies.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\stack.h">
@@ -34,12 +28,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\sort.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inc\list_policies.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inc\npple.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\array2d.h">

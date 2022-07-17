@@ -3,6 +3,11 @@
 
 #include "glcommon.h"
 
+#include "keycodes.h"
+
+#include "list.h"
+#include "npple.h"
+
 namespace tp {
 
 	namespace ogl {
@@ -27,24 +32,29 @@ namespace tp {
 			vec2f size;
 			vec2f minsize;
 
-
 			bool draw_event = false;
 			bool new_frame = true;
 			Timer device_frame_time = Timer(time_ms(1000.f / 70));
 
+			struct EventQueue {
+				tp::List<KeyEvent> keys;
+			} event_queue;
+			
+
 			void resize(vec2f psize);
+			void reposition(vec2f pos);
 			void init(alni params);
 
 			window();
 			window(vec2f size, alni params = 0);
 
 			void set_current();
-
+			void setRectWorld(tp::rect<tp::alnf> rec);
 			void begin_draw(bool need_update = false);
-
+			void update_event_queue(bool whait_for_event);
 			void clear();
 
-			void end_draw(bool whait_for_event = false);
+			void end_draw();
 
 			void post_quit_event();
 			bool CloseSignal();

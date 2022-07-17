@@ -210,6 +210,10 @@ void benchmarker::pattern_combo(const char*& current) {
 
 void benchmarker::pattern_generator() {
 
+
+	static tp::alni selected_idx = -1;
+	static pattern* child_pattern_active = NULL;
+
 	ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.1f);
 
 	pattern* pattern_edit = NULL;
@@ -217,7 +221,10 @@ void benchmarker::pattern_generator() {
 
 		if (ImGui::SubMenuBegin("Selector", 1)) {
 
+			const char* prev_pattern = pattern_generator_active;
 			pattern_combo(pattern_generator_active);
+
+			child_pattern_active = (prev_pattern == pattern_generator_active) ? child_pattern_active : NULL;
 
 			if (pattern_generator_active) {
 				tp::alni idx = patterns.presents(pattern_generator_active);
@@ -235,11 +242,13 @@ void benchmarker::pattern_generator() {
 			ImGui::InputText("pattern name", create_name, 100);
 
 			if (ImGui::Button("Create")) {
-				if (patterns.presents(create_name)) {
+				if (!patterns.presents(create_name)) {
 					pattern* new_pt = new pattern();
 					new_pt->build_in = false;
 					new_pt->pattern_name = create_name;
-					patterns.put(create_name, new_pt);
+					tp::string id = create_name;
+					id.capture();
+					patterns.put(id, new_pt);
 				} else {
 					ImGui::Notify("Such Pattern Already Exists", 3);
 				}
@@ -317,9 +326,6 @@ void benchmarker::pattern_generator() {
 		if (ImGui::SubMenuBegin("Compositor", 1)) {
 
 			if (!pattern_edit->build_in) {
-
-				static tp::alni selected_idx = -1;
-				static pattern* child_pattern_active = NULL;
 
 				if (ImGui::SubMenuBegin("Child Patterns", 2)) {
 					ImGui::BeginListBox("");

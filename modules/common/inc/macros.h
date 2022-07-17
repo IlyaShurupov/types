@@ -10,7 +10,7 @@
 #define PI43 (2 * PI2 / 3)
 
 #define SQRT2 1.4142135623730950488016887242
-#define E 2.7182818284590452353602874714
+#define Exp 2.7182818284590452353602874714
 
 #define ABS(val) (val) > 0 ? (val) : (-val)
 #define CLAMP(val, lower_lim, upper_lim) if (val > upper_lim) { val = upper_lim; } else if (val < lower_lim) {val = lower_lim;}

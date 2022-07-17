@@ -8,19 +8,31 @@
 
 #include "SOIL/SOIL.h"
 
+using namespace tp;
+using namespace ogl;
 
 void GLAPIENTRY
 MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
 	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n", (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity, message);
 }
 
-using namespace tp;
-using namespace ogl;
+window * callback_window = NULL;
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	if (callback_window) callback_window->event_queue.keys.pushBack({Keycode(key), KeyEvent::EventState(action)});
+}
+
 
 void window::resize(vec2f psize) {
 	size = psize;
 	if (winp) {
 		glfwSetWindowSize(winp, (int) size.x, (int) size.y);
+	}
+}
+
+void window::reposition(vec2f pos) {
+	if (winp) {
+		glfwSetWindowPos(winp, (int) pos.x, (int) pos.y);
 	}
 }
 
@@ -110,6 +122,8 @@ void window::init(alni params) {
 	GLFWimage images[2];
 	images[0].pixels = SOIL_load_image("rsc/icons/icon.png", &images[0].width, &images[0].height, 0, 0);
 	glfwSetWindowIcon(winp, 1, images);
+
+	glfwSetKeyCallback(winp, key_callback);
 }
 
 window::window(vec2f psize, alni params) {
@@ -134,19 +148,27 @@ void window::begin_draw(bool need_update) {
 	}
 }
 
-void window::clear() {
-	glClearColor(col_clear.r, col_clear.g, col_clear.b, col_clear.a);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
+void tp::ogl::window::update_event_queue(bool whait_for_event) {
+	callback_window = this;
 
-void window::end_draw(bool whait_for_event) {
-	tablet_update((int*) WIN::glfwGetWin32Window(winp));
+	event_queue.keys.free();
 
 	if (whait_for_event) {
 		glfwWaitEvents();
 	} else {
 		glfwPollEvents();
 	}
+
+	callback_window = NULL;
+}
+
+void window::clear() {
+	glClearColor(col_clear.r, col_clear.g, col_clear.b, col_clear.a);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void window::end_draw() {
+	tablet_update((int*) WIN::glfwGetWin32Window(winp));
 
 	new_frame = false;
 
@@ -163,6 +185,11 @@ void window::end_draw(bool whait_for_event) {
 
 inline void window::set_current() {
 	glfwMakeContextCurrent(winp);
+}
+
+void window::setRectWorld(tp::rect<tp::alnf> rec) {
+	reposition(rec.pos);
+	resize(rec.size);
 }
 
 void window::post_quit_event() {

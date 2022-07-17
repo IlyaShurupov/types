@@ -184,11 +184,11 @@ namespace tp {
 		datap->remove(rng.idxEnd(), len);
 	}
 
-	alni str_user::save_size() {
+	alni str_user::save_size() const {
 		return size() + sizeof(alni);
 	}
 
-	void str_user::save(File* file) {
+	void str_user::save(File* file) const {
 		alni len = save_size();
 		file->write(&len);
 		file->write_bytes(cstr(), len);
@@ -320,4 +320,8 @@ namespace tp {
 		return out;
 	}
 
+
+	alni hash(const str_user& in) {
+		return hash(in.cstr());
+	}
 };

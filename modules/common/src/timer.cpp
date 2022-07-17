@@ -54,6 +54,7 @@ namespace tp {
 
 	time_ms Timer::start() { return mStart; }
 	time_ms Timer::duration() { return mDuration; }
+	void Timer::setDuration(time_ms dur) { mDuration = dur; }
 
 	void Timer::wait() {
 		if (!isTimeout()) {

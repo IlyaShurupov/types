@@ -16,8 +16,8 @@ namespace tp {
 		alni all_len = cur_len + len;
 		char* out = new char[all_len + 1];
 
-		assert(cur_len > 0);
-		assert(len > 0);
+		assert(cur_len >= 0);
+		assert(len >= 0);
 		assert(atidx < cur_len + 1 && atidx >= 0);
 
 		for (alni idx = 0; idx < atidx; idx++) {

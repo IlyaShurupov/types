@@ -118,6 +118,14 @@ namespace tp {
 		return (target - pos).normalize();
 	}
 
+	vec3f Camera::get_up() {
+		return up;
+	}
+
+	vec3f& Camera::get_pos() {
+		return pos;
+	}
+
 	void Camera::set_ratio(halnf ratio) {
 		this->ratio = ratio;
 	}

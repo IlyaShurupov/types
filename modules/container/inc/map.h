@@ -1,8 +1,6 @@
 
 #pragma once
 
-#include "map_policies.h"
-
 #define HASHMAP_LOAD_FACTOR 2/3.f
 #define HASHMAP_MIN_SIZE 4
 #define HASHMAP_PERTURB_SHIFT 5
@@ -10,24 +8,16 @@
 
 #define MAP_VALID_IDX(idx) (idx >= 0)
 
+#include "allocators.h"
+
+
 namespace tp {
 
-	template <typename V, typename K>
-	struct HashNode {
-		K key;
-		V val;
-
-		~HashNode() {
-			return;
-		}
-	};
-
-	template <typename K, typename V, typename hmpolicy, int SZ>
+	template <typename K, typename V, int SZ>
 	class MapIterator;
 
 	struct MapIdx {
 		alni idx;
-
 		MapIdx(alni i) { idx = i; }
 		MapIdx(halni i) { idx = i; }
 		operator alni() { return idx; }
@@ -43,21 +33,27 @@ namespace tp {
 		alni operator-() { return -idx; }
 	};
 
-	template < typename V, typename K, typename hmpolicy = map_policy_default< V, K >, int table_size = HASHMAP_MIN_SIZE >
+	template <typename V, typename K>
+	struct HashNode {
+		K key;
+		V val;
+	};
+
+	template < typename V, typename K, int table_size = HASHMAP_MIN_SIZE >
 	class HashMap {
 
-		friend MapIterator;
+		friend MapIterator<K, V, table_size>;
 
+		PoolAlloc palloc;
 		HashNode<V, K>** table;
 		alni nslots;
 		alni nentries = 0;
-		hmpolicy mp;
 
 		public:
 
-		HashMap() {
+		HashMap(uint2 palloc_chunck_size = 30) : palloc(sizeof(HashNode<V, K>), palloc_chunck_size) {
 			nslots = next_pow_of_2(table_size - 1);
-			table = mp.alloc_table(nslots);
+			table = new HashNode<V, K>*[nslots]();
 		}
 
 		HashNode<V, K>** buff() const { return table; }
@@ -68,11 +64,12 @@ namespace tp {
 			alni idx = find_slot(key, false);
 
 			if (!table[idx] || HASHMAP_DELETED_SLOT(table, idx)) {
-				table[idx] = mp.alloc_node();
+				table[idx] = new (palloc) HashNode<V, K>();
 				table[idx]->key = key;
 				nentries++;
 			} else if (table[idx]) {
-				mp.ValDestruct(table[idx]);
+				table[idx]->~HashNode();
+				new (&table[idx]) HashNode<V, K>();
 			}
 
 			table[idx]->val = val;
@@ -126,9 +123,8 @@ namespace tp {
 				throw Exeption("hmap key not found", false);
 			}
 
-			mp.ValDestruct(table[idx]);
+			delete table[idx];
 
-			mp.free_node(table[idx]);
 			table[idx] = (HashNode<V, K>*) - 1;
 
 			nentries--;
@@ -137,15 +133,15 @@ namespace tp {
 			}
 		}
 
-		void operator=(const HashMap<V, K, hmpolicy, table_size>& in) {
+		void operator=(const HashMap<V, K, table_size>& in) {
 			clear();
 
 			nslots = in.nslots;
-			table = mp.alloc_table(nslots);
+			table = new HashNode<V, K>*[nslots]();
 
 			for (alni i = 0; i < nslots; i++) {
 				if (in.table[i] && !HASHMAP_DELETED_SLOT(in.table, i)) {
-					//Put(in.table[i]->key, copy_val(in.table[i]->val));
+					put(in.table[i]->key, in.table[i]->val);
 				}
 			}
 		}
@@ -153,18 +149,17 @@ namespace tp {
 		void clear() {
 			for (alni i = 0; i < nslots; i++) {
 				if (table[i] && !HASHMAP_DELETED_SLOT(table, i)) {
-					mp.ValDestruct(table[i]);
-					mp.free_node(table[i]);
+					delete table[i];
 				}
 			}
-			mp.free_table(table);
+			delete[] table;
 			table = NULL;
 			nslots = NULL;
 			nentries = NULL;
 		}
 
-		MapIterator<K, V, hmpolicy, table_size> begin() {
-			return MapIterator<K, V, hmpolicy, table_size>(this);
+		MapIterator<K, V, table_size> begin() {
+			return MapIterator<K, V, table_size>(this);
 		}
 
 		alni end() {
@@ -200,7 +195,7 @@ namespace tp {
 			HashNode<V, K>** table_old = table;
 
 			nslots = next_pow_of_2((uint8) ((1.f / (HASHMAP_LOAD_FACTOR)) * nentries + 1));
-			table = mp.alloc_table(nslots);
+			table = new HashNode<V, K>*[nslots]();
 			nentries = 0;
 
 			for (alni i = 0; i < nslots_old; i++) {
@@ -213,11 +208,11 @@ namespace tp {
 				nentries++;
 			}
 
-			mp.free_table(table_old);
+			delete[] table_old;
 		}
 
 		alni find_slot(const K& key, bool existing) {
-			alni hashed_key = mp.KeyHash(key);
+			alni hashed_key = hash(key);
 			alni mask = nslots - 1;
 			alni idx = hashed_key & mask;
 			alni shift = (hashed_key >> HASHMAP_PERTURB_SHIFT) & ~1;
@@ -250,19 +245,19 @@ namespace tp {
 	};
 
 
-	template <typename K, typename V, typename hmpolicy, int SZ>
+	template <typename K, typename V, int SZ>
 	class MapIterator {
 
 		public:
 
-		HashMap<V, K, hmpolicy, SZ>* map;
+		HashMap<V, K, SZ>* map;
 		HashNode<V, K>* iter;
 		alni slot_idx;
 		alni entry_idx;
 
 		HashNode<V, K>* operator->() { return iter; }
 
-		MapIterator(HashMap<V, K, hmpolicy, SZ>* _map) {
+		MapIterator(HashMap<V, K, SZ>* _map) {
 			slot_idx = -1;
 			entry_idx = -1;
 			map = _map;

@@ -157,7 +157,9 @@ class pattern_reader : public test_pattern {
   }
 
   tp::alni pick_idx(tp::alni iter) override {
-    return (tp::alni)(scale->items * opattern->get_y(patterns, get_x_val(iter)));
+    tp::alni out = (tp::alni) (scale->items * opattern->get_y(patterns, get_x_val(iter)));
+    CLAMP(out, 0, scale->items - 1);
+    return out;
   }
 
   tp::alni max_size() override { return scale->size; }

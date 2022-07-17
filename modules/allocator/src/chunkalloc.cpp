@@ -25,7 +25,7 @@ namespace tp {
 			bsize = sizeof(alni);
 		}
 		if (bsize % sizeof(alni) != 0) {
-			bsize += sizeof(alni);
+			bsize += sizeof(alni) - (bsize % sizeof(alni));
 		}
 
 		bsize += sizeof(used_slot_head);
@@ -76,7 +76,7 @@ namespace tp {
 
 	void* ChunkAlloc::Alloc(alni size) {
 
-		if (size > alni(bsize - sizeof(used_slot_head))) {
+		if (size > alni(bsize - sizeof(used_slot_head) - CHUNK_WRAP_LEN * 2)) {
 			throw Exeption("faled allocate on chunk - size exeedes block size", false);
 		}
 

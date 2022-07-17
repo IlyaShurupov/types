@@ -12,6 +12,8 @@
 #endif
 #endif  // WRAP_
 
+#define ALLOCATOR_PLACEMENT_NEW
+
 extern tp::HeapAlloc* global_heap;
 
 void* operator new(size_t _Size);
@@ -31,8 +33,8 @@ void  operator delete[](void* _Block, tp::HeapAlloc& alloc) noexcept;
 void  operator delete(void* _Block, size_t _Size) noexcept;
 void  operator delete[](void* _Block, size_t _Size) noexcept;
 
-/*
-inline void* operator new(size_t _Size, void* _Where) noexcept { return _Where; }
-inline void* operator new[](size_t _Size, void* _Where) noexcept { return _Where; }
-*/
+#ifdef ALLOCATOR_PLACEMENT_NEW
+inline void* operator new(size_t _Size, void* _Where) noexcept;
+//inline void* operator new[](size_t _Size, void* _Where) noexcept;
+#endif
 

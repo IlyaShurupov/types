@@ -19,6 +19,7 @@ namespace tp {
 
 		time_ms start();
 		time_ms duration();
+		void setDuration(time_ms dur);
 
 		bool isTimeout();
 		void reset();

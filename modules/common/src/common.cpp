@@ -107,4 +107,7 @@ namespace tp {
 
 	#endif // WIN
 
+	void terminate(tp::alni code) {
+		exit(int(code));
+	}
 };

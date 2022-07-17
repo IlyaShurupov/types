@@ -29,6 +29,7 @@
   <ItemGroup>
     <ClInclude Include="..\inc\cassert.h" />
     <ClInclude Include="..\inc\common.h" />
+    <ClInclude Include="..\inc\npple.h" />
     <ClInclude Include="..\inc\typeconversion.h" />
     <ClInclude Include="..\inc\env.h" />
     <ClInclude Include="..\inc\exeptions.h" />

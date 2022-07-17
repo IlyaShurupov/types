@@ -23,9 +23,9 @@ namespace tp {
 			refinc(datap);
 		}
 
-		operator alni() const;
-		operator alnf() const;
-		operator bool() const;
+		explicit operator alni() const;
+		explicit operator alnf() const;
+		explicit operator bool() const;
 		//operator const char*() const;
 
 		~str_user();
@@ -68,11 +68,12 @@ namespace tp {
 		void trim(Range range);
 		void clear();
 
-		alni save_size();
-		void save(class File* file);
+		alni save_size() const ;
+		void save(class File* file) const;
 		void load(class File* file);
 	};
 
 	str_user sfmt(const char* fmt, ...);
 
+	alni hash(const str_user&);
 };

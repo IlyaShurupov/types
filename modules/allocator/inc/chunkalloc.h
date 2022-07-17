@@ -4,7 +4,7 @@
 
 #ifdef MEM_WRAP
 #define WRAP_FILL_VAL_CHUNK 4
-#if WRAP_LEN % ALIGNED_SIZE != 0
+#if WRAP_LEN % ALIGNED_SIZE_B != 0
 #error "WRAP_LEN must by multiple of sizeof(alni)"
 #endif
 #define CHUNK_WRAP_LEN WRAP_LEN

@@ -41,7 +41,9 @@ namespace tp {
 		vec3f get_target();
 		void offset_target(halnf val);
 		vec3f get_fw();
-
+		vec3f get_up();
+		vec3f& get_pos();
+		
 		void set_ratio(halnf ratio);
 		void set_fov(halnf fov);
 		halnf get_fov();

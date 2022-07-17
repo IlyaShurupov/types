@@ -8,6 +8,8 @@
 #include "timer.h"
 #include "random.h"
 
+#include <initializer_list>
+
 namespace tp {
 
 	void memsetv(void* p, alni bytesize, uint1 val);
@@ -116,4 +118,9 @@ namespace tp {
 	void char2wide(const char* c, wchar_t* out, alni len);
 	void wide2char(const wchar_t* c, char* out);
 
+
+	template<typename Type>
+	using init_list = std::initializer_list<Type>;
+
+	void terminate(tp::alni code);
 };

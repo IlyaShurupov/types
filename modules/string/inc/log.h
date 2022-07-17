@@ -7,7 +7,7 @@
 namespace tp {
 
 	class Logger {
-		list_node<string>* cursor = nullptr;
+		ListNode<string>* cursor = nullptr;
 		List<string> buff;
 		public:
 		void write(string& in, bool post = false);

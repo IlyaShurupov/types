@@ -42,14 +42,10 @@
     <ClInclude Include="..\inc\array2d.h" />
     <ClInclude Include="..\inc\avltree.h" />
     <ClInclude Include="..\inc\containers.h" />
-    <ClInclude Include="..\inc\avl_policies.h" />
     <ClInclude Include="..\inc\list.h" />
-    <ClInclude Include="..\inc\list_policies.h" />
     <ClInclude Include="..\inc\map.h" />
-    <ClInclude Include="..\inc\map_policies.h" />
     <ClInclude Include="..\inc\sort.h" />
     <ClInclude Include="..\inc\stack.h" />
-    <ClInclude Include="..\inc\npple.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\containers.cpp" />

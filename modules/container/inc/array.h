@@ -1,8 +1,10 @@
 #pragma once
 
-#include "heapalloc.h"
+#include "allocators.h"
+
 
 #include "filesystem.h"
+
 namespace tp {
 
 	template <typename Type>
@@ -47,6 +49,7 @@ namespace tp {
 
 		void free() {
 			mLength = 0;
+
 			if (mBuff) {
 				delete[] mBuff;
 			}
@@ -167,7 +170,7 @@ namespace tp {
 		public:
 
 		ArrayIterator(Array<Type>* array) : mArrayPtr(array) {}
-		
+
 		Type& data() const { return (*mArrayPtr)[mIdx]; }
 		Type& idx() const { return mIdx; }
 		operator alni() { return mIdx; }

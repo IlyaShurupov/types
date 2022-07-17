@@ -65,6 +65,7 @@
     <ClInclude Include="..\inc\glcommon.h" />
     <ClInclude Include="..\inc\glutils.h" />
     <ClInclude Include="..\inc\glw.h" />
+    <ClInclude Include="..\inc\keycodes.h" />
     <ClInclude Include="..\inc\objloader.h" />
     <ClInclude Include="..\inc\shader.h" />
     <ClInclude Include="..\inc\tablet.h" />

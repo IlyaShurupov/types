@@ -1,7 +1,7 @@
 #pragma once
 
-#include "poolalloc.h"
-#include "new.h"
+#include "allocators.h"
+
 
 #define FOREACH_STACK(type, stack, iter) \
   for (stack_node<type>* iter = stack->last; iter; iter = iter->prev)
@@ -40,7 +40,7 @@ namespace tp {
 		}
 
 		void push(Type data) {
-			Node<Type>* NewNode = new(&palloc) Node<Type>(data, last);
+			Node<Type>* NewNode = new (palloc) Node<Type>(data, last);
 			last = NewNode;
 			length++;
 		}
