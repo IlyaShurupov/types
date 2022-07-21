@@ -26,6 +26,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void window::resize(vec2f psize) {
 	size = psize;
 	if (winp) {
+		CLAMP(size.x, minsize.x, 10000);
+		CLAMP(size.y, minsize.y, 10000);
 		glfwSetWindowSize(winp, (int) size.x, (int) size.y);
 	}
 }
@@ -55,6 +57,10 @@ void window::init(alni params) {
 
 	if (params & FULL_SCREEN) {
 		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+	}
+
+	if (params & HIDDEN) {
+		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 	}
 
 	winp = glfwCreateWindow((int) size.x, (int) size.y, " ", NULL, NULL);
@@ -287,6 +293,10 @@ bool window::SpecialKey2() {
 		prev_state = state;
 		return state;
 	}
+}
+
+void window::showWindow() {
+	glfwShowWindow(winp);
 }
 
 bool window::SpecialKey() {

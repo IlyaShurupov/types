@@ -23,14 +23,15 @@ namespace tp {
 
 			enum {
 				FULL_SCREEN = 0x00000001,
-				UNDECORATED = 0x00000100,
 				FACE_CULL = 0x00000010,
+				UNDECORATED = 0x00000100,
+				HIDDEN = 0x00001000
 			};
 
 			GLFWwindow* winp = NULL;
 			rgba col_clear;
 			vec2f size;
-			vec2f minsize;
+			vec2f minsize = vec2f(200, 200);
 
 			bool draw_event = false;
 			bool new_frame = true;
@@ -75,6 +76,7 @@ namespace tp {
 
 			halnf aspect_ratio() { return size.y / size.x; }
 
+			void showWindow();
 			bool SpecialKey();
 			bool SpecialKey2();
 			~window();

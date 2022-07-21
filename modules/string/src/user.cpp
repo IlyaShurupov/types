@@ -185,20 +185,15 @@ namespace tp {
 	}
 
 	alni str_user::save_size() const {
-		return size() + sizeof(alni);
+		return size() + 1;
 	}
 
 	void str_user::save(File* file) const {
-		alni len = save_size();
-		file->write(&len);
-		file->write_bytes(cstr(), len);
+		file->write(*this);
 	}
 
 	void str_user::load(File* file) {
-		alni len;
-		file->read(&len);
-		reserve(len);
-		file->read_bytes(get_writable(), len);
+		file->read(*this);
 	}
 
 	void str_user::clear() {
