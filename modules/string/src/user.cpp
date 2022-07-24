@@ -67,7 +67,7 @@ namespace tp {
 			refinc(datap);
 		}
 
-		if (datap->flags.get(SD_CONST)) {
+		if (datap->is_const) {
 			alni len = slen(datap->buff);
 
 			char* target = datap->buff;
@@ -204,7 +204,7 @@ namespace tp {
 			out += sizeof(char*); // buff
 			out += sizeof(uint4); // flags
 			
-			if (!datap->flags.get(tp::strdata_flags::SD_CONST)) {
+			if (!datap->is_const) {
 				out += size() + 1;
 			}
 		}

@@ -18,16 +18,17 @@ namespace tp {
 
 		refc = 0;
 
-		flags.set(SD_CONST, p_ref);
+		is_const = p_ref;
 	}
 
 	str_data::str_data(const str_data& in) {
 		buff = in.buff;
-		flags.set(SD_CONST, true);
+		is_const = true;
+		refc = 0;
 	}
 
 	str_data::~str_data() {
-		if (!flags.get(SD_CONST)) {
+		if (!is_const) {
 			delete[] buff;
 		}
 	}
@@ -38,7 +39,7 @@ namespace tp {
 	}
 
 	void str_data::release() {
-		if (buff && !flags.get(SD_CONST)) {
+		if (buff && !is_const) {
 			delete[] buff;
 		}
 	}
@@ -47,14 +48,14 @@ namespace tp {
 		release();
 		buff = new char[len + 1];
 		buff[len] = '\0';
-		flags.set(SD_CONST, 0);
+		is_const = false;
 	}
 
 	void str_data::clear() {
-		if (buff && !flags.get(SD_CONST)) {
+		if (buff && !is_const) {
 			delete[] buff;
 		}
-		flags.set(SD_CONST, true);
+		is_const = true;
 		buff = (char*) " ";
 	}
 

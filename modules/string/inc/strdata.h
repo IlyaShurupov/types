@@ -4,14 +4,10 @@
 
 namespace tp {
 
-	enum strdata_flags {
-		SD_CONST,
-	};
-
 	class str_data {
-		Bits<uint4> flags;  // strdata_flags enum flags
-		uint4 refc;         // number of users of this string data
-		char* buff;         // actual string data
+		uint4 is_const; // source is non-modifiable
+		uint4 refc; // number of users of this string data
+		char* buff; // actual string data
 
 		friend class str_user;
 
