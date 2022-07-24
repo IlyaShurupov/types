@@ -73,6 +73,42 @@ void queue_test() {
 	}
 }
 
+void list_test() {
+	tp::List<int> q;
+
+	q.pushBack(0);
+	q.pushBack(1);
+	q.pushBack(2);
+	q.pushBack(3);
+	q.pushBack(4);
+	q.pushBack(5);
+
+	for (auto node : q) {
+		printf("%i ", node.data());
+	}
+
+
+	q.popBack();
+	q.popFront();
+
+	q.pushBack(4);
+	q.pushFront(1);
+
+	q.invert();
+
+	for (auto node : q) {
+		printf("%i ", node.data());
+	}
+
+
+	q.sort([](ListNode<int>* const& node1, ListNode<int>* const& node2){ return node1->data > node2->data; });
+
+	for (auto node : q) {
+		printf("%i ", node.data());
+	}
+}
+
+
 int main() {
-	queue_test();
+	list_test();
 }

@@ -134,6 +134,17 @@ namespace tp {
 			pushFront(node);
 		}
 
+		void popBack() {
+			ListNode<Type>* node = mLast;
+			detach(node);
+			delete node;
+		}
+		void popFront() {
+			ListNode<Type>* node = mFirst;
+			detach(node);
+			delete node;
+		}
+
 		void insert(ListNode<Type>* node, alni idx) {
 			if (idx >= mLength) {
 				attach(node, mLast);
@@ -218,47 +229,55 @@ namespace tp {
 			free();
 		}
 
-
-		/*
-
 		template <typename SortPolicy = SortMerge>
-		void Sort(bool (*compare)(const Type& obj1, const Type& obj2)) {
-			if (length < 2) {
+		void sort(bool (*grater)(ListNode<Type>* const& node1, ListNode<Type>* const& node2)) {
+			
+			if (mLength < 2) {
 				return;
 			}
 
-			SortPolicy SortP;
+			SortPolicy sorter;
 
-			Type* buffer = new Type[length];
+			ListNode<Type>** buffer = new ListNode<Type>*[mLength];
 
 			for (auto iter : *this) {
-				*(buffer + iter.Idx()) = iter.Data();
+				buffer[iter.idx()] = iter.node();
 			}
 
-			SortP.Sort(buffer, length, compare);
+			sorter.sort< ListNode<Type>* >(buffer, (int) mLength, grater);
 
-			for (auto iter : *this) {
-				iter.node()->data = *(buffer + iter.Idx());
+			// reconnecting
+			mFirst = (*buffer);
+			mLast = buffer[mLength - 1];
+
+			(*buffer)->next = buffer[1];
+			(*buffer)->prev = NULL;
+
+			buffer[mLength - 1]->prev = buffer[mLength - 2];
+			buffer[mLength - 1]->next = NULL;
+
+			for (alni i = 1; i < mLength - 1; i++) {
+				buffer[i]->prev = buffer[i - 1];
+				buffer[i]->next = buffer[i + 1];
 			}
 
 			delete[] buffer;
 		}
 
-		void Invert() {
-			ListIterator<Type> i(this, 0);
-			ListIterator<Type> j(this, Len() - 1);
-			while (i < Len() / 2) {
-				SWAP(i.node()->data, j.node()->data, Type);
-				++i;
-				--j;
+		void invert() {
+			ListNode<Type>* iter = mFirst;
+			ListNode<Type>* tmp = NULL;
+			while (iter) {
+				tmp = iter;
+				iter = iter->next;
+				swap(tmp->next, tmp->prev);
 			}
+			swap(mFirst, mLast);
 		}
-		*/
 
 		void detachAll() {
 			forEach([](List<Type>* list, ListNode<Type>* node) { list->detach(node); });
 		}
-
 
 		alni sizeAllocatedMem() {
 			alni out = 0;

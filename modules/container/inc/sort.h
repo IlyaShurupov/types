@@ -13,7 +13,7 @@ namespace tp {
 	struct SortMerge {
 
 		template <typename Type>
-		static void Sort(Type* pxlbuff, int length, bool (*grater)(const Type& obj1, const Type& obj2) = &compare) {
+		static void sort(Type* pxlbuff, int length, bool (*grater)(const Type& obj1, const Type& obj2) = &compare) {
 			mergeSort(pxlbuff, 0, length - 1, grater);
 		}
 
@@ -84,7 +84,7 @@ namespace tp {
 
 	struct SortInsert {
 		template <typename Type>
-		static void Sort(Type* pxlbuff, int length, bool (*grater)(const Type& obj1, const Type& obj2) = &compare) {
+		static void sort(Type* pxlbuff, int length, bool (*grater)(const Type& obj1, const Type& obj2) = &compare) {
 			for (int i = 0; i < length; i++) {
 				for (int j = i + 1; j < length; j++) {
 					if (grater(*pxlbuff[i], *pxlbuff[j])) {
@@ -96,7 +96,7 @@ namespace tp {
 	};
 
 	struct SortRadix {
-		static void Sort(void* pxlbuff, char itemsize, char offset) {}
+		static void sort(void* pxlbuff, char itemsize, char offset) {}
 	};
 
 };
