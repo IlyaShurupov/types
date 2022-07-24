@@ -60,5 +60,21 @@ namespace tp {
 				del = prev;
 			}
 		}
+
+		alni sizeAllocatedMem() {
+			alni out = 0;
+			out += sizeof(Node<Type>*);
+			out += sizeof(alni);
+			out += palloc.sizeAllocatedMem();
+			return out;
+		}
+
+		alni sizeUsedMem() {
+			alni out = 0;
+			out += sizeof(Node<Type>*);
+			out += sizeof(alni);
+			out += palloc.sizeUsedMem();
+			return out;
+		}
 	};
 };

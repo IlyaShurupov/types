@@ -22,6 +22,14 @@ namespace tp {
 
 	texture::~texture() { glDeleteTextures(1, &id); }
 
+	alni ogl::texture::sizeAllocatedMem() {
+		return sizeof(GLuint);
+	}
+
+	alni ogl::texture::sizeUsedMem() {
+		return sizeof(GLuint);
+	}
+
 
 	void texture::update(const Array2D<rgba>& buff) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei) buff.size().x, (GLsizei) buff.size().y, 0, GL_RGBA, GL_FLOAT, buff.buff());

@@ -255,5 +255,22 @@ namespace tp {
 
 			return isInvalid(head->left);
 		}
+
+
+		alni sizeAllocatedMem() {
+			alni out = 0;
+			out += sizeof(AVLNode<Key>*);
+			out += sizeof(alni);
+			out += palloc.sizeAllocatedMem();
+			return out;
+		}
+
+		alni sizeUsedMem() {
+			alni out = 0;
+			out += sizeof(AVLNode<Key>*);
+			out += sizeof(alni);
+			out += palloc.sizeUsedMem();
+			return out;
+		}
 	};
 };

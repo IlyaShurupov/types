@@ -80,6 +80,9 @@ namespace tp {
 			bool SpecialKey();
 			bool SpecialKey2();
 			~window();
+
+			alni sizeAllocatedMem();
+			alni sizeUsedMem();
 		};
 
 	};

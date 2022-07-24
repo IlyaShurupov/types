@@ -35,8 +35,8 @@ namespace tp {
 	ChunkAlloc::ChunkAlloc(alni pbsize, alni pnblocks) {
 		nblocks = pnblocks;
 
-		if (nblocks < 32) {
-			nblocks = 32;
+		if (nblocks < 8) {
+			nblocks = 8;
 		}
 		bsize = calc_bsize(pbsize);
 
@@ -187,5 +187,40 @@ namespace tp {
 			delete[] buff;
 		}
 	}
+
+	alni ChunkAlloc::sizeAllocatedMem() {
+		alni out = 0;
+
+		out += sizeof(alni); // bsize
+		out += sizeof(alni); // nblocks
+		out += sizeof(alni*); // buff
+		out += sizeof(alni*); // mNbnextum
+		out += sizeof(alni); // bfreec
+		out += sizeof(alni); // binitc
+
+		out += sizeof(alni); // binitc
+
+		out += (alni(bsize / (alnf) sizeof(alni)) * nblocks) * sizeof(alni);
+
+		return out;
+	}
+
+	alni ChunkAlloc::sizeUsedMem() {
+		alni out = 0;
+
+		out += sizeof(alni); // bsize
+		out += sizeof(alni); // nblocks
+		out += sizeof(alni*); // buff
+		out += sizeof(alni*); // mNbnextum
+		out += sizeof(alni); // bfreec
+		out += sizeof(alni); // binitc
+
+		out += sizeof(alni); // binitc
+
+		out += (alni(bsize / (alnf) sizeof(alni)) * (nblocks - bfreec)) * sizeof(alni);
+
+		return out;
+	}
+
 };
 

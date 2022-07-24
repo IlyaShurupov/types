@@ -315,3 +315,47 @@ bool window::SpecialKey() {
 window::~window() {
 	glfwDestroyWindow(winp);
 }
+
+alni tp::ogl::window::sizeAllocatedMem() {
+	alni out = 0;
+
+	out += sizeof(bool); // quit_event
+	out += m_prev_cursor.sizeAllocatedMem();
+	out += m_cursor.sizeAllocatedMem();
+
+	out += sizeof(GLFWwindow*); // winp
+
+	out += sizeof(col_clear);
+	out += size.sizeAllocatedMem();
+	out += minsize.sizeAllocatedMem();
+
+	out += sizeof(bool); // draw_event
+	out += sizeof(bool); // new_frame
+
+	out += sizeof(device_frame_time);
+	out += event_queue.keys.sizeAllocatedMem();
+
+	return out;
+}
+
+alni tp::ogl::window::sizeUsedMem() {
+	alni out = 0;
+
+	out += sizeof(bool); // quit_event
+	out += m_prev_cursor.sizeUsedMem();
+	out += m_cursor.sizeUsedMem();
+
+	out += sizeof(GLFWwindow*); // winp
+
+	out += sizeof(col_clear);
+	out += size.sizeUsedMem();
+	out += minsize.sizeUsedMem();
+
+	out += sizeof(bool); // draw_event
+	out += sizeof(bool); // new_frame
+
+	out += sizeof(device_frame_time);
+	out += event_queue.keys.sizeUsedMem();
+
+	return out;
+}

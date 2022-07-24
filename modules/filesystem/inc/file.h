@@ -54,6 +54,17 @@ namespace tp {
 		void close();
 
 		~File() { close(); }
+
+		alni sizeAllocatedMem() {
+			alni out = 0;
+			out += sizeof(osfstream);
+			out += sizeof(alni) * 2;
+			out += sizeof(bool) * 2;
+			return 0;
+		}
+		alni sizeUsedMem() {
+			return sizeAllocatedMem();
+		}
 	};
 
 	string read_file(string path);

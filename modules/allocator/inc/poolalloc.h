@@ -12,11 +12,13 @@ namespace tp {
 				chunk_node* next = NULL;
 				chunk_node* prev = NULL;
 
-				chunk_node(PoolAlloc* self, alni bsize, alni nblocks)
-					: self(self), ChunkAlloc(bsize, nblocks) {}
+				chunk_node(PoolAlloc* self, alni bsize, alni nblocks) : self(self), ChunkAlloc(bsize, nblocks) {}
+				alni sizeAllocatedMem();
+				alni sizeUsedMem();
 
-				//void free(void* p) override { self->free(p); }
-				//alni inuse_size() override { return chunkalloc::inuse_size(); }
+				virtual void Free(void* p) override {
+					self->Free(p);
+				}
 			};
 
 			struct chunk_node* last = NULL;
@@ -25,6 +27,8 @@ namespace tp {
 			void delchunk(chunk_node* node);
 			void initialize();
 			void finalize();
+			alni sizeAllocatedMem();
+			alni sizeUsedMem();
 		};
 		
 		chunk_list chunks;
@@ -47,6 +51,9 @@ namespace tp {
 		bool isWrapSupport() override { return true; }
 		bool isWrapCorrupted() override;
 
+		alni sizeAllocatedMem();
+		alni sizeUsedMem();
+		
 		~PoolAlloc();
 	};
 };

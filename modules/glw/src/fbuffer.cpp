@@ -70,6 +70,14 @@ namespace tp {
 		glDeleteRenderbuffers(1, &depthrenderbuffer);
 	}
 
+	alni ogl::fbuffer::sizeAllocatedMem() {
+		return sizeof(GLenum) * 4 + size.sizeAllocatedMem() + (sizeof(col_clear) + 1) * size.x * size.y;
+	}
+
+	alni ogl::fbuffer::sizeUsedMem() {
+		return sizeAllocatedMem();
+	}
+
 	GLuint ogl::fbuffer::texId() {
 		return renderedTexture;
 	}

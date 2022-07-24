@@ -26,7 +26,7 @@ namespace tp {
 
 		alni mNum = 0;
 		#ifdef MEM_TRACE
-		MemHead* mEntryPtr = nullptr;
+		MemHead* mEntryPtr = nullptr; // last node
 		#endif
 		
 		public:
@@ -48,7 +48,25 @@ namespace tp {
 
 		~HeapAlloc() { checkErrorOnExit(); }
 
+		alni sizeAllocatedMem() {
+			alni out = 0;
+			out += sizeof(alni); // mNum
+			
+			#ifdef MEM_TRACE
+			out += sizeof(MemHead*); // mEntryPtr
 
+			for (MemHead* iter = entry(); iter; iter = iter->prev) {
+				out += iter->size + sizeof(MemHead);
+			}
+
+			#endif
+
+			return out;
+		}
+
+		alni sizeUsedMem() {
+			return sizeAllocatedMem();
+		}
 	};
 
 };

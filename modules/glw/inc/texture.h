@@ -17,6 +17,9 @@ namespace tp {
 			void draw(const GLuint& out = 0);
 			texture();
 			~texture();
+
+			alni sizeAllocatedMem();
+			alni sizeUsedMem();
 		};
 
 	};

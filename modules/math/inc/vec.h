@@ -209,6 +209,14 @@ namespace tp {
 		bool operator!=(const vec& vec) const {
 			return !operator==(vec);
 		}
+
+		alni sizeAllocatedMem() {
+			return sizeof(Type) * dim;
+		}
+
+		alni sizeUsedMem() {
+			return sizeof(Type) * dim;
+		}
 	};
 
 	template <typename Type>
@@ -354,6 +362,14 @@ namespace tp {
 		void clamp(const vec& min, const vec& max) {
 			CLAMP(x, min.x, max.x);
 			CLAMP(y, min.y, max.y);
+		}
+
+		alni sizeAllocatedMem() {
+			return sizeof(Type) * 2;
+		}
+
+		alni sizeUsedMem() {
+			return sizeof(Type) * 2;
 		}
 	};
 
@@ -583,6 +599,14 @@ namespace tp {
 
 		halnf angley() const {
 			return (halnf) atan2(x, z);
+		}
+
+		alni sizeAllocatedMem() {
+			return sizeof(Type) * 3;
+		}
+
+		alni sizeUsedMem() {
+			return sizeof(Type) * 3;
 		}
 	};
 

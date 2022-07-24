@@ -37,6 +37,9 @@ namespace tp {
 
 		~ChunkAlloc();
 
+		alni sizeAllocatedMem();
+		alni sizeUsedMem();
+
 		public:
 		struct unused_slot_head { alni* bnext; };
 		struct used_slot_head { ChunkAlloc* chunk_p; };

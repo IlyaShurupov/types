@@ -47,11 +47,7 @@ void* operator new[](size_t size, tp::HeapAlloc* halloc) {
 }
 
 static inline void alloc_free(void* p) {
-	#ifdef MEM_WRAP
-	tp::AbstractAllocator* alloc = *((tp::AbstractAllocator**) ((tp::int1*) p - WRAP_LEN) - 1);
-	#else
-	allocator* alloc = *((allocator**) p - 1);
-	#endif  // MEM_WRAP
+	tp::AbstractAllocator* alloc = *tp::get_allocator_from_ptr(p);
 	alloc->Free(p);
 
 	if (global_heap == alloc && !global_heap->num()) {

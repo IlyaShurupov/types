@@ -32,6 +32,9 @@ namespace tp {
 			GLuint getu(const char* uid);
 			void unbind();
 			~shader();
+
+			alni sizeAllocatedMem();
+			alni sizeUsedMem();
 		};
 
 	};

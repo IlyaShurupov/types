@@ -53,6 +53,22 @@ namespace tp {
 		}
 	}
 
+	alni PoolAlloc::chunk_list::sizeAllocatedMem() {
+		alni out = sizeof(chunk_node*); // last
+		for (chunk_node* iter = last; iter; iter = iter->prev) {
+			out += iter->sizeAllocatedMem(); // last
+		}
+		return out;
+	}
+
+	alni PoolAlloc::chunk_list::sizeUsedMem() {
+		alni out = sizeof(chunk_node*); // last
+		for (chunk_node* iter = last; iter; iter = iter->prev) {
+			out += iter->sizeUsedMem(); // last
+		}
+		return out;
+	}
+
 	PoolAlloc::PoolAlloc(alni pbsize, alni pnblocks) {
 		chunks.initialize();
 		last_used = NULL;
@@ -130,4 +146,41 @@ namespace tp {
 		}
 		return false;
 	}
+
+	alni PoolAlloc::sizeAllocatedMem() {
+		alni out = 0;
+		out += sizeof(chunk_list::chunk_node*); // last_used;
+		out += sizeof(alni); // nblocks;
+		out += sizeof(alni); // bsize;
+		out += chunks.chunk_list::sizeAllocatedMem();
+		return out;
+	}
+
+	alni PoolAlloc::sizeUsedMem() {
+		alni out = 0;
+		out += sizeof(chunk_list::chunk_node*); // last_used;
+		out += sizeof(alni); // nblocks;
+		out += sizeof(alni); // bsize;
+		out += chunks.chunk_list::sizeUsedMem();
+		return out;
+	}
+
+	alni PoolAlloc::chunk_list::chunk_node::sizeAllocatedMem() {
+		alni out = 0;
+		out += sizeof(chunk_node*); // next
+		out += sizeof(chunk_node*); // prev
+		out += sizeof(PoolAlloc*); // self
+		out += ChunkAlloc::sizeAllocatedMem();
+		return out;
+	}
+
+	alni PoolAlloc::chunk_list::chunk_node::sizeUsedMem() {
+		alni out = 0;
+		out += sizeof(chunk_node*); // next
+		out += sizeof(chunk_node*); // prev
+		out += sizeof(PoolAlloc*); // self
+		out += ChunkAlloc::sizeUsedMem();
+		return out;
+	}
+
 };

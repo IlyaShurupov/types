@@ -71,6 +71,9 @@ namespace tp {
 		alni save_size() const ;
 		void save(class File* file) const;
 		void load(class File* file);
+
+		alni sizeAllocatedMem();
+		alni sizeUsedMem();
 	};
 
 	str_user sfmt(const char* fmt, ...);

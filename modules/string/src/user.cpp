@@ -196,6 +196,25 @@ namespace tp {
 		file->read(*this);
 	}
 
+	alni str_user::sizeAllocatedMem() {
+		alni out = sizeof(str_data*);
+		if (datap) {
+
+			out += sizeof(uint4); // refc
+			out += sizeof(char*); // buff
+			out += sizeof(uint4); // flags
+			
+			if (!datap->flags.get(tp::strdata_flags::SD_CONST)) {
+				out += size() + 1;
+			}
+		}
+		return out;
+	}
+
+	alni str_user::sizeUsedMem() {
+		return sizeAllocatedMem();
+	}
+
 	void str_user::clear() {
 		assert_modifiable();
 		datap->clear();

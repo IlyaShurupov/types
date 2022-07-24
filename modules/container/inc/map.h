@@ -187,6 +187,23 @@ namespace tp {
 			clear();
 		}
 
+		alni sizeAllocatedMem() {
+			alni out = 0;
+			out += sizeof(HashNode<V, K>**);
+			out += sizeof(alni) * 2;
+			out += sizeof(HashNode<V, K>*) * nslots;
+			out += palloc.sizeAllocatedMem();
+			return out;
+		}
+
+		alni sizeUsedMem() {
+			alni out = 0;
+			out += sizeof(HashNode<V, K>**);
+			out += sizeof(HashNode<V, K>*) * nentries;
+			out += sizeof(alni) * 2;
+			out += palloc.sizeUsedMem();
+			return out;
+		}
 
 		private:
 

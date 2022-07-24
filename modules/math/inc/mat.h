@@ -284,6 +284,23 @@ namespace tp {
 			assert(detv);
 			return cofactors() /= detv;
 		}
+
+
+		alni sizeAllocatedMem() {
+			alni out = 0;
+			for (halni i = 0; i < ncol; i++) {
+				out += col[i].sizeAllocatedMem();
+			}
+			return out;
+		}
+
+		alni sizeUsedMem() {
+			alni out = 0;
+			for (halni i = 0; i < ncol; i++) {
+				out += col[i].sizeUsedMem();
+			}
+			return out;
+		}
 	};
 
 	template <typename Type>
@@ -499,6 +516,14 @@ namespace tp {
 			Type detv = det();
 			assert(detv != 0);
 			return (cofactors() /= detv);
+		}
+
+		alni sizeAllocatedMem() {
+			return i.sizeAllocatedMem() + j.sizeAllocatedMem();
+		}
+
+		alni sizeUsedMem() {
+			return i.sizeUsedMem() + j.sizeUsedMem();
 		}
 	};
 
@@ -717,6 +742,14 @@ namespace tp {
 			out.K.z = (Type) (cosa + dir.z * dir.z * tmp);
 
 			return out;
+		}
+
+		alni sizeAllocatedMem() {
+			return I.sizeAllocatedMem() + J.sizeAllocatedMem() + K.sizeAllocatedMem();
+		}
+
+		alni sizeUsedMem() {
+			return I.sizeUsedMem() + J.sizeUsedMem() + K.sizeUsedMem();
 		}
 	};
 

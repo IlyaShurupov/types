@@ -70,4 +70,12 @@ namespace tp {
 		}
 	}
 
+	alni Trig::sizeAllocatedMem() {
+		return V0.sizeAllocatedMem() + V1.sizeAllocatedMem() + V2.sizeAllocatedMem();
+	}
+
+	alni Trig::sizeUsedMem() {
+		return V0.sizeUsedMem() + V1.sizeUsedMem() + V2.sizeUsedMem();
+	}
+
 };

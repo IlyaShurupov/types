@@ -29,4 +29,7 @@ namespace tp {
 
 		~AbstractAllocator() {}
 	};
+
+
+	AbstractAllocator** get_allocator_from_ptr(void* ptr);
 };

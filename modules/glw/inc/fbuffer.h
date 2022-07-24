@@ -25,6 +25,9 @@ namespace tp {
 			void end_draw();
 			GLuint texId();
 			~fbuffer();
+
+			alni sizeAllocatedMem();
+			alni sizeUsedMem();
 		};
 
 	};

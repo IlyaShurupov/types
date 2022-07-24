@@ -28,4 +28,16 @@ namespace tp {
 		return string();
 	}
 
+	alni Logger::sizeAllocatedMem() {
+		alni out = sizeof(ListNode<string>*); // cursor
+		out += buff.sizeAllocatedMem();
+		return out;
+	}
+
+	alni Logger::sizeUsedMem() {
+		alni out = sizeof(ListNode<string>*); // cursor
+		out += buff.sizeUsedMem();
+		return out;
+	}
+
 };

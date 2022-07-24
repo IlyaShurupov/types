@@ -12,4 +12,12 @@ namespace tp {
 
 	Ray::~Ray() {}
 
+
+	alni Ray::sizeAllocatedMem() {
+		return Dir.sizeAllocatedMem() + Pos.sizeAllocatedMem();;
+	}
+
+	alni Ray::sizeUsedMem() {
+		return Dir.sizeUsedMem() + Pos.sizeUsedMem();;
+	}
 };

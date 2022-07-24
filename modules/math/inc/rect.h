@@ -165,6 +165,14 @@ namespace tp {
 
 			size = p3 - pos;
 		}
+
+		alni sizeAllocatedMem() {
+			return v1.sizeAllocatedMem() + v2.sizeAllocatedMem();
+		}
+
+		alni sizeUsedMem() {
+			return v1.sizeUsedMem() + v2.sizeUsedMem();
+		}
 	};
 
 };

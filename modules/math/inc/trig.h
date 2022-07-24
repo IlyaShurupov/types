@@ -17,6 +17,9 @@ namespace tp {
 		void assign(const vec3f& v0, const vec3f& v1, const vec3f& v2);
 		void normal(vec3f& dir);
 		bool rayHit(class Ray& ray, vec3f& HitPos);
+
+		alni sizeAllocatedMem();
+		alni sizeUsedMem();
 	};
 
 };

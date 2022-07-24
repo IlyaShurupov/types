@@ -12,6 +12,9 @@ namespace tp {
 		public:
 		void write(string& in, bool post = false);
 		string read();
+
+		alni sizeAllocatedMem();
+		alni sizeUsedMem();
 	};
 
 	extern Logger GLog;

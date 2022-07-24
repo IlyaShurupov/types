@@ -92,6 +92,27 @@ namespace tp {
 				mBuff[i] = value;
 			}
 		}
+
+
+		alni sizeAllocatedMem() {
+			alni out = 0;
+			out += mSize.sizeAllocatedMem();
+			out += sizeof(Type*);
+			if (mBuff) {
+				out += sizeof(Type) * mSize.x * mSize.y;
+			}
+			return out;
+		}
+
+		alni sizeUsedMem() {
+			alni out = 0;
+			out += mSize.sizeAllocatedMem();
+			out += sizeof(Type*);
+			if (mBuff) {
+				out += sizeof(Type) * mSize.x * mSize.y;
+			}
+			return out;
+		}
 	};
 
 };

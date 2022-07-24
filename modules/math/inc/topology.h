@@ -47,6 +47,9 @@ namespace tp {
 		void set_ratio(halnf ratio);
 		void set_fov(halnf fov);
 		halnf get_fov();
+
+		alni sizeAllocatedMem();
+		alni sizeUsedMem();
 	};
 
 	class IndexedTrig {
@@ -67,6 +70,10 @@ namespace tp {
 		bool rayHit(const Ray& ray);
 		vec3f& get_hit_pos();
 		vec3f get_normal();
+
+
+		alni sizeAllocatedMem();
+		alni sizeUsedMem();
 	};
 
 	class topology {
@@ -87,6 +94,9 @@ namespace tp {
 		void add_trig(vec3f v1, vec3f v2, vec3f v3);
 		void update_transformed();
 		~topology() {}
+
+		alni sizeAllocatedMem();
+		alni sizeUsedMem();
 	};
 
 };

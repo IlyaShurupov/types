@@ -161,6 +161,20 @@ namespace tp {
 		~Array() {
 			free();
 		}
+
+		alni sizeAllocatedMem() {
+			alni out = 0;
+			out += sizeof(alni);
+			out += sizeof(Type*);
+			if (mBuff) {
+				out += sizeof(Type) * mLength;
+			}
+			return out;
+		}
+
+		alni sizeUsedMem() {
+			return sizeAllocatedMem();
+		}
 	};
 
 	template <typename Type>

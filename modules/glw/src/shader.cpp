@@ -141,4 +141,12 @@ namespace tp {
 		glDeleteProgram(programm);
 	}
 
+	alni ogl::shader::sizeAllocatedMem() {
+		return sizeof(GLuint) * 4;
+	}
+
+	alni ogl::shader::sizeUsedMem() {
+		return sizeof(GLuint) * 4;
+	}
+
 };

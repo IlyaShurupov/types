@@ -19,8 +19,8 @@ namespace tp {
 		ListNode<Type>* next = nullptr;
 		ListNode<Type>* prev = nullptr;
 
-		ListNode(Type p_data) { data = p_data; }
 		ListNode() {}
+		ListNode(Type p_data) { data = p_data; }
 
 		Type& operator->() { return data; }
 	};
@@ -35,10 +35,7 @@ namespace tp {
 		PoolAlloc palloc;
 
 		public:
-		bool shared_nodes = false;
-
-		public:
-		List(uint2 palloc_chuck_size = 30) : palloc(sizeof(ListNode<Type>), palloc_chuck_size) {}
+		List(uint2 palloc_chuck_size = 32) : palloc(sizeof(ListNode<Type>), palloc_chuck_size) {}
 
 		inline ListNode<Type>* first() const { return mFirst; }
 		inline ListNode<Type>* last() const { return mLast; }
@@ -260,6 +257,23 @@ namespace tp {
 
 		void detachAll() {
 			forEach([](List<Type>* list, ListNode<Type>* node) { list->detach(node); });
+		}
+
+
+		alni sizeAllocatedMem() {
+			alni out = 0;
+			out += sizeof(ListNode<Type>*) * 2;
+			out += sizeof(alni);
+			out += palloc.sizeAllocatedMem();
+			return out;
+		}
+
+		alni sizeUsedMem() {
+			alni out = 0;
+			out += sizeof(ListNode<Type>*) * 2;
+			out += sizeof(alni);
+			out += palloc.sizeUsedMem();
+			return out;
 		}
 	};
 

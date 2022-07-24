@@ -138,6 +138,14 @@ namespace tp {
 		return this->fov;
 	}
 
+	alni Camera::sizeAllocatedMem() {
+		return sizeof(halnf) * 4 + pos.sizeAllocatedMem() + target.sizeAllocatedMem() + up.sizeAllocatedMem();
+	}
+
+	alni Camera::sizeUsedMem() {
+		return sizeof(halnf) * 4 + pos.sizeUsedMem() + target.sizeUsedMem() + up.sizeUsedMem();
+	}
+
 	vec3f IndexedTrig::HitPos;
 
 	IndexedTrig::IndexedTrig() : v1(0), v2(0), v3(0) {}
@@ -194,6 +202,18 @@ namespace tp {
 		return normal;
 	}
 
+	alni IndexedTrig::sizeAllocatedMem() {
+		alni out = sizeof(halnf) * 3;
+		out += edge1.sizeAllocatedMem() + edge2.sizeAllocatedMem() + v1_val.sizeAllocatedMem() + normal.sizeAllocatedMem();
+		return out;
+	}
+
+	alni IndexedTrig::sizeUsedMem() {
+		alni out = sizeof(halnf) * 3;
+		out += edge1.sizeUsedMem() + edge2.sizeUsedMem() + v1_val.sizeUsedMem() + normal.sizeUsedMem();
+		return out;
+	}
+
 	void topology::add_trig(vec3f v1, vec3f v2, vec3f v3) {
 
 		halni trig_idx = (halni) points.length();
@@ -228,6 +248,26 @@ namespace tp {
 		for (alni idx : Range(trigs.length())) {
 			trigs[idx].update_cache(transformed_points);
 		}
+	}
+
+	alni topology::sizeAllocatedMem() {
+		alni out = 0;
+		out += points.sizeAllocatedMem();
+		out += transformed_points.sizeAllocatedMem();
+		out += trigs.sizeAllocatedMem();
+		out += basis.sizeAllocatedMem();
+		out += origin.sizeAllocatedMem();
+		return out;
+	}
+
+	alni topology::sizeUsedMem() {
+		alni out = 0;
+		out += points.sizeUsedMem();
+		out += transformed_points.sizeUsedMem();
+		out += trigs.sizeUsedMem();
+		out += basis.sizeUsedMem();
+		out += origin.sizeUsedMem();
+		return out;
 	}
 
 };
