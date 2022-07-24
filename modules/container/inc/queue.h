@@ -5,7 +5,7 @@
 namespace tp {
 
 	template <typename Type>
-	class Stack {
+	class Queue {
 		public:
 
 		template <typename Type>
@@ -32,22 +32,32 @@ namespace tp {
 
 		alni length;
 		Node<Type>* top;
+		Node<Type>* bottom;
 
 		PoolAlloc palloc;
 
-		Stack(alni palloc_chunk_size = 16) : palloc(sizeof(Node<Type>), palloc_chunk_size) {
+		Queue(alni palloc_chunk_size = 16) : palloc(sizeof(Node<Type>), palloc_chunk_size) {
 			length = 0;
 			top = nullptr;
+			bottom = nullptr;
 		}
 
-		~Stack() {
+		~Queue() {
 			free();
 		}
 
-		// pushes the node on top of the stack
+		// pushes the node on the bottom of the stack
 		void push(Type data) {
-			Node<Type>* NewNode = new (palloc) Node<Type>(data, top);
-			top = NewNode;
+			Node<Type>* new_node = new (palloc) Node<Type>(data, NULL);
+
+			if (bottom) {
+				bottom->below = new_node;
+			} else {
+				top = new_node;
+			}
+
+			bottom = new_node;
+
 			length++;
 		}
 
@@ -58,6 +68,10 @@ namespace tp {
 			top = top->below;
 			delete del;
 			length--;
+			
+			if (!top) {
+				bottom = NULL;
+			}
 		}
 
 		// deletes all nodes
@@ -72,7 +86,7 @@ namespace tp {
 
 		alni sizeAllocatedMem() {
 			alni out = 0;
-			out += sizeof(Node<Type>*);
+			out += sizeof(Node<Type>*) * 2;
 			out += sizeof(alni);
 			out += palloc.sizeAllocatedMem();
 			return out;
@@ -80,7 +94,7 @@ namespace tp {
 
 		alni sizeUsedMem() {
 			alni out = 0;
-			out += sizeof(Node<Type>*);
+			out += sizeof(Node<Type>*) * 2;
 			out += sizeof(alni);
 			out += palloc.sizeUsedMem();
 			return out;

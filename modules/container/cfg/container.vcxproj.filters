@@ -33,6 +33,9 @@
     <ClInclude Include="..\inc\array2d.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\inc\queue.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\containers.cpp">

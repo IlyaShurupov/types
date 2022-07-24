@@ -44,6 +44,7 @@
     <ClInclude Include="..\inc\containers.h" />
     <ClInclude Include="..\inc\list.h" />
     <ClInclude Include="..\inc\map.h" />
+    <ClInclude Include="..\inc\queue.h" />
     <ClInclude Include="..\inc\sort.h" />
     <ClInclude Include="..\inc\stack.h" />
   </ItemGroup>

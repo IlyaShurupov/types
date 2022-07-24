@@ -42,13 +42,37 @@ void hmap_test() {
 	val = sizeof(HashMap<int, const char*>);
 }
 
-void node_test() {
-	{
-		//ContainerTypeHolder<int*, 0, 0> node(NULL);
-		//ContainerTypeHolder<int*, 0, 0> node2 = node;
+void queue_test() {
+	tp::Queue<int> q;
+
+	q.push(0);
+	q.push(1);
+	q.push(2);
+	q.push(3);
+	q.push(4);
+	q.push(5);
+
+	for (auto node : q) {
+		printf("%i ", node.mIter->data);
+	}
+
+
+	q.pop();
+	q.pop();
+	q.pop();
+	q.pop();
+	q.pop();
+	q.pop();
+
+	q.push(3);
+	q.push(4);
+	q.push(5);
+
+	for (auto node : q) {
+		printf("%i ", node.mIter->data);
 	}
 }
 
 int main() {
-	node_test();
+	queue_test();
 }
