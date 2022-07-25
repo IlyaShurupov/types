@@ -2,6 +2,7 @@
 #include "file.h"
 
 #include <iostream>
+#include <cstdio>
 
 namespace tp {
 
@@ -103,4 +104,7 @@ namespace tp {
 		return script;
 	}
 
+	bool File::removeFile(tp::string path) {
+		return (bool) std::remove(path.cstr());
+	}
 };

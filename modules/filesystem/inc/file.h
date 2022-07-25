@@ -65,6 +65,8 @@ namespace tp {
 		alni sizeUsedMem() {
 			return sizeAllocatedMem();
 		}
+
+		static bool removeFile(tp::string path);
 	};
 
 	string read_file(string path);
